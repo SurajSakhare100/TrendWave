@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom';
 import { products } from '../data';
 import Testimonial from '../components/Testimonial';
 import ProductCard from '../components/ProductCard';
-
+import hero from '../../public/assests/heroimg.png' 
 const Home = () => {
     return (
         <div className="container mx-auto p-4">
             {/* Hero Section */}
             <section className="relative bg-blue-500 text-white rounded-lg overflow-hidden mb-8">
                 <img 
-                    src="https://via.placeholder.com/1500x600?text=Hero+Image" 
+                    src={hero} 
                     alt="Hero" 
-                    className="w-full h-96 object-cover"
+                    className="w-full h-96 object-center"
                 />
                 <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-50">
                     <h1 className="text-5xl font-bold mb-4 text-center">Discover the Best Deals on Fashion</h1>

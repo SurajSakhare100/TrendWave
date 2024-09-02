@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart, FaBars, FaTimes, FaPersonBooth, FaUser, FaBell } from 'react-icons/fa';
+import { FaShoppingCart, FaBars, FaTimes,FaUser, FaBell } from 'react-icons/fa';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +27,7 @@ const Navbar = () => {
                     </div>
                     <div className="hidden md:flex  space-x-6 items-center">
 
-                        <Link to="/profile" className="hover:underline"><FaUser /></Link>
+                        <Link to="/auth/signin" className="hover:underline"><FaUser /></Link>
                         <Link to="/notify" className="hover:underline"><FaBell /></Link>
                         <Link to="/cart" className="flex items-center space-x-1 hover:underline">
                             <FaShoppingCart />

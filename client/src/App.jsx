@@ -7,8 +7,10 @@ import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-import Auth from './pages/Auth';
 import { products } from './data';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 
 const App = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -32,7 +34,9 @@ const App = () => {
                         <Route path="/products/:id" element={<ProductDetails addToCart={addToCart} />} />
                         <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />} />
                         <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/auth/signup" element={<Register />} />
+                        <Route path="/auth/signin" element={<Login />} />
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </main>
                 <Footer />
