@@ -20,9 +20,9 @@ const Navbar = () => {
                         </button>
                     </div>
                     <div className=' hidden md:flex space-x-16 items-center'>
-                        <Link to="/" className="hover:underline">Home</Link>
-                        <Link to="/" className="hover:underline">About</Link>
-                        <Link to="/" className="hover:underline">Contact US</Link>
+                        <Link to="/" className="">Home</Link>
+                        <Link to="/about" className="">About</Link>
+                        <Link to="/contact" className="">Contact US</Link>
                         <Link to="/products" className="hover:underline">Products</Link>
                     </div>
                     <div className="hidden md:flex  space-x-6 items-center">

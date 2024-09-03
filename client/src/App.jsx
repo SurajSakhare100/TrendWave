@@ -11,6 +11,7 @@ import { products } from './data';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
+import About from './pages/About';
 
 const App = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -34,6 +35,7 @@ const App = () => {
                         <Route path="/products/:id" element={<ProductDetails addToCart={addToCart} />} />
                         <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />} />
                         <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/about" element={<About />} />
                         <Route path="/auth/signup" element={<Register />} />
                         <Route path="/auth/signin" element={<Login />} />
                         <Route path="*" element={<NotFound />} />
