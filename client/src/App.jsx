@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
+import ContactPage from './pages/ContactPage';
 
 const App = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -36,6 +37,7 @@ const App = () => {
                         <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/about" element={<About />} />
+                        <Route path="/contact" element={<ContactPage />} />
                         <Route path="/auth/signup" element={<Register />} />
                         <Route path="/auth/signin" element={<Login />} />
                         <Route path="*" element={<NotFound />} />
