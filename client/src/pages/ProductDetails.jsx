@@ -1,33 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { products } from '../data';
+import axios from 'axios';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
-import f1 from '../../public/assests/products/f1.jpg'
 
 const ProductDetails = ({ addToCart }) => {
     const { id } = useParams();
-    const product = products.find(p => p.id === parseInt(id));
-
-    const [selectedImage, setSelectedImage] = useState(product.image);
+    const [product, setProduct] = useState(null);
+    const [selectedImage, setSelectedImage] = useState('');
     const [selectedSize, setSelectedSize] = useState('Select Size');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        // Fetch product details from the API
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+                setProduct(response.data);
+                setSelectedImage(response.data.image); // Set the default image
+                setLoading(false);
+            } catch (err) {
+                setError('Product not found');
+                setLoading(false);
+            }
+        };
+
+        fetchProduct();
+    }, [id]);
+
+    const handleImageClick = (image) => {
+        setSelectedImage(image);
+    };
+
+    const handleSizeChange = (event) => {
+        setSelectedSize(event.target.value);
+    };
+
+    if (loading) {
+        return <div className="container mx-auto p-4 text-center">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="container mx-auto p-4 text-center">{error}</div>;
+    }
 
     if (!product) {
         return <div className="container mx-auto p-4 text-center">Product not found</div>;
     }
 
-    // Function to handle image change on click
-    const handleImageClick = () => {
-        // Logic to change image or open a modal can go here
-        console.log('Image clicked');
-    };
-
-    // Function to handle size selection
-    const handleSizeChange = (event) => {
-        setSelectedSize(event.target.value);
-    };
-
     // Calculate star rating
-    const rating = 4.5; // Example rating, replace with actual product rating
+    const rating = product.rating || 0;
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
 
@@ -35,39 +57,12 @@ const ProductDetails = ({ addToCart }) => {
         <div className="container mx-auto py-14 px-40">
             <div className="flex flex-col md:flex-row items-center md:items-start">
                 <div className='flex flex-col md:w-1/2'>
-                <img 
-                    src={f1} 
-                    alt={product.name} 
-                    className="w-full aspect-square object-cover rounded cursor-pointer mb-4 md:mb-0"
-                    onClick={handleImageClick}
-                />
-                <div className='flex gap-4 origin-center mt-4'>
-                
-                <img 
-                    src={f1} 
-                    alt={product.name} 
-                    className="w-full md:w-1/2 aspect-square object-cover rounded cursor-pointer mb-4 md:mb-0"
-                    onClick={handleImageClick}
-                />
-                <img 
-                    src={f1} 
-                    alt={product.name} 
-                    className="w-full md:w-1/2 aspect-square object-cover rounded cursor-pointer mb-4 md:mb-0"
-                    onClick={handleImageClick}
-                />
-                <img 
-                    src={f1} 
-                    alt={product.name} 
-                    className="w-full md:w-1/2 aspect-square object-cover rounded cursor-pointer mb-4 md:mb-0"
-                    onClick={handleImageClick}
-                />
-                <img 
-                    src={f1} 
-                    alt={product.name} 
-                    className="w-full md:w-1/2 aspect-square object-cover rounded cursor-pointer mb-4 md:mb-0"
-                    onClick={handleImageClick}
-                />
-                </div>
+                    <img 
+                        src={selectedImage} 
+                        alt={product.name} 
+                        className="w-full  object-cover rounded cursor-pointer mb-4 md:mb-0"
+                        onClick={() => handleImageClick(product.image)}
+                    />
                 </div>
                 
                 <div className="md:w-1/2 md:ml-8">
@@ -95,10 +90,9 @@ const ProductDetails = ({ addToCart }) => {
                             className="border border-gray-300 rounded-lg py-2 px-4 w-40"
                         >
                             <option disabled>Select Size</option>
-                            <option value="S">Small</option>
-                            <option value="M">Medium</option>
-                            <option value="L">Large</option>
-                            <option value="XL">Extra Large</option>
+                            {product.sizes && product.sizes.map((size, index) => (
+                                <option key={index} value={size}>{size}</option>
+                            ))}
                         </select>
                     </div>
 
@@ -108,10 +102,8 @@ const ProductDetails = ({ addToCart }) => {
                     >
                         Add to Cart
                     </button>
-
                 </div>
             </div>
-                
         </div>
     );
 };
