@@ -20,11 +20,10 @@ export const getAllProducts = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
-// Get  products by category
+
 export const getFilteredProducts = async (req, res) => {
   try {
-    const { category, subcategory, priceRange, size } = req.query;
-    console.log({ category, subcategory, priceRange, size })
+    const { category, subcategory, priceRange, size, limit = 12, page = 1 } = req.query;
 
     // Build the filter object
     const filter = {};
@@ -34,21 +33,44 @@ export const getFilteredProducts = async (req, res) => {
 
     // Price range filter
     if (priceRange) {
-        const [minPrice, maxPrice] = priceRange.split('-').map(Number);
-        filter.price = {};
-        if (!isNaN(minPrice)) filter.price.$gte = minPrice;
-        if (!isNaN(maxPrice)) filter.price.$lte = maxPrice;
+      const [minPrice, maxPrice] = priceRange.split('-').map(Number);
+      filter.price = {};
+      if (!isNaN(minPrice)) filter.price.$gte = minPrice;
+      if (!isNaN(maxPrice)) filter.price.$lte = maxPrice;
     }
 
-    // Fetch filtered products
-    const products = await Product.find(filter);
+    // Pagination options
+    const limitValue = parseInt(limit, 10) || 12; // Default to 12 if limit is not provided
+    const pageValue = parseInt(page, 10) || 1; // Default to 1 if page is not provided
+    const skipValue = (pageValue - 1) * limitValue;
 
-    res.json(products);
-} catch (error) {
+    // Count the total number of products matching the filter
+    const totalProducts = await Product.countDocuments(filter);
+
+    // Fetch the filtered products with pagination
+    const products = await Product.find(filter)
+      .limit(limitValue)
+      .skip(skipValue);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalProducts / limitValue);
+
+    // Return the products and additional info
+    res.json({
+      success: true,
+      total: totalProducts,
+      page: pageValue,
+      totalPages,
+      products,
+    });
+
+  } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
-}
+  }
 };
+
+
 
 // Get a product by ID
 export const getProductById = async (req, res) => {
