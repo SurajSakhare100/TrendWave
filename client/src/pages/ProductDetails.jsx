@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import {  addToCartAPI } from '../../app/features/cartSlice.js';
 
-const ProductDetails = ({ addToCart }) => {
+const ProductDetails = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedImage, setSelectedImage] = useState('');
     const [selectedSize, setSelectedSize] = useState('Select Size');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         // Fetch product details from the API
@@ -36,6 +39,14 @@ const ProductDetails = ({ addToCart }) => {
         setSelectedSize(event.target.value);
     };
 
+    const handleAddToCart = () => {
+        if (product && selectedSize !== 'Select Size') {
+            dispatch(addToCartAPI({userId:"123",product:{id:product._id,price:product.price,image:product.image}}));
+        } else {
+            alert('Please select a size before adding to cart.');
+        }
+    };
+
     if (loading) {
         return <div className="container mx-auto p-4 text-center">Loading...</div>;
     }
@@ -56,11 +67,11 @@ const ProductDetails = ({ addToCart }) => {
     return (
         <div className="container mx-auto py-14 px-40">
             <div className="flex flex-col md:flex-row items-center md:items-start">
-                <div className='flex flex-col md:w-1/2'>
+                <div className="flex flex-col md:w-1/2">
                     <img 
                         src={selectedImage} 
                         alt={product.name} 
-                        className="w-full  object-cover rounded cursor-pointer mb-4 md:mb-0"
+                        className="w-full object-cover rounded cursor-pointer mb-4 md:mb-0"
                         onClick={() => handleImageClick(product.image)}
                     />
                 </div>
@@ -97,7 +108,7 @@ const ProductDetails = ({ addToCart }) => {
                     </div>
 
                     <button
-                        onClick={() => addToCart(product, selectedSize)}
+                        onClick={handleAddToCart}
                         className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
                     >
                         Add to Cart

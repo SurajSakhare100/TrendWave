@@ -15,16 +15,6 @@ import About from './pages/About';
 import ContactPage from './pages/ContactPage';
 
 const App = () => {
-    const [cartItems, setCartItems] = useState([]);
-
-    const addToCart = (product) => {
-        setCartItems([...cartItems, product]);
-    };
-
-    const removeFromCart = (id) => {
-        setCartItems(cartItems.filter(item => item.id !== id));
-    };
-
     return (
         <Router>
             <div className="app">
@@ -33,8 +23,8 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/products" element={<Products products={products} />} />
-                        <Route path="/products/:id" element={<ProductDetails addToCart={addToCart} />} />
-                        <Route path="/cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />} />
+                        <Route path="/products/:id" element={<ProductDetails  />} />
+                        <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/contact" element={<ContactPage />} />
