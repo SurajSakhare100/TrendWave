@@ -1,109 +1,133 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-// import { clearCart } from '../../app/features/cartSlice';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
-    const dispatch = useDispatch();
-    const cart = useSelector((state) => state.cart.items);
-    const [shippingAddress, setShippingAddress] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(false);
+    const userId = '123';
+    const [shippingAddress, setShippingAddress] = useState({
+        address: '',
+        city: '',
+        postalCode: '',
+        country: ''
+    });
+    const [paymentMethod, setPaymentMethod] = useState('PayPal');
+    const [orderSuccess, setOrderSuccess] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
-    const handleCheckout = async () => {
-        setLoading(true);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setShippingAddress({ ...shippingAddress, [name]: value });
+    };
+
+    const handleOrder = async () => {
+        setErrorMessage('');
+        setOrderSuccess(null);
+
         try {
-            // Assume you have a backend endpoint to handle order creation
-            const response = await axios.post('http://localhost:5000/api/orders', {
-                items: cart,
-                shippingAddress,
-                paymentMethod,
+            const response = await fetch(`http://localhost:5000/api/orders/${userId}/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    shippingAddress,
+                    paymentMethod,
+                    items: [],  // Fetch or pass cart items
+                }),
             });
-            if (response.data.success) {
-                // dispatch(clearCart()); // Clear cart on successful order
-                setSuccess(true);
-                setShippingAddress('');
-                setPaymentMethod('');
+
+            const result = await response.json();
+            if (result.success) {
+                setOrderSuccess(true);
+                setTimeout(() => {
+                    navigate('/orders');  // Redirect to orders page
+                }, 2000);
+            } else {
+                throw new Error(result.message || 'Failed to place order');
             }
-        } catch (err) {
-            setError('Failed to process the order');
+        } catch (error) {
+            console.error('Order failed', error);
+            setErrorMessage(error.message || 'Something went wrong');
         }
-        setLoading(false);
     };
-
-    const handleAddressChange = (event) => {
-        setShippingAddress(event.target.value);
-    };
-
-    const handlePaymentMethodChange = (event) => {
-        setPaymentMethod(event.target.value);
-    };
-
-    const calculateTotal = () => {
-        return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
-    };
-
-    if (loading) {
-        return <div className="container mx-auto p-4 text-center">Processing...</div>;
-    }
 
     return (
-        <div className="container mx-auto py-14 px-40">
-            <h1 className="text-3xl font-bold mb-4">Checkout</h1>
-            {success && <div className="text-green-500 mb-4">Order placed successfully!</div>}
-            {error && <div className="text-red-500 mb-4">{error}</div>}
-
-            <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-2">Shipping Address</h2>
-                <textarea
-                    value={shippingAddress}
-                    onChange={handleAddressChange}
-                    rows="4"
-                    className="border border-gray-300 rounded-lg py-2 px-4 w-full"
-                    placeholder="Enter your shipping address"
-                />
-            </div>
-
-            <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-2">Payment Method</h2>
-                <select
-                    value={paymentMethod}
-                    onChange={handlePaymentMethodChange}
-                    className="border border-gray-300 rounded-lg py-2 px-4 w-full"
-                >
-                    <option value="">Select Payment Method</option>
-                    <option value="credit-card">Credit Card</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="bank-transfer">Bank Transfer</option>
-                </select>
-            </div>
-
-            <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-2">Order Summary</h2>
-                <div className="border-t border-gray-300 pt-4">
-                    {cart.map((item) => (
-                        <div key={item.id} className="flex justify-between mb-2">
-                            <span>{item.name} (x{item.quantity})</span>
-                            <span>${(item.price * item.quantity).toFixed(2)}</span>
+        <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg my-10">
+            <h2 className="text-xl font-semibold mb-4">Checkout</h2>
+            <div className="space-y-4">
+                <div className="border-b border-gray-200 pb-4">
+                    <h3 className="text-lg font-medium mb-2">Shipping Address</h3>
+                    <div className="space-y-3">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Address</label>
+                            <input
+                                type="text"
+                                name="address"
+                                value={shippingAddress.address}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
                         </div>
-                    ))}
-                    <div className="border-t border-gray-300 pt-2 mt-2">
-                        <div className="flex justify-between font-bold text-lg">
-                            <span>Total</span>
-                            <span>${calculateTotal()}</span>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">City</label>
+                            <input
+                                type="text"
+                                name="city"
+                                value={shippingAddress.city}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Postal Code</label>
+                            <input
+                                type="text"
+                                name="postalCode"
+                                value={shippingAddress.postalCode}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Country</label>
+                            <input
+                                type="text"
+                                name="country"
+                                value={shippingAddress.country}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
                         </div>
                     </div>
                 </div>
+                <div className="border-b border-gray-200 pb-4">
+                    <h3 className="text-lg font-medium mb-2">Payment Method</h3>
+                    <select
+                        value={paymentMethod}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                        <option value="PayPal">PayPal</option>
+                        <option value="Credit Card">Credit Card</option>
+                    </select>
+                </div>
+                <button
+                    onClick={handleOrder}
+                    className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                    Place Order
+                </button>
+                {errorMessage && (
+                    <div className="mt-4 p-4 bg-red-100 text-red-800 border border-red-300 rounded-md">
+                        {errorMessage}
+                    </div>
+                )}
+                {orderSuccess && !errorMessage && (
+                    <div className="mt-4 p-4 bg-green-100 text-green-800 border border-green-300 rounded-md">
+                        Order placed successfully! Redirecting...
+                    </div>
+                )}
             </div>
-
-            <button
-                onClick={handleCheckout}
-                className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
-            >
-                Place Order
-            </button>
         </div>
     );
 };

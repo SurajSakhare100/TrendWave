@@ -1,10 +1,9 @@
 import express from 'express';
-import { addItemToCart, CreateOrder, getCart, removeItemFromCart, updateItemQuantity } from '../controllers/cart.controller.js';
+import { addItemToCart, getCart, removeItemFromCart, updateItemQuantity } from '../controllers/cart.controller.js';
 
 const router = express.Router();
 
 // Routes
-router.post('/orders', CreateOrder);
 router.get('/:userId', getCart);
 router.post('/:userId', addItemToCart);
 

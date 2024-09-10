@@ -1,9 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import productRoutes from './routes/product.routes.js';
+import orderRoutes from './routes/order.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import dotenv from 'dotenv';
-
 // Load environment variables from .env file
 dotenv.config();
 
@@ -21,6 +21,9 @@ mongoose.connect(dbUri).then(() => {
 // Use product routes
 app.use('/api', productRoutes);
 app.use('/api/cart', cartRoutes);
+
+app.use('/api/orders', orderRoutes);
+
 
 // Get port from environment variable or default to 5000
 const PORT = process.env.PORT || 5000;

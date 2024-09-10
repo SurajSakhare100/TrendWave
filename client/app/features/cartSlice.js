@@ -10,6 +10,7 @@ const initialState = {
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId) => {
   const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+  console.log(response)
   return response.data;
 });
 
@@ -20,11 +21,13 @@ export const addToCartAPI = createAsyncThunk('cart/addToCartAPI', async ({ userI
     image: product.image,
     quantity: 1,
   });
+  console.log(response)
   return response.data;
 });
 
 export const removeFromCartAPI = createAsyncThunk('cart/removeFromCartAPI', async ({ userId, productId }) => {
   const response = await axios.delete(`http://localhost:5000/api/cart/${userId}/${productId}`);
+  console.log(response.data.items)
   return response.data;
 });
 

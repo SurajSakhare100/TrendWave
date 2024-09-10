@@ -24,6 +24,7 @@ const Cart = () => {
   const handleCheckout = () => {
     navigate('/checkout');
   };
+  console.log(items)
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Shopping Cart</h1>
@@ -34,7 +35,7 @@ const Cart = () => {
           <ul>
             {items.map((item) => (
               <li key={item._id} className="flex items-center justify-between mb-4 p-4 border rounded-lg">
-                <img src={item.image} alt={item.name} className="w-20 h-20 object-cover mr-4" />
+                <img src={item.image} alt={item.name} className="w-20 h-20 object-contain mr-4" />
                 <div className="flex-grow">
                   <h2 className="text-lg font-semibold">{item.name}</h2>
                   <p className="text-gray-700">Price: {item.price.toFixed(2)} RS</p>
@@ -45,10 +46,10 @@ const Cart = () => {
                     value={item.quantity}
                     min="1"
                     className="w-16 p-1 border rounded-lg text-center"
-                    onChange={(e) => handleQuantityChange(item._id, parseInt(e.target.value, 10))}
+                    onChange={(e) => handleQuantityChange(item.productId._id, parseInt(e.target.value, 10))}
                   />
                   <button
-                    onClick={() => handleRemove(item._id)}
+                    onClick={() => handleRemove(item.productId._id)}
                     className="ml-4 p-2 bg-red-500 text-white rounded-lg"
                   >
                     Remove
