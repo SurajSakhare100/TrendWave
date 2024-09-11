@@ -4,7 +4,6 @@ import { FaShoppingCart, FaBars, FaTimes,FaUser, FaBell } from 'react-icons/fa';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
     return (
         <nav className="bg-gray-800  text-white shadow-md">
             <div className="container mx-auto flex justify-between items-center p-4">

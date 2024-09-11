@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { GoogleAuth } from '../components/GoogleAuth';
 
 const Login = () => {
     const [form, setForm] = useState({
@@ -22,9 +23,7 @@ const Login = () => {
     };
 
     const togglePasswordVisibility = () => {
-        setTimeout(()=>{
-            setShowPassword(!showPassword);
-        },[100])
+        setShowPassword(prevState => !prevState);
     };
 
     return (
@@ -79,6 +78,7 @@ const Login = () => {
                         Login
                     </button>
                 </form>
+                <GoogleAuth />
                 <p className="text-sm text-center text-gray-600">
                     Don't have an account? <Link to="/auth/signup" className="text-blue-500 hover:underline">Register</Link>
                 </p>
