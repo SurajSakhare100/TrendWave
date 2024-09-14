@@ -1,22 +1,15 @@
 import Order from '../models/order.model.js';
-
-import mongoose from 'mongoose';
 import Cart from '../models/cart.model.js'; // Assuming you have a Cart model
 
 export const CreateOrder = async (req, res) => {
     try {
         const { items, shippingAddress, paymentMethod } = req.body;
         let { userId } = req.params;
-
-        // Check if the provided userId is a valid ObjectId
-        // if (!mongoose.Types.ObjectId.isValid(userId)) {
-        //     return res.status(400).json({ message: 'Invalid userId' });
-        // }
         
         // Validate the shippingAddress fields
-        // if (!shippingAddress || !shippingAddress.country || !shippingAddress.postalCode || !shippingAddress.city || !shippingAddress.address) {
-        //     return res.status(400).json({ message: 'All shipping address fields are required' });
-        // }
+        if (!shippingAddress || !shippingAddress.country || !shippingAddress.postalCode || !shippingAddress.city || !shippingAddress.address) {
+            return res.status(400).json({ message: 'All shipping address fields are required' });
+        }
 
         // Create a new order
         const newOrder = new Order({
@@ -28,14 +21,13 @@ export const CreateOrder = async (req, res) => {
             status: 'Processing',  // Set the initial order status
             createdAt: Date.now()
         });
-        console.log(newOrder)
 
         // Save the order to the database
-        await newOrder.save();
+        const order= await newOrder.save();
 
         // Clear the user's cart after order creation (assuming you already implemented this in the cart logic)
-        await Cart.findOneAndUpdate(
-            { userId: mongoose.Types.ObjectId(userId) },
+        const cart=await Cart.findOneAndUpdate(
+            { userId },
             { $set: { items: [], totalPrice: 0 } }, // Empty cart and reset totalPrice
             { new: true }
         );

@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {  fetchCart, removeFromCartAPI, updateQuantityAPI } from '../../app/features/cartSlice.js';
+import {  fetchCart, removeFromCartAPI, updateQuantityAPI } from '../app/features/cartSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { items, totalPrice } = useSelector((state) => state.cart);
-  const userId = '123'; // Replace with actual user ID
+  const id = useSelector((state) => state.user._id);
+ 
   useEffect(() => {
-    dispatch(fetchCart(userId)); // Fetch cart data when component mounts
-  }, [dispatch, userId]);
+    dispatch(fetchCart(id)); // Fetch cart data when component mounts
+  }, [dispatch, id]);
 
   const handleRemove = (productId) => {
-    dispatch(removeFromCartAPI({ userId, productId }));
+    dispatch(removeFromCartAPI({ id, productId }));
   };
 
   const handleQuantityChange = (productId, quantity) => {
     if (quantity < 1) return;
-    dispatch(updateQuantityAPI({ userId, productId, quantity }));
+    dispatch(updateQuantityAPI({ id, productId, quantity }));
   };
 
   const handleCheckout = () => {

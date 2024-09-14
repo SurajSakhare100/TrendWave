@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
-    const userId = '123';
+    const user=useSelector((state)=>state.user)
     const [shippingAddress, setShippingAddress] = useState({
         address: '',
         city: '',
         postalCode: '',
         country: ''
     });
+    const items=useSelector((state)=>state.cart.items)
     const [paymentMethod, setPaymentMethod] = useState('PayPal');
     const [orderSuccess, setOrderSuccess] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
@@ -24,7 +26,7 @@ const Checkout = () => {
         setOrderSuccess(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/orders/${userId}/create`, {
+            const response = await fetch(`http://localhost:5000/api/orders/${user?._id}/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,7 +34,7 @@ const Checkout = () => {
                 body: JSON.stringify({
                     shippingAddress,
                     paymentMethod,
-                    items: [],  // Fetch or pass cart items
+                    items: items,  // Fetch or pass cart items
                 }),
             });
 

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
-import {  addToCartAPI } from '../../app/features/cartSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCartAPI } from '../app/features/cartSlice';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -13,7 +13,7 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
-
+    const userId=useSelector((state)=>state.user._id)
     useEffect(() => {
         // Fetch product details from the API
         const fetchProduct = async () => {
@@ -41,7 +41,7 @@ const ProductDetails = () => {
 
     const handleAddToCart = () => {
         if (product && selectedSize !== 'Select Size') {
-            dispatch(addToCartAPI({userId:"123",product:{id:product._id,price:product.price,image:product.image}}));
+            dispatch(addToCartAPI({ userId, product: { id: id, price: product.price, image: product.image } }));
         } else {
             alert('Please select a size before adding to cart.');
         }
@@ -65,21 +65,21 @@ const ProductDetails = () => {
     const hasHalfStar = rating % 1 !== 0;
 
     return (
-        <div className="container mx-auto py-14 px-40">
+        <div className="container mx-auto py-14 px-20">
             <div className="flex flex-col md:flex-row items-center md:items-start">
                 <div className="flex flex-col md:w-1/2">
-                    <img 
-                        src={selectedImage} 
-                        alt={product.name} 
+                    <img
+                        src={selectedImage}
+                        alt={product.name}
                         className="w-full object-cover rounded cursor-pointer mb-4 md:mb-0"
                         onClick={() => handleImageClick(product.image)}
                     />
                 </div>
-                
+
                 <div className="md:w-1/2 md:ml-8">
                     <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-                    <p className="text-xl font-semibold mb-4">${product.price.toFixed(2)}</p>
-                    
+                    <p className="text-2xl font-semibold mb-4">${product.price.toFixed(2)} 378</p>
+
                     <div className="flex items-center mb-4">
                         {[...Array(fullStars)].map((_, i) => (
                             <FaStar key={i} className="text-yellow-500" />
@@ -91,14 +91,14 @@ const ProductDetails = () => {
                     </div>
 
                     <p className="text-gray-700 mb-4">{product.description}</p>
-                    
+
                     <div className="mb-4">
                         <label htmlFor="size" className="block text-gray-700 font-medium mb-2">Select Size:</label>
-                        <select 
-                            id="size" 
-                            value={selectedSize} 
-                            onChange={handleSizeChange} 
-                            className="border border-gray-300 rounded-lg py-2 px-4 w-40"
+                        <select
+                            id="size"
+                            value={selectedSize}
+                            onChange={handleSizeChange}
+                            className=" border-gray-300 bg-gray-50 border-2  py-2 px-4 w-40"
                         >
                             <option disabled>Select Size</option>
                             {product.sizes && product.sizes.map((size, index) => (
@@ -109,10 +109,37 @@ const ProductDetails = () => {
 
                     <button
                         onClick={handleAddToCart}
-                        className="bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
+                        className="bg-blue-600 text-white py-2 px-4 w-40  hover:bg-blue-700"
                     >
                         Add to Cart
                     </button>
+
+                    <div className='mt-4 font-normal' 
+                    >
+                        <p>Category: Men, Polo, Casual</p>
+                        <p>Tags: Modern, Design, cotton</p>
+
+                    </div>
+                </div>
+            </div>
+            <div className='mt-20'>
+                <div className='border-b '>
+                            <ul className='flex w-full h-full text-md '>
+                                <li className=' h-full border py-3 px-6 font-semibold'>
+                                Description
+                                </li>
+                                <li className='h-full border py-3 px-6'>
+                                Reviews(0)
+                                </li>
+                            </ul>
+                </div>
+                <div className='flex flex-col space-y-2 text-gray-600 py-10'>
+                    <h2>
+                    A key objective is engaging digital marketing customers and allowing them to interact with the brand through servicing and delivery of digital media. Information is easy to access at a fast rate through the use of digital communications. 
+                    </h2>
+                    <h4>
+                    Users with access to the Internet can use many digital mediums, such as Facebook, YouTube, Forums, and Email etc. Through Digital communications it creates a Multi-communication channel where information can be quickly exchanged around the world by anyone without any regard to whom they are.[28] Social segregation plays no part through social mediums due to lack of face to face communication and information being wide spread instead to a selective audience. 
+                    </h4>
                 </div>
             </div>
         </div>

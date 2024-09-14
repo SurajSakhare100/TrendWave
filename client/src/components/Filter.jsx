@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from '../../utils/debounce';
-import { fetchProducts, setFilters } from '../../app/features/productSlice';
+import { fetchProducts, setFilters } from '../app/features/productSlice';
 
 const Filter = () => {
     const {filters,products, categories, subcategories, sizes, loading, error}=useSelector((state) => state.product);

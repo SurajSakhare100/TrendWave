@@ -10,7 +10,6 @@ const initialState = {
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId) => {
   const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
-  console.log(response)
   return response.data;
 });
 

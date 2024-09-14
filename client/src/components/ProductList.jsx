@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProducts, setFilters } from '../../app/features/productSlice';
+import { fetchProducts, setFilters } from '../app/features/productSlice';
 import Filter from './Filter';
 import { Link } from 'react-router-dom';
 import Pagination from './Pagination';

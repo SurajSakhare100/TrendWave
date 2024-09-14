@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client'; // Updated import for React 18+
 import { Provider } from 'react-redux';
-import store from './../app/store/store.js';
+import store from './app/store/store.js';
 import App from './App.jsx';
 import './index.css';
 
