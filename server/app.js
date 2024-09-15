@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 
 
 // Use product routes
-app.use('/api', productRoutes);
+app.use('/api/v1/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 
 app.use('/api/orders', orderRoutes);

@@ -18,8 +18,8 @@ const ProductDetails = () => {
         // Fetch product details from the API
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/products/${id}`);
-                setProduct(response.data);
+                const response = await axios.get(`http://localhost:5000/api/v1/products/${id}`);
+                setProduct(response.data.data);
                 setSelectedImage(response.data.image); // Set the default image
                 setLoading(false);
             } catch (err) {
@@ -69,7 +69,7 @@ const ProductDetails = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start">
                 <div className="flex flex-col md:w-1/2">
                     <img
-                        src={selectedImage}
+                        src={product.image}
                         alt={product.name}
                         className="w-full object-cover rounded cursor-pointer mb-4 md:mb-0"
                         onClick={() => handleImageClick(product.image)}
@@ -78,7 +78,7 @@ const ProductDetails = () => {
 
                 <div className="md:w-1/2 md:ml-8">
                     <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-                    <p className="text-2xl font-semibold mb-4">${product.price.toFixed(2)} 378</p>
+                    <p className="text-2xl font-semibold mb-4">${product.price.toFixed(2)}</p>
 
                     <div className="flex items-center mb-4">
                         {[...Array(fullStars)].map((_, i) => (
@@ -116,8 +116,8 @@ const ProductDetails = () => {
 
                     <div className='mt-4 font-normal' 
                     >
-                        <p>Category: Men, Polo, Casual</p>
-                        <p>Tags: Modern, Design, cotton</p>
+                        <p>Category : <span>{product.category}</span></p>
+                        <p>Tags: <span>{product.tags}</span></p>
 
                     </div>
                 </div>

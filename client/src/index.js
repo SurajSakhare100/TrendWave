@@ -3,6 +3,7 @@ import axios from "axios";
 // import { useDispatch } from "react-redux";
 
 export const url = "http://localhost:5000";
+const API_URL = url+'/api/v1/products';
 const handleResponse = (res) => res.data.data;
 const handleError = (err) => {
   console.log(err.message);
@@ -73,6 +74,76 @@ const registerUser = async (user) => {
       return handleError(error);
     }
   };
+
+
+
+
+// Create new product
+export const createProduct = async (productData) => {
+  console.log(productData)
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        };
+        const { data } = await axios.post(API_URL, productData, config);
+        return data;
+    } catch (error) {
+        console.error('Error creating product:', error.response?.data?.message || error.message);
+        throw error;
+    }
+};
+
+// Get all products
+export const getProducts = async () => {
+    try {
+        const { data } = await axios.get(API_URL);
+        return data;
+    } catch (error) {
+        console.error('Error fetching products:', error.response?.data?.message || error.message);
+        throw error;
+    }
+};
+
+// Get product by ID
+export const getProductById = async (id) => {
+    try {
+        const { data } = await axios.get(`${API_URL}/${id}`);
+        return data;
+    } catch (error) {
+        console.error('Error fetching product:', error.response?.data?.message || error.message);
+        throw error;
+    }
+};
+
+// Update product
+export const updateProduct = async (id, productData) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        };
+        const { data } = await axios.put(`${API_URL}/${id}`, productData, config);
+        return data;
+    } catch (error) {
+        console.error('Error updating product:', error.response?.data?.message || error.message);
+        throw error;
+    }
+};
+
+// Delete product
+export const deleteProduct = async (id) => {
+    try {
+        const { data } = await axios.delete(`${API_URL}/${id}`);
+        return data;
+    } catch (error) {
+        console.error('Error deleting product:', error.response?.data?.message || error.message);
+        throw error;
+    }
+};
+
 
 export {
     registerUser,

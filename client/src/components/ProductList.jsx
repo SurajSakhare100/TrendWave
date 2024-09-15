@@ -11,7 +11,7 @@ const ProductList = () => {
     const { products, categories, subcategories, page, pageSize, sizes, filters, loading, error } = useSelector((state) => state.product);
     useEffect(() => {
         dispatch(fetchProducts({ filters, page: currentPage }));
-    }, [filters, dispatch, currentPage]);
+    }, [ dispatch, currentPage]);
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
@@ -28,14 +28,14 @@ const ProductList = () => {
                         <p>Error: {error}</p>
                     ) : (
                         <div className="w-full">
-                            {products.length > 0 ?
+                            {products?.length > 0 ?
                                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 justify-between'>
-                                    {products.map((product) => (
+                                    {products?.map((product) => (
                                         <div key={product._id} className="hover:scale-105 hover:shadow-lg p-4 cursor-pointer rounded-lg">
-                                            <Link to={`/products/${product._id}`}>
-                                                <img src={product.image} alt={product.name} className="w-[300px] object-cover mb-4" />
-                                                <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
-                                                <p className="text-gray-700 mb-2">{product.price.toFixed(2)} RS</p></Link>
+                                            <Link to={`/products/${product?._id}`}>
+                                                <img src={product?.image} alt={product.name} className="w-[300px] object-cover mb-4" />
+                                                <h2 className="text-xl font-semibold mb-2">{product?.name}</h2>
+                                                <p className="text-gray-700 mb-2">{product?.price.toFixed(2)} RS</p></Link>
                                         </div>
                                     ))
                                     }

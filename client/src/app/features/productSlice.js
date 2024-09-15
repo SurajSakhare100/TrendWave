@@ -11,7 +11,7 @@ export const fetchProducts = createAsyncThunk(
     async ({ filters, page }, thunkAPI) => {
       try {
         // Make the API request with filters and page
-        const response = await axios.get(`${url}/api/products/filters`, {
+        const response = await axios.get(`${url}/api/v1/products/filters`, {
           params: { ...filters, page }
         });
         return response.data;
@@ -50,7 +50,7 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.products = action.payload.products;
+        state.products = action.payload;
         if(action.payload.total==0){
         state.pageSize=0;
         }else{

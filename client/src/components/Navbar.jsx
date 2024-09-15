@@ -35,9 +35,9 @@ const Navbar = () => {
                         <Link to="/cart" className="flex items-center space-x-1 hover:text-blue-700 font-medium transition-colors">
                             <FaShoppingCart />
                         </Link>
-                        <Link to={'/profile'} className='text-black'>
+                        <Link to={`/admin/${user._id}`} className='text-black'>
                         {
-                            <img src={user?.profilePicture} alt="" className='rounded-full border-2 w-10 h-10'/>
+                            <img src={user?.profilePicture} alt="" className='rounded-full border-2 w-12 h-12'/>
                         }
                         </Link>
                     </div>

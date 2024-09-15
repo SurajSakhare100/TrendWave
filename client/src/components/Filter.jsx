@@ -7,15 +7,9 @@ const Filter = () => {
     const {filters,products, categories, subcategories, sizes, loading, error}=useSelector((state) => state.product);
     const dispatch = useDispatch();
 
-    // const fetchFilteredProducts = useCallback(
-    //     // debounce(() => {
-    //         dispatch(fetchProducts(filters))
-    //     // }, 500),
-    //     [dispatch, filters] // Make sure the dependencies are correct
-    // );
    
     const onFilterChange = (newFilters) => {
-        dispatch(setFilters(newFilters));
+        // dispatch(setFilters(newFilters));
     };
 
     // useEffect(() => {
