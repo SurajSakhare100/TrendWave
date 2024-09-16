@@ -133,6 +133,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production', // Set to true in production
     sameSite: 'strict',
+    maxAge: 7 * 24 * 60 * 60 * 1000 
   };
 
   // Remove password from the user object
