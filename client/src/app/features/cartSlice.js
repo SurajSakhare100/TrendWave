@@ -26,7 +26,6 @@ export const addToCartAPI = createAsyncThunk('cart/addToCartAPI', async ({ userI
 
 export const removeFromCartAPI = createAsyncThunk('cart/removeFromCartAPI', async ({ userId, productId }) => {
   const response = await axios.delete(`http://localhost:5000/api/cart/${userId}/${productId}`);
-  console.log(response.data.items)
   return response.data;
 });
 

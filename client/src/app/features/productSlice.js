@@ -1,38 +1,59 @@
 // productSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { act } from 'react';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { act } from "react";
 
 const url = "http://localhost:5000";
 
 // Thunk for fetching products based on filters
 export const fetchProducts = createAsyncThunk(
-    'product/fetchProducts',
-    async ({ filters, page }, thunkAPI) => {
-      try {
-        // Make the API request with filters and page
-        const response = await axios.get(`${url}/api/v1/products/filters`, {
-          params: { ...filters, page }
-        });
-        return response.data;
-      } catch (err) {
-        return thunkAPI.rejectWithValue('Error fetching products');
-      }
+  "product/fetchProducts",
+  async ({ filters, page }, thunkAPI) => {
+    try {
+      // Make the API request with filters and page
+      const response = await axios.get(`${url}/api/v1/products/filters`, {
+        params: { ...filters, page },
+      });
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue("Error fetching products");
     }
-  );
+  }
+);
 
 const productSlice = createSlice({
-  name: 'product',
+  name: "product",
   initialState: {
     products: [],
-    categories: ['Men', 'Women', 'Child'],
-    subcategories: ['Topwear', 'Jackets', 'Pants', 'Tshirts', 'Polos', 'Sweaters', 'Cardigans', 'Hoodies', 'Sweatshirts', 'Skirts', 'Shorts', 'Tracksuits', 'Shirts', 'Dresses'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-    filters: { category: '', subcategory: '', priceRange: '', size: '' },
+    categories: ["Men", "Women", "Child"],
+    subcategories: [
+      "Topwear",
+      "Jackets",
+      "Pants",
+      "Tshirts",
+      "Polos",
+      "Sweaters",
+      "Cardigans",
+      "Hoodies",
+      "Sweatshirts",
+      "Skirts",
+      "Shorts",
+      "Tracksuits",
+      "Shirts",
+      "Dresses",
+    ],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    filters: {
+      category: "",
+      subcategory: "",
+      minPrice: 0,
+      maxPrice: 3000,
+      sizes: "",
+    },
     loading: false,
     error: null,
     page: 1,
-    pageSize: 5
+    pageSize: 5,
   },
   reducers: {
     setFilters: (state, action) => {
@@ -40,8 +61,8 @@ const productSlice = createSlice({
       state.page = 1; // Reset to page 1 when filters change
     },
     setPage(state, action) {
-        state.page = action.payload;
-    }
+      state.page = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -50,11 +71,11 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.products = action.payload;
-        if(action.payload.total==0){
-        state.pageSize=0;
-        }else{
-            state.pageSize=action.payload.totalPages;
+        state.products = action.payload.products;
+        if (action.payload.pagination.totalProducts == 0) {
+          state.pageSize = 0;
+        } else {
+          state.pageSize = action.payload.pagination.totalPages;
         }
         state.loading = false;
         state.error = null;
@@ -66,5 +87,5 @@ const productSlice = createSlice({
   },
 });
 
-export const { setFilters , setPage } = productSlice.actions;
+export const { setFilters, setPage } = productSlice.actions;
 export default productSlice.reducer;

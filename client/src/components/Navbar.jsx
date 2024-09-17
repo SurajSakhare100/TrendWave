@@ -4,13 +4,26 @@ import { FaShoppingCart, FaBars, FaTimes, FaUser, FaShoppingBag } from 'react-ic
 import { LuShoppingBag } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../app/features/userSlices';
+import { fetchCart } from '../app/features/cartSlice';
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const user=useSelector((state)=>state.user)
-    const dispatch=useDispatch(null)
+    const user = useSelector((state) => state.user);
+    const cartlength = useSelector((state) => state.cart.items.length);
+    const dispatch = useDispatch();
+    const userId = useSelector((state) => state.user._id);
+    
     useEffect(() => {
-        dispatch(fetchUser()); // Fetch the user by ID
-      }, [dispatch]);
+        const fetchUserData = async () => {
+            await dispatch(fetchUser()); 
+        };
+        fetchUserData();
+    }, [dispatch]); 
+    
+    useEffect(() => {
+        if (userId) {  // Check if userId is available before fetching the cart
+            dispatch(fetchCart(userId));
+        }
+    }, [dispatch, userId]);
     return (
         <nav className="dark:bg-gray-800 bg-white dark:text-white text-black shadow-lg sticky top-0 z-50 text-nowrap">
             <div className="container mx-auto flex justify-between items-center py-4">
@@ -34,6 +47,7 @@ const Navbar = () => {
                         <Link to="/notify" className="hover:text-blue-700 font-medium transition-colors text-xl">< LuShoppingBag/></Link>
                         <Link to="/cart" className="flex items-center space-x-1 hover:text-blue-700 font-medium transition-colors">
                             <FaShoppingCart />
+                            <div className='w-4 h-4 flex items-center justify-center text-[13px]  font-bold font-poppins  rounded-full -translate-x-[50%] -translate-y-[50%]'>{cartlength}</div>
                         </Link>
                         <Link to={`/admin/${user._id}`} className='text-black'>
                         {

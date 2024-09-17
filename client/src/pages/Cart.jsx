@@ -1,31 +1,25 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {  fetchCart, removeFromCartAPI, updateQuantityAPI } from '../app/features/cartSlice';
+import {  removeFromCartAPI, updateQuantityAPI } from '../app/features/cartSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { items, totalPrice } = useSelector((state) => state.cart);
-  const id = useSelector((state) => state.user._id);
- 
-  useEffect(() => {
-    dispatch(fetchCart(id)); // Fetch cart data when component mounts
-  }, [dispatch, id]);
-
+  const userId = useSelector((state) => state.user._id);
   const handleRemove = (productId) => {
-    dispatch(removeFromCartAPI({ id, productId }));
+    dispatch(removeFromCartAPI({ userId, productId }));
   };
 
   const handleQuantityChange = (productId, quantity) => {
     if (quantity < 1) return;
-    dispatch(updateQuantityAPI({ id, productId, quantity }));
+    dispatch(updateQuantityAPI({ userId, productId, quantity }));
   };
 
   const handleCheckout = () => {
     navigate('/checkout');
   };
-  console.log(items)
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Shopping Cart</h1>

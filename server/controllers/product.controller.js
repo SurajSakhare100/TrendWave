@@ -54,18 +54,23 @@ const getAllProducts = asyncHandler(async (req, res) => {
       // ApiResponse(res, 500, 'Server error while fetching products');
   }
 })
-
 const getFilteredProducts = async (req, res) => {
-    const { category, tags, minPrice, maxPrice ,subcategories} = req.query;
-    console.log(category, tags, minPrice, maxPrice ,subcategories)
+    const { category, tags, minPrice, maxPrice, subcategory, sizes, page = 1, limit = 12 } = req.query;
+    
+    // Convert page and limit to integers
+    const pageNumber = parseInt(page, 10);
+    const pageLimit = parseInt(limit, 10);
     try {
         // Build the filter object
         const filter = {};
         if (category) {
             filter.category = category;
         }
-        if (subcategories) {
-            filter.subCategory = subcategories;
+        if (subcategory) {
+            filter.subCategory = subcategory;
+        }
+        if (sizes) {
+            filter.sizes = sizes;
         }
         if (tags) {
             filter.tags = { $in: tags.split(',') }; // Tags should be a comma-separated string
@@ -79,10 +84,23 @@ const getFilteredProducts = async (req, res) => {
                 filter.price.$lte = parseFloat(maxPrice);
             }
         }
-        console.log(filter)
-        // Fetch products based on filters
-        const products = await Product.find(filter);
-        res.status(200).json(products);
+
+        // Fetch products based on filters with pagination
+        const products = await Product.find(filter)
+            .skip((pageNumber - 1) * pageLimit)
+            .limit(pageLimit);
+        // Count total number of products matching the filters for pagination info
+        const totalProducts = await Product.countDocuments(filter);
+
+        res.status(200).json({
+            products,
+            pagination: {
+                totalProducts,
+                totalPages: Math.ceil(totalProducts / pageLimit),
+                currentPage: pageNumber,
+                perPage: pageLimit
+            }
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
