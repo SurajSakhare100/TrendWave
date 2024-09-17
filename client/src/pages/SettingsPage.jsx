@@ -9,11 +9,10 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Settings</h1>
+    <div className="container mx-auto">
 
       {/* Tabs */}
-      <div className="bg-white shadow-md rounded-lg mb-8">
+      <div className="bg-white shadow rounded-lg mb-8">
         <ul className="flex border-b">
           <li className={`w-1/4 text-center cursor-pointer py-4 ${activeTab === 'account' ? 'border-b-2 border-indigo-500 text-indigo-600' : 'text-gray-600'}`} onClick={() => handleTabChange('account')}>
             <FaUser className="inline-block mr-2" /> Account
@@ -32,7 +31,7 @@ const SettingsPage = () => {
 
       {/* Settings Content */}
       {activeTab === 'account' && (
-        <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="bg-white  p-6">
           <h2 className="text-xl font-semibold mb-4">Account Settings</h2>
           <div className="space-y-6">
             <div>
@@ -53,7 +52,7 @@ const SettingsPage = () => {
       )}
 
       {activeTab === 'security' && (
-        <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="bg-white  p-6">
           <h2 className="text-xl font-semibold mb-4">Security Settings</h2>
           <div className="space-y-6">
             <div>
@@ -78,7 +77,7 @@ const SettingsPage = () => {
       )}
 
       {activeTab === 'notifications' && (
-        <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="bg-white  p-6">
           <h2 className="text-xl font-semibold mb-4">Notification Settings</h2>
           <div className="space-y-6">
             <div>
@@ -105,7 +104,7 @@ const SettingsPage = () => {
       )}
 
       {activeTab === 'preferences' && (
-        <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="bg-white  p-6">
           <h2 className="text-xl font-semibold mb-4">Preferences</h2>
           <div className="space-y-6">
             <div>

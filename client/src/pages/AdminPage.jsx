@@ -7,6 +7,9 @@ import ItemList from './ItemList';
 import Analytics from './Analytics';
 import Dashboard from './Dashboard';
 import SettingsPage from './SettingsPage';
+import Footer from '../components/Footer';
+import OrderPage from './OrderPage';
+import ShippingManagementPage from './ShippingManagementPage';
 
 export default function AdminPage() {
     return (
@@ -20,10 +23,13 @@ export default function AdminPage() {
                         <Route path="inventory" element={<ItemList />} />
                         <Route path="analytics" element={<Analytics />} />
                         <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="orders" element={<OrderPage />} />
+                        <Route path="ship" element={<ShippingManagementPage />} />
                         <Route path="settings" element={<SettingsPage />} />
                         {/* Add more routes as needed */}
                     </Routes>
                 </div>
+                <Footer/>
             </div>
         </div>
     );

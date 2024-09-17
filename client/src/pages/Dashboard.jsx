@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaShoppingCart, FaStar, FaBoxOpen, FaBell, FaTag, FaBox, FaUsers } from 'react-icons/fa';
+import { FaShoppingCart, FaStar, FaBoxOpen, FaBell, FaTag, FaBox, FaUsers, FaClock } from 'react-icons/fa';
 
 // Sample Data
 const recentOrders = [
@@ -128,6 +128,25 @@ const Dashboard = () => {
           </ul>
         </div>
         
+      </div>
+      
+      {/* Recent Activities */}
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-xl font-semibold mb-4 text-gray-700">Recent Activities</h2>
+        <ul className="space-y-4">
+          <li className="flex items-center space-x-2">
+            <FaClock className="text-gray-500" />
+            <span className="text-gray-700">Order #1234 processed</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <FaClock className="text-gray-500" />
+            <span className="text-gray-700">New product added: "Summer Dress"</span>
+          </li>
+          <li className="flex items-center space-x-2">
+            <FaClock className="text-gray-500" />
+            <span className="text-gray-700">Inventory updated for "Winter Coat"</span>
+          </li>
+        </ul>
       </div>
     </div>
   );

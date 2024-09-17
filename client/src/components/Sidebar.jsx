@@ -16,7 +16,7 @@ export default function Sidebar() {
                         <FiShoppingCart className="mr-2" /> Orders
                     </li>
                 </Link>
-                <Link to="customers">
+                <Link to="ship">
                     <li className="px-4 py-2 hover:bg-blue-300 cursor-pointer flex items-center">
                         <FiUsers className="mr-2" /> Customers
                     </li>
