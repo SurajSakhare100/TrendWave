@@ -1,7 +1,5 @@
-// productSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react";
 
 const url = "http://localhost:5000";
 
@@ -10,13 +8,12 @@ export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
   async ({ filters, page }, thunkAPI) => {
     try {
-      // Make the API request with filters and page
       const response = await axios.get(`${url}/api/v1/products/filters`, {
         params: { ...filters, page },
       });
       return response.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue("Error fetching products");
+      return thunkAPI.rejectWithValue(err.response?.data?.message || "Error fetching products");
     }
   }
 );
@@ -27,33 +24,22 @@ const productSlice = createSlice({
     products: [],
     categories: ["Men", "Women", "Child"],
     subcategories: [
-      "Topwear",
-      "Jackets",
-      "Pants",
-      "Tshirts",
-      "Polos",
-      "Sweaters",
-      "Cardigans",
-      "Hoodies",
-      "Sweatshirts",
-      "Skirts",
-      "Shorts",
-      "Tracksuits",
-      "Shirts",
-      "Dresses",
+      "Topwear", "Jackets", "Pants", "Tshirts", "Polos", "Sweaters", "Cardigans",
+      "Hoodies", "Sweatshirts", "Skirts", "Shorts", "Tracksuits", "Shirts", "Dresses"
     ],
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["S", "M", "L", "XL", "XXL"], // Available sizes
     filters: {
       category: "",
       subcategory: "",
       minPrice: 0,
-      maxPrice: 3000,
-      sizes: "",
+      maxPrice: 10000,
+      sizes: [], // Handle multiple sizes
     },
     loading: false,
     error: null,
     page: 1,
     pageSize: 5,
+    totalProducts: 0, // Track total products count
   },
   reducers: {
     setFilters: (state, action) => {
@@ -63,6 +49,9 @@ const productSlice = createSlice({
     setPage(state, action) {
       state.page = action.payload;
     },
+    setTotalProducts: (state, action) => {
+      state.totalProducts = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -72,11 +61,8 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.products = action.payload.products;
-        if (action.payload.pagination.totalProducts == 0) {
-          state.pageSize = 0;
-        } else {
-          state.pageSize = action.payload.pagination.totalPages;
-        }
+        state.totalProducts = action.payload.pagination.totalProducts; // Set total products
+        state.pageSize = action.payload.pagination.totalPages;
         state.loading = false;
         state.error = null;
       })
@@ -87,5 +73,5 @@ const productSlice = createSlice({
   },
 });
 
-export const { setFilters, setPage } = productSlice.actions;
+export const { setFilters, setPage, setTotalProducts } = productSlice.actions;
 export default productSlice.reducer;

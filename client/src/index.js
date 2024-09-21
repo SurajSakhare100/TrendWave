@@ -80,7 +80,6 @@ const registerUser = async (user) => {
 
 // Create new product
 export const createProduct = async (productData) => {
-  console.log(productData)
     try {
         const config = {
             headers: {
@@ -109,7 +108,7 @@ export const getProducts = async () => {
 // Get product by ID
 export const getProductById = async (id) => {
     try {
-        const { data } = await axios.get(`${API_URL}/${id}`);
+        const  data  = await axios.get(`${API_URL}/${id}`);
         return data;
     } catch (error) {
         console.error('Error fetching product:', error.response?.data?.message || error.message);

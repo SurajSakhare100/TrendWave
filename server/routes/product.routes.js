@@ -6,14 +6,16 @@ const router = express.Router();
 
 // Product CRUD routes
 router.route('/')
-    .post(upload.single('image'), createProduct) // Image upload middleware
+    .post(upload.array('images', 4), createProduct) // Handle up to 4 image uploads
     .get(getAllProducts);
 
+// Route for filtering products
+router.get('/filters', getFilteredProducts); 
 
-router.get('/filters', getFilteredProducts);  // Place this route before the dynamic :id route
-
+// Routes for specific product by ID
 router.route('/:id')
     .get(getProductById)
-    .put(upload.single('image'), updateProduct)
+    .put(upload.array('images', 4), updateProduct) // Handle up to 4 image uploads
     .delete(deleteProduct);
+
 export default router;

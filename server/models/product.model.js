@@ -8,7 +8,6 @@ const productSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
     },
     price: {
         type: Number,
@@ -19,13 +18,25 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    tags: {
-        type: [String],
+    subCategory:{
+        type: String,
         required: true,
     },
-    image: {
-        type: String, // URL or path to the image
+    tags: {
+        type: [String], 
+    },
+    images: {
+        type: [String], // Array of URLs or paths to images
         required: true,
+    },
+    sizes: {
+        type: [String], // Array of available sizes (e.g., ["S", "M", "L", "XL"])
+        required: true,
+    },
+    stockQuantity: {
+        type: Number,
+        required: true,
+        default: 0,
     },
 }, { timestamps: true });
 

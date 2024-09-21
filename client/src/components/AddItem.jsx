@@ -1,46 +1,87 @@
 import React, { useState } from 'react';
 import { createProduct } from '../index.js';
+import { useSelector } from 'react-redux';
 
 const AddItem = () => {
     const [formData, setFormData] = useState({
         itemName: '',
-        image: null,
-        description:'',
+        images: [], // Handle multiple images
+        description: '',
         category: '',
+        subCategory: '',
         price: '',
-        tags: []
+        tags: [],
+        sizes: [] // Field for sizes
     });
     const [tagInput, setTagInput] = useState('');
+    const [sizeInput, setSizeInput] = useState(''); // State for size input
+    const { categories, subcategories } = useSelector((state) => state.product);
 
-    const categories = ['Men', 'Women', 'Kids', 'Accessories'];
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
-     // Handle form input change
-     const handleChange = (e) => {
+
+    // Handle form input change
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
+
     const handleImageChange = (e) => {
-        setFormData({ ...formData, image: e.target.files[0] });
+        const files = Array.from(e.target.files);
+        if (files.length + formData.images.length > 4) {
+            alert('You can only upload up to 4 images.');
+            return;
+        }
+        setFormData((prevData) => ({
+            ...prevData,
+            images: [...prevData.images, ...files],
+        }));
     };
 
     const handleTagInputChange = (e) => {
         setTagInput(e.target.value);
     };
 
+    const handleSizeInputChange = (e) => {
+        setSizeInput(e.target.value);
+    };
+
     const handleAddTag = () => {
         if (tagInput && !formData.tags.includes(tagInput)) {
-            setFormData({ ...formData, tags: [...formData.tags, tagInput] });
+            setFormData((prevData) => ({
+                ...prevData,
+                tags: [...prevData.tags, tagInput],
+            }));
             setTagInput('');
         }
     };
 
     const handleRemoveTag = (tag) => {
-        setFormData({ ...formData, tags: formData.tags.filter((t) => t !== tag) });
+        setFormData((prevData) => ({
+            ...prevData,
+            tags: prevData.tags.filter((t) => t !== tag),
+        }));
+    };
+
+    const handleAddSize = () => {
+        if (sizeInput && !formData.sizes.includes(sizeInput)) {
+            setFormData((prevData) => ({
+                ...prevData,
+                sizes: [...prevData.sizes, sizeInput],
+            }));
+            setSizeInput('');
+        }
+    };
+
+    const handleRemoveSize = (size) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            sizes: prevData.sizes.filter((s) => s !== size),
+        }));
     };
 
     // Submit form for adding or updating product
@@ -55,13 +96,16 @@ const AddItem = () => {
         form.append('description', formData.description);
         form.append('price', formData.price);
         form.append('category', formData.category);
-        form.append('tags', formData.tags); // Split tags into an array
-        if (formData.image) {
-            form.append('image', formData.image); // Only append image if present
-        }
-        try{
-            const newproduct=  await createProduct(form);
-            console.log(newproduct)
+        form.append('subCategory', formData.subCategory);
+        form.append('tags', JSON.stringify(formData.tags)); // Convert tags array to JSON string
+        form.append('sizes', JSON.stringify(formData.sizes)); // Convert sizes array to JSON string
+        formData.images.forEach((image) => {
+            form.append('images', image); // Append multiple images
+        });
+
+        try {
+            const newProduct = await createProduct(form);
+            console.log(newProduct);
             setSuccess(true);
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to save product');
@@ -70,12 +114,11 @@ const AddItem = () => {
         }
     };
 
-
     return (
-        <div className="bg-white p-8  w-full max-w-2xl">
+        <div className="bg-white p-8 w-full max-w-2xl">
             <h1 className="text-2xl font-bold mb-6">Add New Item</h1>
             <form onSubmit={handleSubmit} className="space-y-6">
-                
+
                 {/* Item Name */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Item Name</label>
@@ -83,7 +126,7 @@ const AddItem = () => {
                         type="text"
                         name="itemName"
                         value={formData.itemName}
-                        onChange={(e) => setFormData({ ...formData, itemName: e.target.value })}
+                        onChange={handleChange}
                         className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
                         placeholder="Enter item name"
                         required
@@ -92,25 +135,39 @@ const AddItem = () => {
 
                 {/* Image Upload */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Upload Image</label>
+                    <label className="block text-sm font-medium text-gray-700">Upload Images</label>
+                    <div className="mt-1 flex flex-wrap gap-2">
+                        {formData.images.map((image, index) => (
+                            <img
+                                key={index}
+                                src={URL.createObjectURL(image)}
+                                alt={`Preview ${index}`}
+                                className="w-24 h-24 object-cover border border-gray-300 rounded-lg"
+                            />
+                        ))}
+                    </div>
                     <input
                         type="file"
                         accept="image/*"
+                        multiple
                         onChange={handleImageChange}
-                        className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
-                        required
+                        className="mt-4 p-2 border border-gray-300 rounded-lg w-full"
                     />
+                    
                 </div>
+
+                {/* Description */}
                 <div className="mb-4">
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
                     <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        required
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                     />
                 </div>
+
+                {/* Price */}
                 <div className="mb-4">
                     <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
                     <input
@@ -118,8 +175,8 @@ const AddItem = () => {
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
-                        required
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                        required
                     />
                 </div>
 
@@ -127,8 +184,9 @@ const AddItem = () => {
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Category</label>
                     <select
+                        name="category"
                         value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        onChange={handleChange}
                         className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
                         required
                     >
@@ -136,6 +194,25 @@ const AddItem = () => {
                         {categories.map((category, idx) => (
                             <option key={idx} value={category}>
                                 {category}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* SubCategory Selection */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">SubCategory</label>
+                    <select
+                        name="subCategory"
+                        value={formData.subCategory}
+                        onChange={handleChange}
+                        className="mt-1 p-2 border border-gray-300 rounded-lg w-full"
+                        required
+                    >
+                        <option value="" disabled>Select a SubCategory</option>
+                        {subcategories.map((subCategory, idx) => (
+                            <option key={idx} value={subCategory}>
+                                {subCategory}
                             </option>
                         ))}
                     </select>
@@ -179,13 +256,58 @@ const AddItem = () => {
                     </div>
                 </div>
 
+                {/* Sizes Input */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Sizes</label>
+                    <div className="flex items-center space-x-2 mt-1">
+                        <input
+                            type="text"
+                            value={sizeInput}
+                            onChange={handleSizeInputChange}
+                            className="p-2 border border-gray-300 rounded-lg flex-1"
+                            placeholder="Enter a size"
+                        />
+                        <button
+                            type="button"
+                            onClick={handleAddSize}
+                            className="px-4 py-2 bg-gray-800 text-white rounded-md"
+                        >
+                            Add Size
+                        </button>
+                    </div>
+                    <div className="flex flex-wrap mt-2">
+                        {formData.sizes.map((size, idx) => (
+                            <span
+                                key={idx}
+                                className="bg-gray-100 px-4 py-2 rounded-full mr-2 mt-2 inline-flex items-center"
+                            >
+                                {size}
+                                <button
+                                    type="button"
+                                    className="ml-2 text-red-500"
+                                    onClick={() => handleRemoveSize(size)}
+                                >
+                                    &times;
+                                </button>
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Submit Button */}
-                <button
-                    type="submit"
-                    className="w-full hover:bg-gray-800 text-white py-2 px-4 rounded-lg bg-black transition"
-                >
-                    Add Item
-                </button>
+                <div>
+                    <button
+                        type="submit"
+                        className={`px-4 py-2 text-white rounded-md ${loading ? 'bg-gray-400' : 'bg-gray-800'}`}
+                        disabled={loading}
+                    >
+                        {loading ? 'Submitting...' : 'Submit'}
+                    </button>
+                </div>
+
+                {/* Success or Error Message */}
+                {success && <div className="text-green-500">Item added successfully!</div>}
+                {error && <div className="text-red-500">{error}</div>}
             </form>
         </div>
     );

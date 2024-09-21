@@ -14,7 +14,7 @@ const Navbar = () => {
     
     useEffect(() => {
         const fetchUserData = async () => {
-            await dispatch(fetchUser()); 
+             dispatch(fetchUser()); 
         };
         fetchUserData();
     }, [dispatch]); 

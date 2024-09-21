@@ -78,7 +78,7 @@ const ProductDetails = () => {
 
                 <div className="md:w-1/2 md:ml-8">
                     <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-                    <p className="text-2xl font-semibold mb-4">${product.price.toFixed(2)}</p>
+                    <p className="text-2xl font-semibold mb-4">${product?.price.toFixed(2)}</p>
 
                     <div className="flex items-center mb-4">
                         {[...Array(fullStars)].map((_, i) => (

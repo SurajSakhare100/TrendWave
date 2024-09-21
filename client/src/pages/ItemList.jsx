@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa'; // Importing icons
+import { getProducts } from '../index.js';
+import { Link } from 'react-router-dom';
 
-const ProductList = ({ products }) => {
+const ItemList = () => {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getProducts()
+      setProducts(data?.data)
+    }
+    fetchData()
+  }, [])
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">Product Inventory</h1>
@@ -30,16 +40,16 @@ const ProductList = ({ products }) => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {products.length >0 && products.map((product) => (
               <tr
-                key={product.id}
+                key={product._id}
                 className="bg-white border-b hover:bg-gray-50"
               >
                 <td className="px-6 py-4">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-12 h-12 object-cover rounded-md"
+                    className="w-12 h-12 object-cover object-center rounded-md"
                   />
                 </td>
                 <td className="px-6 py-4 font-medium text-gray-900">
@@ -49,20 +59,19 @@ const ProductList = ({ products }) => {
                 <td className="px-6 py-4">{`$${product.price.toFixed(2)}`}</td>
                 <td className="px-6 py-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs ${
-                      product.stock > 0
+                    className={`px-3 py-1 rounded-full text-xs ${product.stock > 0
                         ? 'bg-green-100 text-green-800'
                         : 'bg-red-100 text-red-800'
-                    }`}
+                      }`}
                   >
                     {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right space-x-4">
                   {/* Edit Button with Icon */}
-                  <button className="text-blue-600 hover:text-blue-800">
-                    <FaEdit className="inline-block" /> Edit
-                  </button>
+                  <Link className="text-blue-600 hover:text-blue-800" to={`../editproduct/${product._id}`}>
+                    <FaEdit className="inline-block"  /> Edit
+                  </Link>
 
                   {/* Delete Button with Icon */}
                   <button className="text-red-600 hover:text-red-800">
@@ -78,27 +87,4 @@ const ProductList = ({ products }) => {
   );
 };
 
-// Example product data
-const products = [
-  {
-    id: 1,
-    name: 'Summer Dress',
-    category: 'Women',
-    price: 49.99,
-    stock: 12,
-    image: 'https://example.com/summer-dress.jpg',
-  },
-  {
-    id: 2,
-    name: 'Men’s Jacket',
-    category: 'Men',
-    price: 79.99,
-    stock: 0,
-    image: 'https://example.com/mens-jacket.jpg',
-  },
-  // Add more products here...
-];
-
-const App = () => <ProductList products={products} />;
-
-export default App;
+export default ItemList;

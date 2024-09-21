@@ -10,6 +10,7 @@ import SettingsPage from './SettingsPage';
 import Footer from '../components/Footer';
 import OrderPage from './OrderPage';
 import ShippingManagementPage from './ShippingManagementPage';
+import EditProduct from './EditProduct';
 
 export default function AdminPage() {
     return (
@@ -26,6 +27,7 @@ export default function AdminPage() {
                         <Route path="orders" element={<OrderPage />} />
                         <Route path="ship" element={<ShippingManagementPage />} />
                         <Route path="settings" element={<SettingsPage />} />
+                        <Route path="editproduct/:id" element={<EditProduct />} />
                         {/* Add more routes as needed */}
                     </Routes>
                 </div>
