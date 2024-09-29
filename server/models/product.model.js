@@ -1,44 +1,43 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const productSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true,
+// Define the Product Schema
+const productSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  description: {
+    type: String,
+    trim: true,
+    default: '',
+  },
+  image_url: {
+    type: String,
+    default: '',
+  },
+  categories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Category', // Reference to Category model
     },
-    description: {
-        type: String,
-    },
-    price: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
-    category: {
-        type: String,
-        required: true,
-    },
-    subCategory:{
-        type: String,
-        required: true,
-    },
-    tags: {
-        type: [String], 
-    },
-    images: {
-        type: [String], // Array of URLs or paths to images
-        required: true,
-    },
-    sizes: {
-        type: [String], // Array of available sizes (e.g., ["S", "M", "L", "XL"])
-        required: true,
-    },
-    stockQuantity: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
-}, { timestamps: true });
+  ],
+  stock: {
+    type: Number,
+    default: 0,
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false,
+  },
+}, {
+  timestamps: true, // Automatically manage createdAt and updatedAt fields
+});
 
+// Create and export the Product model
 const Product = mongoose.model('Product', productSchema);
 export default Product;

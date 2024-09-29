@@ -7,7 +7,7 @@ import { uploadOnCloudinary } from "../utils/cloudnary.js";
 // Create a new product with multiple image uploads
 const createProduct = asyncHandler(async (req, res) => {
   try {
-    const { name, description, price, category,subCategory, tags } = req.body;
+    const { name, description, price, category } = req.body;
     
     // Handle multiple image uploads
     let imageUrls = [];
@@ -137,6 +137,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
+
 
 export {
   createProduct,

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import cartRoutes from './routes/cart.routes.js';
-import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser'
 import cors from 'cors';
@@ -32,7 +32,7 @@ app.use('/api/v1/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 
 app.use('/api/orders', orderRoutes);
-app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
 
 
 // Get port from environment variable or default to 5000
