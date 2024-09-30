@@ -1,76 +1,73 @@
 import express from 'express';
 import Cart from '../models/cart.model.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { ApiError } from '../utils/ApiError.js';
 const router = express.Router();
 
 
 // Get Cart by User ID
-const getCart = async (req, res) => {
-    const { userId } = req.params;
-    try {
-        const cart = await Cart.findOne({ userId }).populate('items.productId');
-        if (!cart) return res.status(404).json({ message: 'Cart not found' });
-
-        res.json(cart);  // Always send the updated cart to frontend
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+const getCart = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const cart = await Cart.findOne({ userId }).populate('items.productId');
+  
+    if (!cart) {
+      res.status(404);
+      throw new Error('Cart not found');
     }
-};
-
+  
+    res.status(200).json({
+      success: true,
+      data: cart,
+    });
+  });
 
 // Add Item to Cart
-const addItemToCart = async (req, res) => {
-    const { userId } = req.params;
-    const { productId, price, quantity, image } = req.body;
+const addToCart =asyncHandler( async (req, res) => {
+    const  userId  = req.user._id;
+    const { productId, price, quantity, image,stock,isFeatured } = req.body;
 
     if (isNaN(price) || price < 0 || isNaN(quantity) || quantity < 0) {
-        return res.status(400).json({ message: 'Invalid price or quantity' });
+        return next(new ApiError("invalid price or quantity"));
     }
 
     try {
         let cart = await Cart.findOneAndUpdate(
             { userId, 'items.productId': { $ne: productId } },
             {
-                $push: { items: { productId, price, quantity, image } },
+                $push: { items: { productId, price, quantity, image,stock,isFeatured } },
                 $inc: { totalPrice: price * quantity }
             },
             { new: true, upsert: true }
         ).populate('items.productId');  // Populate after update
 
-        res.json(cart);  // Return updated cart to frontend
+        return res.status(200).json(new ApiResponse(200, cart,'Cart fetched successfully', ));
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+});
 
 // Remove Item from Cart using $pull and $inc
-const removeItemFromCart = async (req, res) => {
-    const { userId, productId } = req.params;
-
-    try {
-        const cart = await Cart.findOne({ userId });
-        if (!cart) return res.status(404).json({ message: 'Cart not found' });
-
-        const itemToRemove = cart.items.find(item => item.productId.toString() === productId);
-        if (!itemToRemove) return res.status(404).json({ message: 'Item not found in cart' });
-
-        const updatedCart = await Cart.findOneAndUpdate(
-            { userId },
-            {
-                $pull: { items: { productId } },
-                $inc: { totalPrice: -(itemToRemove.price * itemToRemove.quantity) }
-            },
-            { new: true }
-        ).populate('items.productId');  // Populate after update
-
-        res.json(updatedCart);  // Return updated cart to frontend
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+const removeFromCart = asyncHandler(async (req, res) => {
+    const { itemId } = req.params;
+    const userId = req.user._id;
+  
+    const cart = await Cart.findOne({ userId });
+  
+    if (!cart) {
+      res.status(404);
+      throw new Error('Cart not found');
     }
-};
+  
+    cart.items = cart.items.filter((item) => item._id.toString() !== itemId);
+    await cart.save();
+  
+    res.status(200).json({ success: true, data: cart });
+  });
 
 
 // Update Item Quantity in Cart using $set and $inc
-const updateItemQuantity = async (req, res) => {
+const updateItemQuantity =asyncHandler( async (req, res) => {
     const { userId, productId } = req.params;
     const { quantity } = req.body;
 
@@ -103,13 +100,28 @@ const updateItemQuantity = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
-
+});
+const clearCart = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const cart = await Cart.findOne({ userId });
+  
+    if (!cart) {
+      res.status(404);
+      throw new Error('Cart not found');
+    }
+  
+    cart.items = [];
+    cart.totalPrice = 0;
+    await cart.save();
+  
+    res.status(200).json({ success: true, message: 'Cart cleared successfully' });
+  });
 
 
 export {
     getCart,
-    addItemToCart,
-    removeItemFromCart,
-    updateItemQuantity
+    addToCart,
+    removeFromCart,
+    updateItemQuantity,
+    clearCart
 };

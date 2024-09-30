@@ -16,16 +16,35 @@ const productSchema = new Schema({
     trim: true,
     default: '',
   },
-  image_url: {
+  images: [
+    {
+      type: String,
+      default: '',
+    }
+  ],
+  categories: [
+    {
+      type: String,
+      default: "t-shirts",
+    },
+  ],
+  sizes: [
+    {
+      type: String,
+      enum: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+      required: true,
+    }
+  ],
+  colors: [
+    {
+      type: String,
+      required: true,
+    }
+  ],
+  material: {
     type: String,
     default: '',
   },
-  categories: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Category', // Reference to Category model
-    },
-  ],
   stock: {
     type: Number,
     default: 0,
@@ -33,6 +52,19 @@ const productSchema = new Schema({
   isFeatured: {
     type: Boolean,
     default: false,
+  },
+  brand: {
+    type: String,
+    trim: true,
+    default: '',
+  },
+  ratings: {
+    type: Number,
+    default: 0, // Average rating
+  },
+  numReviews: {
+    type: Number,
+    default: 0, // Number of reviews
   },
 }, {
   timestamps: true, // Automatically manage createdAt and updatedAt fields
