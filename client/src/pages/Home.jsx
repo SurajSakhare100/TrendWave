@@ -35,14 +35,14 @@ const Home = () => {
             </div>
 
             {/* Featured Products Section */}
-            <section className="py-16">
-                <h2 className="text-3xl font-bold text-center mb-10">Featured Products</h2>
+            <section className="py-8 md:py-16">
+                <h2 className="text-3xl font-bold text-center md:mb-10">Featured Products</h2>
                 <ProductCard products={products.slice(0, 4)} /> {/* Display the first 4 products */}
             </section>
 
             {/* Latest Collection Section */}
-            <section className="py-16 bg-gray-100">
-                <div className="text-center mb-10">
+            <section className="py-8 md:py-16 bg-gray-100">
+                <div className="text-center md:mb-10">
                     <h2 className="text-3xl font-bold">Latest Collection</h2>
                     <p className="text-lg text-gray-600">Fresh styles handpicked for you</p>
                 </div>
@@ -72,21 +72,21 @@ const Home = () => {
             </section>
 
             {/* Modern Newsletter Section */}
-            <section className="relative py-24 bg-cover bg-center text-white" style={{ backgroundImage: `url('https://img.freepik.com/free-photo/beautiful-brunette-woman-holding-shopping-bags_23-2148359561.jpg?w=1060&t=st=1725543899~exp=1725547499~hmac=131df4c8d56d2ec64cc4411dbb4e7742b31c705a9736d524e490b000fe41e58a')` }}>
+            <section className="relative py-12 h-full md:py-24 bg-cover bg-center text-white" style={{ backgroundImage: `url('https://img.freepik.com/free-photo/beautiful-brunette-woman-holding-shopping-bags_23-2148359561.jpg?w=1060&t=st=1725543899~exp=1725547499~hmac=131df4c8d56d2ec64cc4411dbb4e7742b31c705a9736d524e490b000fe41e58a')` }}>
                 <div className="absolute inset-0 bg-black bg-opacity-60"></div>
                 <div className="relative container mx-auto">
                     <div className="text-center max-w-2xl mx-auto">
                         <h2 className="text-4xl font-bold mb-4">Stay Updated With Our Newsletter</h2>
                         <p className="text-lg mb-8">Sign up for exclusive offers, new arrivals, and the latest updates in fashion.</p>
-                        <form className="flex flex-col sm:flex-row justify-center">
+                        <form className="px-10  flex flex-col sm:flex-row justify-center">
                             <input
                                 type="email"
-                                className="w-full sm:w-2/3 p-3 rounded-l-lg text-black focus:outline-none mb-4 sm:mb-0"
+                                className="w-full sm:w-2/3 p-3 md:rounded-l-lg text-black focus:outline-none mb-4 sm:mb-0"
                                 placeholder="Enter your email address"
                             />
                             <button
                                 type="submit"
-                                className="bg-yellow-500 text-black font-semibold px-6 py-3 rounded-r-lg hover:bg-yellow-600 transition duration-300"
+                                className="bg-yellow-500 text-black font-semibold px-6 py-3 md:rounded-r-lg hover:bg-yellow-600 transition duration-300"
                             >
                                 Subscribe
                             </button>

@@ -1,57 +1,148 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getCurrentUser } from '../../index.js';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { base } from "../../index.js";
 
-// Define the initial state for the user
+const url = `${base}/api/v1/`;
 const initialState = {
-  id: null,
-  username: '',
-  email: '',
-  profilePicture: '',
+  _id: null,
+  username: "",
+  profileName: "",
+  email: "",
+  profilePicture: "",
+  bio: "",
   isAuthenticated: false,
-  status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+  status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
 };
 
-// Create an async thunk for fetching the user data
-export const fetchUser = createAsyncThunk('user/fetchUser', async (userId) => {
-  const response = await getCurrentUser();
-  return response;
-});
+// Thunks for async actions
+export const fetchCurrentUser = createAsyncThunk(
+  "user/fetchCurrentUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(url + "users/profile", {
+        withCredentials: true,
+      }); // API endpoint for getting current user
+      return response.data.data; // Assuming the API wraps the user data in `data` field
+    } catch (error) {
+      return rejectWithValue(
+        error.response.data.message || "Failed to fetch user"
+      );
+    }
+  }
+);
 
-// Create a slice for the user state
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(url + "users/login", userData, {
+        withCredentials: true,
+      }); // Login API
+      return response.data.data; // Assuming successful login returns user data in `data`
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || "Login failed");
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  "user/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.post(url + "user/logout", null, { withCredentials: true }); // Logout API
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || "Logout failed");
+    }
+  }
+);
+// Thunk for updating user details
+export const updateUserDetails = createAsyncThunk(
+  "user/updateUserDetails",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(url + "user/update", userData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+          withCredentials: true,
+        
+      }); // API endpoint for updating user details
+      return response.data.data; // Assuming the API wraps the updated user data in `data` field
+    } catch (error) {
+      return rejectWithValue(
+        error.response.data.message || "Failed to update user details"
+      );
+    }
+  }
+);
+
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
-    setUser(state, action) {
-      return { ...action.payload, isAuthenticated: true };
-    },
     updateUserProfile(state, action) {
-      const { username, profilePicture } = action.payload;
+      const { username, profilePicture, bio } = action.payload;
       state.username = username;
       state.profilePicture = profilePicture;
+      state.bio = bio;
     },
-    logoutUser(state) {
-      return { ...initialState, isAuthenticated: false };
-    },
+    
   },
   extraReducers: (builder) => {
+    // Handling fetchCurrentUser
     builder
-      .addCase(fetchUser.pending, (state) => {
-        state.status = 'loading';
+      .addCase(fetchCurrentUser.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        return { ...action.payload, isAuthenticated: true, status: 'succeeded' };
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        return {
+          ...action.payload,
+          isAuthenticated: true,
+          status: "succeeded",
+        };
       })
-      .addCase(fetchUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      // Handling loginUser
+      .addCase(loginUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        return {
+          ...action.payload,
+          isAuthenticated: true,
+          status: "succeeded",
+        };
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      // Handling logoutUser
+      .addCase(logoutUser.fulfilled, (state) => {
+        return { ...initialState, status: "idle" };
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+    // Handling updateUserDetails
+    builder
+      .addCase(updateUserDetails.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateUserDetails.fulfilled, (state, action) => {
+        return { ...state, ...action.payload, status: "succeeded" };
+      })
+      .addCase(updateUserDetails.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });
 
-// Export the actions
-export const { setUser, updateUserProfile, logoutUser } = userSlice.actions;
-
-// Export the reducer
+export const { updateUserProfile } = userSlice.actions;
 export default userSlice.reducer;

@@ -6,14 +6,15 @@ const Footer = () => {
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
                 {/* Company Info */}
                 <div>
-                    <h2 className="text-2xl font-bold text-white mb-4">Trend-Wave</h2>
-                    <p className="text-sm">
+                    <h2 className="text-2xl font-bold text-white mb-4 ">Trend-Wave</h2>
+                    <p className="text-sm text-wrap">
                         Stay ahead of the trends with Trend-Wave, your ultimate source for the latest fashion, tech, and lifestyle updates.
                     </p>
                 </div>
 
-                {/* Quick Links */}
-                <div>
+                <div className='w-full flex justify-between'>
+                    {/* Quick Links */}
+                <div className='md:text-right text-left'>
                     <h3 className="text-lg font-semibold text-white mb-3">Quick Links</h3>
                     <ul className="space-y-2">
                         <li><a href="/about" className="hover:text-white transition duration-300">About Us</a></li>
@@ -24,14 +25,15 @@ const Footer = () => {
                 </div>
 
                 {/* Support */}
-                <div>
-                    <h3 className="text-lg font-semibold text-white mb-3">Support</h3>
+                <div className='text-right md:text-left'>
+                    <h3 className=" text-lg font-semibold text-white mb-3">Support</h3>
                     <ul className="space-y-2">
                         <li><a href="/help" className="hover:text-white transition duration-300">Help Center</a></li>
                         <li><a href="/faq" className="hover:text-white transition duration-300">FAQ</a></li>
                         <li><a href="/privacy" className="hover:text-white transition duration-300">Privacy Policy</a></li>
                         <li><a href="/terms" className="hover:text-white transition duration-300">Terms of Service</a></li>
                     </ul>
+                </div>
                 </div>
 
                 {/* Newsletter */}

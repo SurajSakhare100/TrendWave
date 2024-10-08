@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
@@ -15,6 +14,7 @@ import ContactPage from './pages/ContactPage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { products } from './data';
 import AdminPage from './pages/AdminPage';
+import Footer from './components/Footer/Footer';
 
 const App = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -43,7 +43,7 @@ const App = () => {
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </main>
-                    <Footer />
+                    <Footer/>
                 </div>
             </Router>
         </GoogleOAuthProvider>

@@ -2,8 +2,8 @@ import axios from "axios";
 // import { setUser } from "./app/slices/userSlice";
 // import { useDispatch } from "react-redux";
 
-export const url = "http://localhost:5000";
-const API_URL = url+'/api/v1/products';
+export const base = "http://localhost:5000";
+const API_URL = base+'/api/v1/products';
 const handleResponse = (res) => res.data.data;
 const handleError = (err) => {
   console.log(err.message);
@@ -25,7 +25,7 @@ const axiosInstance = axios.create({
 // User-related functions
 const registerUser = async (user) => {
     try {
-      const response = await axiosInstance.post(`${url}/api/v1/auth/registeruser`,{...user});
+      const response = await axiosInstance.post(`${base}/api/v1/users/register`,{...user});
       return handleResponse(response);
     } catch (error) {
       return handleError(error);
@@ -35,7 +35,7 @@ const registerUser = async (user) => {
   
   const loginUser = async (form) => {
     try {
-      const response = await axios.post(`${url}/api/v1/auth/loginuser`, {
+      const response = await axios.post(`${base}/api/v1/auth/loginuser`, {
         ...form
       }, {
         withCredentials: true,

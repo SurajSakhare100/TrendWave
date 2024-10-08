@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaShoppingCart, FaBars, FaTimes, FaUser, FaShoppingBag } from 'react-icons/fa';
 import { LuShoppingBag } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../app/features/userSlices';
+import { fetchCurrentUser } from '../app/features/userSlices';
 import { fetchCart } from '../app/features/cartSlice';
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +14,7 @@ const Navbar = () => {
     
     useEffect(() => {
         const fetchUserData = async () => {
-             dispatch(fetchUser()); 
+            dispatch(fetchCurrentUser()); 
         };
         fetchUserData();
     }, [dispatch]); 

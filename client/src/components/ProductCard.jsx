@@ -19,13 +19,13 @@ const ProductCard = ({ products }) => {
             {products?.map((product) => (
                 <div
                     key={product.id}
-                    className="border  rounded-lg p-4 shadow-lg bg-white cursor-pointer hover:shadow-xl transition-shadow duration-300"
+                    className="border rounded-lg p-4 shadow-lg bg-white cursor-pointer hover:shadow-xl  flex-shrink-0 transition-shadow duration-300"
                 >
                     <Link to={`/products/${product.id}`}>
                         <img
                             src={f1}
                             alt={product.name}
-                            className="w-96 aspect-square object-cover rounded mb-4 hover:opacity-80 transition-opacity duration-300"
+                            className="w-56 md:w-96 aspect-square object-cover rounded mb-4 hover:opacity-80 transition-opacity duration-300"
                         />
                         <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
                         <div className="text-lg font-bold text-gray-800 mb-2">
