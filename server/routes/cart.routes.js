@@ -1,5 +1,5 @@
 import express from 'express';
-import { addToCart, getCart, removeFromCart, clearCart } from '../controllers/cart.controller.js';
+import { addToCart, getCart, removeFromCart, clearCart, updateItemQuantity } from '../controllers/cart.controller.js';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
@@ -11,9 +11,10 @@ router.post('/', verifyJWT, addToCart);
 router.get('/', verifyJWT, getCart);
 
 // Route to remove an item from the cart
-router.delete('/:itemId', verifyJWT, removeFromCart);
+router.delete('/:productId', verifyJWT, removeFromCart);
 
 // Route to clear the user's cart
 router.delete('/', verifyJWT, clearCart);
+router.put('/', verifyJWT, updateItemQuantity);
 
 export default router;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleAuth } from '../components/GoogleAuth';
@@ -36,10 +36,10 @@ const Login = () => {
 
 
     return (
-        <div className="flex items-center justify-center min-h-screen ">
+        <div className="flex items-center justify-center flex-shrink ">
             <div className="w-full max-w-md p-8  ">
                 <h1 className="text-2xl font-bold text-center text-gray-700">Login</h1>
-               {/* Email */}
+             
                <form onSubmit={handleSubmit(login)}>
                <Input
                     label="Email"
@@ -78,7 +78,10 @@ const Login = () => {
             <div>
             <p className='text-center text-2xl py-2'> or</p>
             </div>
-                <GoogleAuth />
+
+            <div className="flex w-full h-12">
+          <GoogleAuth />
+        </div>
                 <p className="text-md text-center text-gray-600 mt-4">
                     Don't have an account? <Link to="/auth/signup" className="text-blue-500 hover:underline">Register</Link>
                 </p>

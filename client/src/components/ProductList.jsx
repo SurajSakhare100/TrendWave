@@ -40,7 +40,7 @@ const ProductList = () => {
                                             <img
                                                 src={product.image || '/default-image.jpg'}
                                                 alt={product.name}
-                                                className="w-full h-60 object-cover mb-4 rounded"
+                                                className="w-full h-80 object-cover mb-4 rounded"
                                             />
                                             <h2 className="text-xl font-semibold mb-1 truncate">{product.name}</h2>
                                             <p className="text-gray-700 font-medium">{product.price ? `${product.price.toFixed(2)} RS` : 'Price Unavailable'}</p>

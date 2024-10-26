@@ -8,7 +8,7 @@ const initialState = {
   username: "",
   profileName: "",
   email: "",
-  profilePicture: "",
+  profile_url: "",
   bio: "",
   isAuthenticated: false,
   status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -20,10 +20,10 @@ export const fetchCurrentUser = createAsyncThunk(
   "user/fetchCurrentUser",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(url + "users/profile", {
+      const response = await axios.get(url + "auth/getuser", {
         withCredentials: true,
-      }); // API endpoint for getting current user
-      return response.data.data; // Assuming the API wraps the user data in `data` field
+      }); 
+      return response.data.data; 
     } catch (error) {
       return rejectWithValue(
         error.response.data.message || "Failed to fetch user"

@@ -23,7 +23,7 @@ const Navbar = () => {
         }
     }, [dispatch, userId]);
 
-    const cartLength = cartItems.length;
+    const cartLength = cartItems?.length;
 
     const menuItems = [
         { to: "/", label: "Home" },
@@ -57,11 +57,16 @@ const Navbar = () => {
                             <FaShoppingCart />
                             <div className='w-4 h-4 flex items-center justify-center text-[13px] font-bold font-poppins rounded-full -translate-x-[50%] -translate-y-[50%]'>{cartLength}</div>
                         </Link>
-                        <Link to={`/admin/${user._id}`} className='text-black'>
-                            {user?.profilePicture && (
-                                <img src={user.profilePicture} alt="User Profile" className='rounded-full border-2 w-12 h-12' />
-                            )}
-                        </Link>
+                        {/* User Profile Picture */}
+                        {user?.profile_url && (
+                            <Link to={`/admin/${user._id}`} className='text-black flex items-center'>
+                                <img 
+                                    src={user.profile_url} 
+                                    alt="User Profile" 
+                                    className='rounded-full  w-12 h-12' 
+                                />
+                            </Link>
+                        )}
                     </div>
                 </div>
 

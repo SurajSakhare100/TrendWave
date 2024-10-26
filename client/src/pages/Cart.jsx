@@ -7,6 +7,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { items, totalPrice } = useSelector((state) => state.cart);
+  const carts=useSelector((state) => state.cart);
   const userId = useSelector((state) => state.user._id);
   const handleRemove = (productId) => {
     dispatch(removeFromCartAPI({ userId, productId }));
@@ -23,12 +24,12 @@ const Cart = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Shopping Cart</h1>
-      {items.length === 0 ? (
+      {items?.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
         <div>
           <ul>
-            {items.map((item) => (
+            {items?.map((item) => (
               <li key={item._id} className="flex items-center justify-between mb-4 p-4 border rounded-lg">
                 <img src={item.image} alt={item.name} className="w-20 h-20 object-contain mr-4" />
                 <div className="flex-grow">
@@ -54,7 +55,7 @@ const Cart = () => {
             ))}
           </ul>
           <div className="mt-4">
-            <h2 className="text-xl font-semibold">Total Price: {totalPrice.toFixed(2)} RS</h2>
+            <h2 className="text-xl font-semibold">Total Price: {totalPrice?.toFixed(2)} RS</h2>
           </div>
           <div className="mt-6">
             <button

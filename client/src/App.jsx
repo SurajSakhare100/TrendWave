@@ -18,7 +18,6 @@ import Footer from './components/Footer/Footer';
 
 const App = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
     return (
         <GoogleOAuthProvider clientId={clientId}>
             <Router>

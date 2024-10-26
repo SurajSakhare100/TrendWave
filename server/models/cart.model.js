@@ -6,14 +6,13 @@ const cartSchema = new mongoose.Schema({
         {
             productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
             quantity: { type: Number, required: true, default: 1 },  // Default quantity is 1
-            price: { type: Number, required: true },  // Price of the product at the time of adding to cart
-            stock: { type: Number, required: true },  // Available stock of the product
+            price: { type: Number,default:0 },  // Price of the product at the time of adding to cart
+            stock: { type: Number, default:0},  // Available stock of the product
             image: { type: String },
             isFeatured: {
                 type: Boolean,
                 default: false,
             }, 
-             // URL of product image
         }
     ],
     totalPrice: { type: Number, default: 0 }  // Total price of all items in the cart

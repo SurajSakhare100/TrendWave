@@ -1,50 +1,40 @@
 // src/components/GoogleAuth.js
 import { GoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export function GoogleAuth() {
-  const handleSuccess = (credentialResponse) => {
-    // Assuming 'code' is the authorization code you receive
-    const authorizationCode = credentialResponse.code;
+  const navigate = useNavigate();
 
-    fetch('http://localhost:5000/api/auth/google', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ code: authorizationCode }),
-    })
-    .then(response => {
-      // Check if the response is JSON
-      console.log('object')
-      const contentType = response.headers.get('Content-Type');
-      if (contentType && contentType.includes('application/json')) {
-        return response.json();
-      } else {
-        throw new Error('Response is not JSON');
+  const handleSuccess = async (tokenResponse) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/google-login",
+        { token: tokenResponse.credential },
+        { withCredentials: true }
+      );
+
+      if (response.data.user) {
+        navigate('/');
       }
-    })
-    .then(data => {
-      console.log('Login successful, backend response:', data);
-      // Handle successful login (e.g., redirect, store user info, etc.)
-    })
-    .catch(error => {
-      console.error('Error exchanging authorization code:', error);
-      // Optionally show an error message to the user
-    });
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
 
   const handleError = (errorResponse) => {
     console.error('Google login failed', errorResponse);
-    // Optionally show an error message to the user
   };
 
   return (
-    <div>
+    <div className="w-full">
       <GoogleLogin
         onSuccess={handleSuccess}
         onError={handleError}
+        flow="auth-code"
         useOneTap
-        flow="auth-code" // Ensure this is the correct flow for your application
+        style={{ width: '100%', height: '50px' }} 
+        className="w-full h-full"
       />
     </div>
   );

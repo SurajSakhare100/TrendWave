@@ -9,28 +9,28 @@ const initialState = {
 };
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId) => {
-  const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
-  return response.data;
+  const response = await axios.get(`http://localhost:5000/api/v1/carts`,{withCredentials:true});
+  console.log(response.data.data)
+  return response.data.data;
 });
 
 export const addToCartAPI = createAsyncThunk('cart/addToCartAPI', async ({ userId, product }) => {
-  const response = await axios.post(`http://localhost:5000/api/cart/${userId}`, {
+  const response = await axios.post(`http://localhost:5000/api/v1/carts`, {
     productId: product.id,
     price: product.price,
     image: product.image,
     quantity: 1,
-  });
-  console.log(response)
+  },{withCredentials:true});
   return response.data;
 });
 
 export const removeFromCartAPI = createAsyncThunk('cart/removeFromCartAPI', async ({ userId, productId }) => {
-  const response = await axios.delete(`http://localhost:5000/api/cart/${userId}/${productId}`);
+  const response = await axios.delete(`http://localhost:5000/api/v1/carts/${productId}`,{withCredentials:true});
   return response.data;
 });
 
 export const updateQuantityAPI = createAsyncThunk('cart/updateQuantityAPI', async ({ userId, productId, quantity }) => {
-  const response = await axios.put(`http://localhost:5000/api/cart/${userId}/${productId}`, { quantity });
+  const response = await axios.put(`http://localhost:5000/api/v1/carts`, {productId, quantity },{withCredentials:true});
   return response.data;
 });
 

@@ -1,40 +1,79 @@
-const client_id=process.env.GOOGLE_CLIENT_ID;
-const client_secret=process.env.GOOGLE_CLIENT_SECRET;
-const redirect_uri=process.env.REDIRECT_URI;
-export const googleLogin = async () => {
-  const { code } = req.body;
-
-  try {
-    // Exchange the authorization code for an access token
-    const response = await axios.post("https://oauth2.googleapis.com/token", {
-      code,
-      client_id,
-      client_secret,
-      redirect_uri,
-      grant_type: "authorization_code",
-    });
-
-    // Send the response back to the frontend
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error exchanging authorization code:", error);
-    res.status(500).json({ error: "Failed to exchange authorization code" });
-  }
-};
-
-
+import { OAuth2Client } from "google-auth-library";
 import User from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudnary.js";
 import { options } from "../utils/constant.js";
-import jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const googleLogin = async (req, res) => {
+  const { token } = req.body; // Extract token from request body
+
+  try {
+    // Verify the ID token received from Google
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { name, email, picture } = ticket.getPayload(); // Get user info from token
+
+    // Check if user already exists
+    let user = await User.findOne({ email });
+    if (!user) {
+      // Create a new user if they don't exist
+      user = new User({
+        username: name,
+        profileName: name,
+        email,
+        profile_url: picture,
+        password: "",
+      });
+      await user.save();
+    }
+
+    // Generate access and refresh tokens
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+      user._id
+    );
+
+    // Generate JWT token
+    const jwtToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    // Define cookie options (set secure to true in production)
+    const options = {
+      httpOnly: true, // Prevents JavaScript access to cookies
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+    };
+
+    // Return the response with tokens set in cookies
+    const userWithoutPassword = await User.findById(user._id).select(
+      "-password -refreshToken"
+    );
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .cookie("token", jwtToken, options)
+      .json(
+        new ApiResponse(200, userWithoutPassword, "User logged in successfully")
+      );
+  } catch (error) {
+    console.error("Google login failed:", error); // Log the error for debugging
+    res.status(400).json({ error: "Google login failed. Try again later." });
+  }
+};
+
 const registerUser = asyncHandler(async (req, res) => {
   try {
     // get user details from frontend
 
-    const { username, email, password,confirmPassword } = req.body;
+    const { username, email, password, confirmPassword } = req.body;
     // validation - not empty
 
     if (
@@ -126,14 +165,16 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   // Generate tokens
-  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
-  
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    user._id
+  );
+
   // Prepare cookie options
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // Set to true in production
-    sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000 
+    secure: process.env.NODE_ENV === "production", // Set to true in production
+    sameSite: "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   };
 
   // Remove password from the user object
@@ -145,9 +186,10 @@ const loginUser = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(200,  userWithoutPassword , "User logged in successfully"));
+    .json(
+      new ApiResponse(200, userWithoutPassword, "User logged in successfully")
+    );
 });
-
 
 const getCurrentUser = asyncHandler(async (req, res) => {
   try {
@@ -198,7 +240,6 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Password changed successfully"));
 });
 
-
 const getAllUser = asyncHandler(async (req, res) => {
   try {
     const users = await User.find({}).select("-password -refreshToken");
@@ -241,4 +282,5 @@ export {
   changeCurrentPassword,
   getUserById,
   getAllUser,
+  googleLogin,
 };

@@ -10,6 +10,7 @@ export const fetchProducts = createAsyncThunk(
     try {
       const response = await axios.get(`${url}/api/v1/products/filters`, {
         params: { ...filters, page },
+        withCredentials: true,
       });
       return response.data;
     } catch (err) {

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAPI } from '../app/features/cartSlice';
+import { getProductById } from '..';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -18,7 +19,7 @@ const ProductDetails = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/v1/products/${id}`);
+                const response = await getProductById(id);
                 setProduct(response.data.data);
                 setSelectedImage(response.data.data.image || '/default-image.jpg'); // Set default image
                 setLoading(false);

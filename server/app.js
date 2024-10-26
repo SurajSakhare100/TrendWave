@@ -4,11 +4,13 @@ import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import userRoutes from './routes/user.routes.js';
+import authRoutes from './routes/auth.routes.js';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser'
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-// Load environment variables from .env file
+import Razorpay from 'razorpay'
+
 dotenv.config();
 
 const app = express();
@@ -18,12 +20,13 @@ app.use(cors({
   credentials: true,
 }));
 
+const instance = new Razorpay({ key_id: 'YOUR_KEY_ID', key_secret: 'YOUR_SECRET' })
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.use(cors());
 app.use(bodyParser.json());
 
 
@@ -33,6 +36,7 @@ app.use('/api/v1/carts', cartRoutes);
 
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 
 // Get port from environment variable or default to 5000
