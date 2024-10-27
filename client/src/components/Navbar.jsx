@@ -33,8 +33,8 @@ const Navbar = () => {
     ];
 
     return (
-        <nav className="dark:bg-gray-800 bg-white dark:text-white text-black shadow-lg sticky top-0 z-50 text-nowrap">
-            <div className="container mx-auto flex justify-between items-center py-4">
+        <nav className="dark:bg-black bg-white dark:text-white text-black shadow-lg sticky top-0 z-50 text-nowrap">
+            <div className="container mx-auto flex justify-between items-center py-3">
                 {/* Logo and Mobile Menu Button */}
                 <div className="h-full flex items-center justify-between space-x-6 w-full px-10">
                     <Link to="/" className="text-2xl font-bold hover:text-blue-700 transition-colors ">Trend Wave</Link>
@@ -63,7 +63,7 @@ const Navbar = () => {
                                 <img 
                                     src={user.profile_url} 
                                     alt="User Profile" 
-                                    className='rounded-full  w-12 h-12' 
+                                    className='rounded-full  w-10 h-10 border-2' 
                                 />
                             </Link>
                         )}

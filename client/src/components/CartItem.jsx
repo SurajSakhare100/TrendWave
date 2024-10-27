@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './Button/Button';
 
 const CartItem = ({ item, removeFromCart }) => {
     return (
@@ -6,7 +7,12 @@ const CartItem = ({ item, removeFromCart }) => {
             <img src={item.image} alt={item.name} />
             <h2>{item.name}</h2>
             <p>${item.price}</p>
-            <button onClick={() => removeFromCart(item.id)}>Remove</button>
+            <Button 
+            onClick={() => removeFromCart(item.id)}
+            type = "button"
+            variant = "primary"
+            size = "md"
+            >Removes</Button>
         </div>
     );
 };

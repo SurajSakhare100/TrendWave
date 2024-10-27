@@ -34,16 +34,19 @@ const ProductList = () => {
                                 {products.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="hover:scale-105 hover:shadow-lg p-4 rounded-lg transition-transform duration-300"
+                                        className="hover:scale-105 hover:shadow-lg shadow-md  transition-transform duration-300"
                                     >
                                         <Link to={`/products/${product._id}`}>
                                             <img
                                                 src={product.image || '/default-image.jpg'}
                                                 alt={product.name}
-                                                className="w-full h-80 object-cover mb-4 rounded"
+                                                className="w-full h-80 object-cover "
                                             />
+                                            <div className='p-4'>
                                             <h2 className="text-xl font-semibold mb-1 truncate">{product.name}</h2>
+                                            {/* <h3 className="text-sm  truncate">{product.description}</h3> */}
                                             <p className="text-gray-700 font-medium">{product.price ? `${product.price.toFixed(2)} RS` : 'Price Unavailable'}</p>
+                                            </div>
                                         </Link>
                                     </div>
                                 ))}

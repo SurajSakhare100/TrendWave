@@ -5,6 +5,7 @@ import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAPI } from '../app/features/cartSlice';
 import { getProductById } from '..';
+import Button from '../components/Button/Button';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -63,7 +64,7 @@ const ProductDetails = () => {
                     <img
                         src={selectedImage || '/default-image.jpg'}
                         alt={product.name}
-                        className="w-full max-w-md object-cover rounded-md cursor-pointer mb-4"
+                        className="w-full max-w-md object-cover shadow-sm cursor-pointer mb-4"
                         onClick={() => setSelectedImage(product.image)}
                     />
                 </div>
@@ -92,7 +93,7 @@ const ProductDetails = () => {
                                 id="size"
                                 value={selectedSize}
                                 onChange={(e) => setSelectedSize(e.target.value)}
-                                className="border border-gray-300 bg-gray-50 py-2 px-4 w-40 rounded"
+                                className="border border-gray-300 bg-gray-50 py-2 px-4 w-40 "
                                 aria-label="Select product size"
                             >
                                 <option disabled>Select Size</option>
@@ -105,12 +106,12 @@ const ProductDetails = () => {
                         </div>
                     )}
 
-                    <button
+                    <Button
                         onClick={handleAddToCart}
-                        className="bg-blue-600 text-white py-2 px-4 w-40 rounded hover:bg-blue-700 transition duration-300"
+                        size='xl'
                     >
                         Add to Cart
-                    </button>
+                    </Button>
 
                     <div className="mt-4 font-normal text-gray-700">
                         <p>Category: <span>{product.category}</span></p>

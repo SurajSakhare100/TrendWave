@@ -15,6 +15,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { products } from './data';
 import AdminPage from './pages/AdminPage';
 import Footer from './components/Footer/Footer';
+import CheckoutForm from './components/CheckoutForm';
 
 const App = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -34,6 +35,7 @@ const App = () => {
                             <Route path="/contact" element={<ContactPage />} />
                             <Route path="/auth/signup" element={<Register />} />
                             <Route path="/auth/signin" element={<Login />} />
+                            <Route path="/check" element={<CheckoutForm />} />
 
                             {/* Admin Page Route */}
                             <Route path="/admin/:id/*" element={<AdminPage />} />

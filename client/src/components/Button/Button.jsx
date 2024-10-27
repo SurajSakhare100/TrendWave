@@ -10,7 +10,6 @@ const Button = ({
   className = '',
   ...props
 }) => {
-  // Define button styles based on variant and size
   const baseStyles = 'inline-flex items-center justify-center font-medium focus:outline-none transition ease-in-out duration-150';
   
   const variantStyles = {
@@ -23,7 +22,8 @@ const Button = ({
   const sizeStyles = {
     sm: 'px-2 py-1 text-sm',
     md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg',
+    lg: 'px-6 py-2 text-md',
+    xl:'px-10 py-2 text-md'
   };
 
   const disabledStyles = disabled ? 'opacity-50 cursor-not-allowed' : '';
