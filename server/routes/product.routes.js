@@ -9,6 +9,7 @@ import {
   saveProduct,
   removeSavedProduct,
   getSavedProducts,
+  rateProduct,
 } from "../controllers/product.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
@@ -16,6 +17,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 router.get('/savedProducts',verifyJWT, getSavedProducts);
+router.post('/:productId/rate',verifyJWT, rateProduct);
 
 router
   .route("/")

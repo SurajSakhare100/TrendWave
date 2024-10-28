@@ -1,6 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
 
-// Define the Product Schema
+const RatingSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  rating: { type: Number, required: true, min: 1, max: 5 },
+});
+
 const productSchema = new Schema({
   name: {
     type: String,
@@ -62,6 +66,8 @@ const productSchema = new Schema({
     type: Number,
     default: 0, // Average rating
   },
+  ratings: [RatingSchema],
+  averageRating: { type: Number, default: 0 },
   numReviews: {
     type: Number,
     default: 0, // Number of reviews
@@ -70,6 +76,10 @@ const productSchema = new Schema({
   timestamps: true, // Automatically manage createdAt and updatedAt fields
 });
 
-// Create and export the Product model
+productSchema.methods.calculateAverageRating = function () {
+  const total = this.ratings.reduce((acc, { rating }) => acc + rating, 0);
+  this.averageRating = total / this.ratings.length;
+  return this.save();
+};
 const Product = mongoose.model('Product', productSchema);
 export default Product;

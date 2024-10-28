@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -26,26 +27,20 @@ const Checkout = () => {
         setOrderSuccess(null);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/orders/${user?._id}/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
+            const response = await axios.post(`http://localhost:5000/api/v1/orders/${user?._id}/create`, {
+               
                     shippingAddress,
                     paymentMethod,
                     items: items,  // Fetch or pass cart items
-                }),
             });
 
-            const result = await response.json();
-            if (result.success) {
+            if (response.status) {
                 setOrderSuccess(true);
                 setTimeout(() => {
-                    navigate('/orders');  // Redirect to orders page
+                    navigate(`/product/${product._id}/review`);  // Redirect to orders page
                 }, 2000);
             } else {
-                throw new Error(result.message || 'Failed to place order');
+                throw new Error(response.message || 'Failed to place order');
             }
         } catch (error) {
             console.error('Order failed', error);

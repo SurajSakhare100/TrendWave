@@ -204,6 +204,36 @@ const getSavedProducts = async (req, res) => {
   }
 };
 
+const rateProduct = async (req, res) => {
+const { productId } = req.params;
+const {  rating } = req.body;
+const userId=req.user._id;
+
+try {
+  const product = await Product.findById(productId);
+
+  // Check if the user has already rated the product
+  const existingRating = product.ratings.find(
+    (r) => r.user.toString() === userId
+  );
+
+  if (existingRating) {
+    // Update existing rating
+    existingRating.rating = rating;
+  } else {
+    // Add new rating
+    product.ratings.push({ user: userId, rating });
+  }
+
+  // Recalculate and update the average rating
+  await product.calculateAverageRating();
+
+  res.status(200).json({ success: true, averageRating: product.averageRating });
+} catch (error) {
+  res.status(500).json({ error: "Error rating product" });
+}
+};
+
 export {
   createProduct,
   getAllProducts,
@@ -213,5 +243,6 @@ export {
   getFilteredProducts,
   saveProduct,
   removeSavedProduct,
-  getSavedProducts
+  getSavedProducts,
+  rateProduct
 };

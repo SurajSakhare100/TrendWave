@@ -17,6 +17,8 @@ import AdminPage from './pages/AdminPage';
 import Footer from './components/Footer/Footer';
 import CheckoutForm from './components/CheckoutForm';
 import WishList from './pages/WishList';
+import ReviewModel from './components/reviewModel/ReviewModel';
+import ReviewProduct from './pages/reviewProduct';
 
 const App = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -38,6 +40,7 @@ const App = () => {
                             <Route path="/auth/signin" element={<Login />} />
                             <Route path="/check" element={<CheckoutForm />} />
                             <Route path="/wishlist" element={<WishList />} />
+                            <Route path="/products/:productId/review" element={<ReviewProduct />} />
 
                             {/* Admin Page Route */}
                             <Route path="/admin/:id/*" element={<AdminPage />} />

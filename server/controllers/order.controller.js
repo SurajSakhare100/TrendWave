@@ -32,7 +32,7 @@ export const CreateOrder = async (req, res) => {
             { new: true }
         );
 
-        res.json({ success: true, message: 'Order placed successfully', orderId: newOrder._id });
+        res.status(200).json({ success: true, message: 'Order placed successfully', orderId: newOrder._id });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Failed to process order' });
