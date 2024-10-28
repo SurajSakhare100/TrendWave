@@ -1,22 +1,39 @@
-import express from 'express';
-import { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct, getFilteredProducts } from '../controllers/product.controller.js';
+import express from "express";
+import {
+  createProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+  getFilteredProducts,
+  saveProduct,
+  removeSavedProduct,
+  getSavedProducts,
+} from "../controllers/product.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
-import { verifyJWT } from '../middlewares/auth.middleware.js';
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-// Product CRUD routes
-router.route('/')
-    .post(verifyJWT,upload.array('images', 4), createProduct) // Handle up to 4 image uploads
-    .get(verifyJWT,getAllProducts);
+router.get('/savedProducts',verifyJWT, getSavedProducts);
+
+router
+  .route("/")
+  .post(verifyJWT, upload.array("images", 4), createProduct) // Handle up to 4 image uploads
+  .get(verifyJWT, getAllProducts);
 
 // Route for filtering products
-router.get('/filters',verifyJWT, getFilteredProducts); 
+router.get("/filters", verifyJWT, getFilteredProducts);
 
 // Routes for specific product by ID
-router.route('/:id')
-    .get(verifyJWT,getProductById)
-    .put(verifyJWT,upload.array('images', 4), updateProduct) // Handle up to 4 image uploads
-    .delete(verifyJWT,deleteProduct);
+router
+  .route("/:id")
+  .get(verifyJWT, getProductById)
+  .put(verifyJWT, upload.array("images", 4), updateProduct) // Handle up to 4 image uploads
+  .delete(verifyJWT, deleteProduct);
+
+router.route("/save/:productId")
+      .post(verifyJWT, saveProduct)
+      .delete(verifyJWT, removeSavedProduct);
 
 export default router;

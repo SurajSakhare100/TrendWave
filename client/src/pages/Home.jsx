@@ -4,6 +4,7 @@ import { products } from '../data';
 import Testimonial from '../components/Testimonial';
 import ProductCard from '../components/ProductCard';
 import gsap from 'gsap';
+import HeroSection from '../components/HomePageSections/HeroSection';
 
 const Home = () => {
     const testimonialBox = useRef(null);
@@ -20,23 +21,11 @@ const Home = () => {
     return (
         <div className="container mx-auto">
             {/* Hero Section */}
-            <div className="relative bg-cover bg-center h-screen brightness-200" style={{ backgroundImage: `url('https://img.freepik.com/free-photo/close-up-woman-front-clothing-piles_23-2150951005.jpg')` }}>
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="text-center text-white">
-                        <h1 className="text-5xl font-bold mb-4">Discover the Latest Trends</h1>
-                        <p className="text-xl mb-8">Explore our new collection for the season</p>
-                        <Link to="/shop">
-                            <button className="bg-white text-black py-2 px-6 rounded-full mr-4">Shop Now</button>
-                        </Link>
-                        <Link to="/learn-more">
-                            <button className="bg-transparent border border-white text-white py-2 px-6 rounded-full">Learn More</button>
-                        </Link>
-                    </div>
-                </div>
-            </div>
+            <HeroSection/>
+            
 
             {/* Featured Products Section */}
-            <section className="py-8 md:py-16">
+            <section className="py-8 md:py-16 mx-auto">
                 <h2 className="text-3xl font-bold text-center mb-6 md:mb-10">Featured Products</h2>
                 <ProductCard products={products.slice(0, 4)} /> {/* Display the first 4 products */}
             </section>

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAPI } from '../app/features/cartSlice';
 import { getProductById } from '..';
 import Button from '../components/Button/Button';
+import LikeProduct from '../components/Like Product/LikeProduct';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -58,7 +59,7 @@ const ProductDetails = () => {
     const hasHalfStar = rating % 1 !== 0;
 
     return (
-        <div className="container mx-auto py-10 px-4 md:px-20">
+        <div className="container mx-auto py-10 px-4 md:px-20 mt-16">
             <div className="flex flex-col md:flex-row">
                 <div className="md:w-1/2 flex justify-center">
                     <img
@@ -68,7 +69,10 @@ const ProductDetails = () => {
                         onClick={() => setSelectedImage(product.image)}
                     />
                 </div>
-                <div className="md:w-1/2 md:pl-8">
+                <div className="md:w-1/2">
+                    <div className='flex justify-end '>
+                    <LikeProduct productId={product._id} className="text-xl"/>
+                    </div>
                     <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
                     <p className="text-2xl font-semibold mb-4">₹{product.price?.toFixed(2)}</p>
 
@@ -109,6 +113,7 @@ const ProductDetails = () => {
                     <Button
                         onClick={handleAddToCart}
                         size='xl'
+                        className='flex-shrink'
                     >
                         Add to Cart
                     </Button>

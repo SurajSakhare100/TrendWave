@@ -23,8 +23,7 @@ const addressSchema = new Schema({
     type: String,
     default: '',
   },
-}, { _id: false }); // Disable auto-generated _id for sub-documents
-
+}, { _id: false }); 
 const userSchema = new Schema(
   {
     email: {
@@ -53,10 +52,11 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ['admin', 'customer'], // Define roles as needed
+      enum: ['admin', 'customer'], 
       default: 'customer',
     },
-    address: addressSchema, // Use the address schema defined above
+    address: addressSchema,
+    savedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
     refresh_token: {
       type: String,
     },
@@ -66,7 +66,6 @@ const userSchema = new Schema(
   }
 );
 
-// Hash password before saving
 userSchema.pre('save', async function (next) {
   if (this.isModified('password') || this.isNew) {
     const salt = await bcrypt.genSalt(10);
@@ -75,12 +74,10 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// Method to compare passwords
 userSchema.methods.isPasswordCorrect = async function (currentPassword) {
   return await bcrypt.compare(currentPassword, this.password);
 };
 
-// Method to generate access token
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -94,8 +91,6 @@ userSchema.methods.generateAccessToken = function () {
     }
   );
 };
-
-// Method to generate refresh token
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
@@ -108,6 +103,5 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-// Create and export the User model
 const User = mongoose.model('User', userSchema);
 export default User;

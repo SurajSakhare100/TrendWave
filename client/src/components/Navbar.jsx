@@ -12,10 +12,14 @@ const Navbar = () => {
     const cartItems = useSelector((state) => state.cart.items);
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.user._id);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
     useEffect(() => {
         dispatch(fetchCurrentUser());
-    }, [dispatch]); 
+    }, [dispatch]);
 
     useEffect(() => {
         if (userId) {
@@ -33,7 +37,7 @@ const Navbar = () => {
     ];
 
     return (
-        <nav className="dark:bg-black bg-white dark:text-white text-black shadow-lg sticky top-0 z-50 text-nowrap">
+        <nav className="dark:bg-black bg-white dark:text-white text-black shadow-lg py-2 fixed w-full top-0 z-40 text-nowrap">
             <div className="container mx-auto flex justify-between items-center py-3">
                 {/* Logo and Mobile Menu Button */}
                 <div className="h-full flex items-center justify-between space-x-6 w-full px-10">
@@ -52,21 +56,43 @@ const Navbar = () => {
                     </div>
                     <div className="hidden sm:flex space-x-6 items-center">
                         <Link to="/auth/signin" className="hover:text-blue-700 font-medium transition-colors"><FaUser /></Link>
-                        <Link to="/notify" className="hover:text-blue-700 font-medium transition-colors text-xl"><LuShoppingBag/></Link>
+                        <Link to="/notify" className="hover:text-blue-700 font-medium transition-colors text-xl"><LuShoppingBag /></Link>
                         <Link to="/cart" className="flex items-center space-x-1 hover:text-blue-700 font-medium transition-colors">
                             <FaShoppingCart />
                             <div className='w-4 h-4 flex items-center justify-center text-[13px] font-bold font-poppins rounded-full -translate-x-[50%] -translate-y-[50%]'>{cartLength}</div>
                         </Link>
-                        {/* User Profile Picture */}
-                        {user?.profile_url && (
-                            <Link to={`/admin/${user._id}`} className='text-black flex items-center'>
-                                <img 
-                                    src={user.profile_url} 
-                                    alt="User Profile" 
-                                    className='rounded-full  w-10 h-10 border-2' 
-                                />
-                            </Link>
-                        )}
+                        <div className="relative">
+                            {/* User Profile Picture */}
+                            {user?.profile_url && (
+                                <button onClick={toggleDropdown} className="flex items-center focus:outline-none">
+                                    <img
+                                        src={user?.profile_url}
+                                        alt="User Profile"
+                                        className="rounded-full w-10 h-10 border-2"
+                                    />
+                                </button>
+                            )}
+
+                            {/* Dropdown Menu */}
+                            {isDropdownOpen && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
+                                    <Link
+                                        to={`/wishlist`}
+                                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                        onClick={() => setIsDropdownOpen(false)}
+                                    >
+                                        Wishlist
+                                    </Link>
+                                    <Link
+                                        to={`/admin/${user._id}`}
+                                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                        onClick={() => setIsDropdownOpen(false)}
+                                    >
+                                        Admin Page
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 

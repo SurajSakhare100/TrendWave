@@ -16,6 +16,7 @@ import { products } from './data';
 import AdminPage from './pages/AdminPage';
 import Footer from './components/Footer/Footer';
 import CheckoutForm from './components/CheckoutForm';
+import WishList from './pages/WishList';
 
 const App = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -36,6 +37,7 @@ const App = () => {
                             <Route path="/auth/signup" element={<Register />} />
                             <Route path="/auth/signin" element={<Login />} />
                             <Route path="/check" element={<CheckoutForm />} />
+                            <Route path="/wishlist" element={<WishList />} />
 
                             {/* Admin Page Route */}
                             <Route path="/admin/:id/*" element={<AdminPage />} />
