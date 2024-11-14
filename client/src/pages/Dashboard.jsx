@@ -1,155 +1,108 @@
-import React from 'react';
-import { FaShoppingCart, FaStar, FaBoxOpen, FaBell, FaTag, FaBox, FaUsers, FaClock } from 'react-icons/fa';
+import React, { useState } from 'react';
 
-// Sample Data
-const recentOrders = [
-  { id: 'ORD12345', date: '2024-09-15', amount: '$120.00', status: 'Completed' },
-  { id: 'ORD12346', date: '2024-09-14', amount: '$89.50', status: 'Shipped' },
-  { id: 'ORD12347', date: '2024-09-13', amount: '$45.00', status: 'Pending' },
-];
+import Sidebar from '../partials/Sidebar';
+import Header from '../partials/Header';
+import FilterButton from '../components/DashBoard/DropdownFilter';
+import Datepicker from '../components/DashBoard/Datepicker';
+import DashboardCard01 from '../partials/dashboard/DashboardCard01';
+import DashboardCard02 from '../partials/dashboard/DashboardCard02';
+import DashboardCard03 from '../partials/dashboard/DashboardCard03';
+import DashboardCard04 from '../partials/dashboard/DashboardCard04';
+import DashboardCard05 from '../partials/dashboard/DashboardCard05';
+import DashboardCard06 from '../partials/dashboard/DashboardCard06';
+import DashboardCard07 from '../partials/dashboard/DashboardCard07';
+import DashboardCard08 from '../partials/dashboard/DashboardCard08';
+import DashboardCard09 from '../partials/dashboard/DashboardCard09';
+import DashboardCard10 from '../partials/dashboard/DashboardCard10';
+import DashboardCard11 from '../partials/dashboard/DashboardCard11';
+import DashboardCard12 from '../partials/dashboard/DashboardCard12';
+import DashboardCard13 from '../partials/dashboard/DashboardCard13';
+import Banner from '../partials/Banner';
 
-const topSellingProducts = [
-  { name: 'Men\'s Jacket', sales: 300 },
-  { name: 'Women\'s Dress', sales: 250 },
-  { name: 'Kids\' T-Shirt', sales: 200 },
-];
+function Dashboard() {
 
-const customerFeedback = [
-  { customer: 'John Doe', feedback: 'Great quality! Will buy again.', rating: 5 },
-  { customer: 'Jane Smith', feedback: 'Good service, but delivery was delayed.', rating: 3 },
-];
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-const stockAlerts = [
-  { product: 'Men\'s Jacket', stock: 5 },
-  { product: 'Women\'s Dress', stock: 3 },
-];
-
-const Dashboard = () => {
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Admin Dashboard</h1>
+    <div className="flex h-screen overflow-hidden bg-white dark:bg-black">
 
-      {/* Top Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white shadow-lg rounded-lg p-6 flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">Total Sales This Month</h2>
-            <p className="text-2xl font-bold text-gray-900">$12,345</p>
+      {/* Sidebar */}
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+      {/* Content area */}
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+
+        {/*  Site header */}
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+        <main className="grow">
+          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+            {/* Dashboard actions */}
+            <div className="sm:flex sm:justify-between sm:items-center mb-8">
+
+              {/* Left: Title */}
+              <div className="mb-4 sm:mb-0">
+                <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Dashboard</h1>
+              </div>
+
+              {/* Right: Actions */}
+              <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+                {/* Filter button */}
+                <FilterButton align="right" />
+                {/* Datepicker built with flatpickr */}
+                <Datepicker align="left" />
+                {/* Add view button */}
+                <button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
+                  <svg className="fill-current shrink-0 xs:hidden" width="16" height="16" viewBox="0 0 16 16">
+                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                  </svg>
+                  <span className="max-xs:sr-only">Add View</span>
+                </button>                
+              </div>
+
+            </div>
+
+            {/* Cards */}
+            <div className="grid grid-cols-12 gap-6">
+
+              {/* Line chart (Acme Plus) */}
+              <DashboardCard01 />
+              {/* Line chart (Acme Advanced) */}
+              <DashboardCard02 />
+              {/* Line chart (Acme Professional) */}
+              <DashboardCard03 />
+              {/* Bar chart (Direct vs Indirect) */}
+              <DashboardCard04 />
+              {/* Line chart (Real Time Value) */}
+              <DashboardCard05 />
+              {/* Doughnut chart (Top Countries) */}
+              <DashboardCard06 />
+              {/* Table (Top Channels) */}
+              <DashboardCard07 />
+              {/* Line chart (Sales Over Time) */}
+              <DashboardCard08 />
+              {/* Stacked bar chart (Sales VS Refunds) */}
+              <DashboardCard09 />
+              {/* Card (Customers) */}
+              <DashboardCard10 />
+              {/* Card (Reasons for Refunds) */}
+              <DashboardCard11 />
+              {/* Card (Recent Activity) */}
+              <DashboardCard12 />
+              {/* Card (Income/Expenses) */}
+              <DashboardCard13 />
+              
+            </div>
+
           </div>
-          <FaShoppingCart className="text-3xl text-green-500" />
-        </div>
+        </main>
 
-        <div className="bg-white shadow-lg rounded-lg p-6 flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">Total Revenue</h2>
-            <p className="text-2xl font-bold text-gray-900">$78,900</p>
-          </div>
-          <FaTag className="text-3xl text-blue-500" />
-        </div>
+        <Banner />
 
-        <div className="bg-white shadow-lg rounded-lg p-6 flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">Products in Stock</h2>
-            <p className="text-2xl font-bold text-gray-900">4,567</p>
-          </div>
-          <FaBox className="text-3xl text-purple-500" />
-        </div>
-
-        <div className="bg-white shadow-lg rounded-lg p-6 flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">New Customers</h2>
-            <p className="text-2xl font-bold text-gray-900">123</p>
-          </div>
-          <FaUsers className="text-3xl text-red-500" />
-        </div>
-      </div>
-
-      {/* Sections */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        {/* Recent Orders */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Orders</h2>
-          <ul className="space-y-4">
-            {recentOrders.map(order => (
-              <li key={order.id} className="flex justify-between items-center border-b py-2">
-                <div>
-                  <p className="font-semibold text-gray-800">Order ID: {order.id}</p>
-                  <p className="text-gray-600">Date: {order.date}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-gray-800 font-semibold">{order.amount}</p>
-                  <p className={`text-sm ${order.status === 'Completed' ? 'text-green-600' : order.status === 'Shipped' ? 'text-blue-600' : 'text-yellow-600'}`}>
-                    {order.status}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Top Selling Products */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Top Selling Products</h2>
-          <ul className="space-y-4">
-            {topSellingProducts.map(product => (
-              <li key={product.name} className="flex justify-between items-center border-b py-2">
-                <p className="font-semibold text-gray-800">{product.name}</p>
-                <p className="text-gray-600">{product.sales} units sold</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Customer Feedback */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Customer Feedback</h2>
-          <ul className="space-y-4">
-            {customerFeedback.map(feedback => (
-              <li key={feedback.customer} className="border-b py-2">
-                <p className="font-semibold text-gray-800">{feedback.customer}</p>
-                <p className="text-gray-600">{feedback.feedback}</p>
-                <p className="text-yellow-500">Rating: {Array(feedback.rating).fill('⭐').join('')}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Stock Alerts */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Stock Alerts</h2>
-          <ul className="space-y-4">
-            {stockAlerts.map(alert => (
-              <li key={alert.product} className="flex justify-between items-center border-b py-2">
-                <p className="font-semibold text-gray-800">{alert.product}</p>
-                <p className={`text-red-500 font-semibold`}>Only {alert.stock} left</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-      </div>
-      
-      {/* Recent Activities */}
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">Recent Activities</h2>
-        <ul className="space-y-4">
-          <li className="flex items-center space-x-2">
-            <FaClock className="text-gray-500" />
-            <span className="text-gray-700">Order #1234 processed</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <FaClock className="text-gray-500" />
-            <span className="text-gray-700">New product added: "Summer Dress"</span>
-          </li>
-          <li className="flex items-center space-x-2">
-            <FaClock className="text-gray-500" />
-            <span className="text-gray-700">Inventory updated for "Winter Coat"</span>
-          </li>
-        </ul>
       </div>
     </div>
   );
-};
+}
 
 export default Dashboard;

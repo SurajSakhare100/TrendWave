@@ -22,10 +22,10 @@ router.post('/:productId/rate',verifyJWT, rateProduct);
 router
   .route("/")
   .post(verifyJWT, upload.array("images", 4), createProduct) // Handle up to 4 image uploads
-  .get(verifyJWT, getAllProducts);
+  .get( getAllProducts);
 
 // Route for filtering products
-router.get("/filters", verifyJWT, getFilteredProducts);
+router.get("/filters", getFilteredProducts);
 
 // Routes for specific product by ID
 router

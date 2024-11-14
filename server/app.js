@@ -6,6 +6,7 @@ import cartRoutes from './routes/cart.routes.js';
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser'
 import cors from 'cors';
@@ -40,6 +41,7 @@ app.use('/api/v1/payment', paymentRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
 
 
 // Get port from environment variable or default to 5000
