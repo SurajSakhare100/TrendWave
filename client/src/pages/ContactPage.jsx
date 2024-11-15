@@ -22,13 +22,11 @@ const ContactPage = () => {
 
   return (
     <div className="bg-gradient-to-r from-blue-50 to-purple-50 min-h-screen flex flex-col items-center relative">
-      {/* Decorative Background Circles */}
       <div className="absolute inset-0 flex justify-center items-center overflow-hidden">
         <div className="w-96 h-96 bg-blue-400 opacity-20 rounded-full absolute -top-32 -left-32"></div>
         <div className="w-80 h-80 bg-purple-400 opacity-20 rounded-full absolute bottom-12 -right-32"></div>
       </div>
 
-      {/* Hero Section */}
       <div className="relative w-full py-16">
         <div className="container mx-auto text-center">
           <h1 className="text-5xl font-extrabold text-gray-800 drop-shadow-md">Contact Us</h1>
@@ -36,7 +34,6 @@ const ContactPage = () => {
         </div>
       </div>
 
-      {/* Contact Information Section */}
       <div className="relative container mx-auto py-12 grid grid-cols-1 md:grid-cols-3 gap-12 text-center px-20">
         <div className="flex flex-col items-center p-8 bg-white shadow-xl rounded-2xl transform transition-transform hover:scale-105">
           <FaPhoneAlt className="text-5xl text-blue-500 mb-4" />
@@ -55,7 +52,6 @@ const ContactPage = () => {
         </div>
       </div>
 
-      {/* FAQ Section */}
       <section className="contact_container relative py-28 px-8 text-gray-800">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-6">Frequently Asked Questions!</h1>
