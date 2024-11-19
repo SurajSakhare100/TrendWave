@@ -39,7 +39,6 @@ const Navbar = () => {
     return (
         <nav className="dark:bg-black bg-white dark:text-white text-black shadow-lg py-2 fixed w-full top-0 z-40 text-nowrap">
             <div className="container mx-auto flex justify-between items-center py-3">
-                {/* Logo and Mobile Menu Button */}
                 <div className="h-full flex items-center justify-between space-x-6 w-full px-10">
                     <Link to="/" className="text-2xl font-bold hover:text-blue-700 transition-colors ">Trend Wave</Link>
                     <button
@@ -62,7 +61,6 @@ const Navbar = () => {
                             <div className='w-4 h-4 flex items-center justify-center text-[13px] font-bold font-poppins rounded-full -translate-x-[50%] -translate-y-[50%]'>{cartLength}</div>
                         </Link>
                         <div className="relative">
-                            {/* User Profile Picture */}
                             {user?.profile_url && (
                                 <button onClick={toggleDropdown} className="flex items-center focus:outline-none">
                                     <img
@@ -73,7 +71,6 @@ const Navbar = () => {
                                 </button>
                             )}
 
-                            {/* Dropdown Menu */}
                             {isDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
                                     <Link
@@ -96,7 +93,6 @@ const Navbar = () => {
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
                 <div className={`fixed inset-0 bg-black bg-opacity-75 z-50 transition-transform transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} sm:hidden`}>
                     <div className="flex flex-col items-center justify-center h-full space-y-6 text-white">
                         <button

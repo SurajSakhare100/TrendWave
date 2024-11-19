@@ -109,6 +109,7 @@ export const getProducts = async () => {
 export const getProductById = async (id) => {
     try {
         const  data  = await axios.get(`${API_URL}/${id}`,{withCredentials: true,});
+        console.log(data)
         return data;
     } catch (error) {
         console.error('Error fetching product:', error.response?.data?.message || error.message);

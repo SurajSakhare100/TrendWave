@@ -4,7 +4,7 @@ import { FaHeart } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
 const LikeProduct = ({ productId ,...props}) => {
-  const savedProducts = useSelector((state) => state.user.savedProducts);
+  const savedProducts = useSelector((state) => state.user?.savedProducts || '');
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {

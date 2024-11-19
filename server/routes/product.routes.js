@@ -30,7 +30,7 @@ router.get("/filters", getFilteredProducts);
 // Routes for specific product by ID
 router
   .route("/:id")
-  .get(verifyJWT, getProductById)
+  .get( getProductById)
   .put(verifyJWT, upload.array("images", 4), updateProduct) // Handle up to 4 image uploads
   .delete(verifyJWT, deleteProduct);
 

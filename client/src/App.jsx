@@ -28,7 +28,7 @@ const App = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     return (
         <GoogleOAuthProvider clientId={clientId}>
-            <Provider store={store}> {/* Wrap in Provider */}
+            <Provider store={store}> 
                 <Router>
                     <div className="app">
                         <Navbar />

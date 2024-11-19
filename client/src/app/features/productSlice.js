@@ -3,7 +3,6 @@ import axios from "axios";
 
 const url = "http://localhost:5000";
 
-// Thunk for fetching products based on filters
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
   async ({ filters, page }, thunkAPI) => {
@@ -28,24 +27,24 @@ const productSlice = createSlice({
       "Topwear", "Jackets", "Pants", "Tshirts", "Polos", "Sweaters", "Cardigans",
       "Hoodies", "Sweatshirts", "Skirts", "Shorts", "Tracksuits", "Shirts", "Dresses"
     ],
-    sizes: ["S", "M", "L", "XL", "XXL"], // Available sizes
+    sizes: ["S", "M", "L", "XL", "XXL"], 
     filters: {
       category: "",
       subcategory: "",
       minPrice: 0,
       maxPrice: 10000,
-      sizes: [], // Handle multiple sizes
+      sizes: [], 
     },
     loading: false,
     error: null,
     page: 1,
-    pageSize: 5,
-    totalProducts: 0, // Track total products count
+    pageSize: 12,
+    totalProducts: 0, 
   },
   reducers: {
     setFilters: (state, action) => {
       state.filters = action.payload;
-      state.page = 1; // Reset to page 1 when filters change
+      state.page = 1; 
     },
     setPage(state, action) {
       state.page = action.payload;
@@ -62,7 +61,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.products = action.payload.products;
-        state.totalProducts = action.payload.pagination.totalProducts; // Set total products
+        state.totalProducts = action.payload.pagination.totalProducts;
         state.pageSize = action.payload.pagination.totalPages;
         state.loading = false;
         state.error = null;

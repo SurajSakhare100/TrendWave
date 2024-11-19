@@ -77,6 +77,7 @@ const getFilteredProducts = asyncHandler(async (req, res,next) => {
       .skip((pageNumber - 1) * pageLimit)
       .limit(pageLimit);
     const totalProducts = await Product.countDocuments(filter);
+   
 
     res.status(200).json({
       products,
