@@ -4,7 +4,7 @@ import { FaShoppingCart, FaBars, FaTimes, FaUser } from 'react-icons/fa';
 import { LuShoppingBag } from "react-icons/lu";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCurrentUser } from '../app/features/userSlices';
-import { fetchCart } from '../app/features/cartSlice';
+import { fetchCart } from '../app/features/cartSlice'; // Make sure this action is available in your slice
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,13 +17,14 @@ const Navbar = () => {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
     useEffect(() => {
         dispatch(fetchCurrentUser());
     }, [dispatch]);
 
     useEffect(() => {
         if (userId) {
-            dispatch(fetchCart(userId));
+            dispatch(fetchCart(userId)); 
         }
     }, [dispatch, userId]);
 
@@ -38,7 +39,7 @@ const Navbar = () => {
 
     return (
         <nav className="dark:bg-black bg-white dark:text-white text-black shadow-lg py-2 fixed w-full top-0 z-40 text-nowrap">
-            <div className="container mx-auto flex justify-between items-center py-3">
+            <div className="mx-auto flex justify-between items-center py-3">
                 <div className="h-full flex items-center justify-between space-x-6 w-full px-10">
                     <Link to="/" className="text-2xl font-bold hover:text-blue-700 transition-colors ">Trend Wave</Link>
                     <button
@@ -46,7 +47,7 @@ const Navbar = () => {
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     >
-                        {isMenuOpen ? <FaTimes /> : <FaBars />}
+                        {isMenuOpen ? '' : <FaBars />}
                     </button>
                     <div className="hidden sm:flex space-x-8 items-center">
                         {menuItems.map(item => (
@@ -96,18 +97,18 @@ const Navbar = () => {
                 <div className={`fixed inset-0 bg-black bg-opacity-75 z-50 transition-transform transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} sm:hidden`}>
                     <div className="flex flex-col items-center justify-center h-full space-y-6 text-white">
                         <button
-                            className="absolute top-4 right-4 text-2xl hover:text-blue-700 font-medium transition-colors"
+                            className="absolute top-8 right-8 text-2xl hover:text-blue-700 font-medium transition-colors"
                             onClick={() => setIsMenuOpen(false)}
                             aria-label="Close mobile menu"
                         >
                             <FaTimes />
                         </button>
                         {menuItems.map(item => (
-                            <Link key={item.to} to={item.to} className="text-2xl hover:text-blue-700 font-medium transition-colors" onClick={() => setIsMenuOpen(false)}>
+                            <Link key={item.to} to={item.to} className="text-2xl hover:text-blue-700 font-medium transition-colors" onClick={() => setIsMenuOpen(false)} >
                                 {item.label}
                             </Link>
                         ))}
-                        <Link to="/cart" className="flex items-center space-x-1 text-2xl hover:text-blue-700 font-medium transition-colors" onClick={() => setIsMenuOpen(false)}>
+                        <Link to="/cart" className="flex items-center space-x-1 text-2xl hover:text-blue-700 font-medium transition-colors" onClick={() => setIsMenuOpen(false)} >
                             <FaShoppingCart />
                             <span>Cart</span>
                         </Link>
