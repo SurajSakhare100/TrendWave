@@ -29,14 +29,14 @@ const WishList = () => {
   }
 
   return (
-    <div className="pt-28 pb-10 px-8 sm:px-20 bg-gray-50 dark:bg-black">
+    <div className="pt-28 pb-10 px-8 sm:px-20 bg-gray-50 dark:bg-black ">
       <h2 className="text-4xl text-center font-semibold mt-2 mb-4 text-black dark:text-white">Your Saved Products</h2>
       
       {error && <p className="text-center text-red-500">{error}</p>} {/* Show error message if any */}
       
       {savedProducts.length > 0 ? (
         <div className="product-list">
-          <ul className="shadow-md p-4 rounded-md w-full md:w-2/3 mx-auto">
+          <ul className="shadow-sm dark:shadow-white p-4 rounded-md w-full md:w-2/3 mx-auto border">
             {savedProducts?.map((product) => (
               <li key={product._id} className="flex items-center justify-between mb-4 p-4 border-b border-gray-300">
                 <div className="flex gap-4 sm:gap-6">

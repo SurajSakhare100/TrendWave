@@ -58,17 +58,17 @@ const Filter = () => {
     };
 
     return (
-        <div className="w-full  p-4 border border-gray-300 text-black dark:text-gray-700  ">
+        <div className="w-full  p-4 border border-gray-300 text-black dark:text-white  ">
             <h2 className="text-xl font-semibold mb-4">Filters</h2>
 
             <div className='grid grid-cols-2 gap-6'>
                 <div className="">
-                    <label htmlFor="category" className="block text-black dark:text-gray-700 font-medium mb-2">Category:</label>
+                    <label htmlFor="category" className="block text-black dark:text-gray-300 font-medium mb-2">Category:</label>
                     <select
                         id="category"
                         value={filters.category}
                         onChange={handleCategoryChange}
-                        className="border border-gray-300 text-black dark:text-gray-700  py-2 px-4 w-full"
+                        className="border border-gray-300 text-black dark:text-gray-600  py-2 px-4 w-full"
                     >
                         <option value="">All Categories</option>
                         {categories?.map((category, index) => (
@@ -78,12 +78,12 @@ const Filter = () => {
                 </div>
 
                 <div className="">
-                    <label htmlFor="subcategory" className="block text-black dark:text-gray-700 font-medium mb-2">Subcategory:</label>
+                    <label htmlFor="subcategory" className="block text-black dark:text-gray-300 font-medium mb-2">Subcategory:</label>
                     <select
                         id="subcategory"
                         value={filters.subcategory}
                         onChange={handleSubcategoryChange}
-                        className="border border-gray-300 text-black dark:text-gray-700  py-2 px-4 w-full"
+                        className="border border-gray-300 text-black dark:text-gray-600  py-2 px-4 w-full"
                     >
                         <option value="">All Subcategories</option>
                         {subcategories?.map((subcategory, index) => (
@@ -93,12 +93,12 @@ const Filter = () => {
                 </div>
 
                 <div className="">
-                    <label htmlFor="priceRange" className="block text-black dark:text-gray-700 font-medium mb-2">Price Range:</label>
+                    <label htmlFor="priceRange" className="block text-black dark:text-gray-300 font-medium mb-2">Price Range:</label>
                     <select
                         id="priceRange"
                         value={filters.priceRange}
                         onChange={handlePriceRangeChange}
-                        className="border border-gray-300 text-black dark:text-gray-700   py-2 px-4 w-full"
+                        className="border border-gray-300 text-black dark:text-gray-600   py-2 px-4 w-full"
                     >
                         <option value="">All Prices</option>
                         <option value="0-300">0 - 300 Rs</option>
@@ -112,12 +112,12 @@ const Filter = () => {
                 </div>
 
                 <div className="">
-                    <label htmlFor="size" className="block text-black dark:text-gray-700 font-medium mb-2">Size:</label>
+                    <label htmlFor="size" className="block text-black dark:text-gray-300 font-medium mb-2">Size:</label>
                     <select
                         id="size"
                         value={filters.size}
                         onChange={handleSizeChange}
-                        className="border border-gray-300 text-black dark:text-gray-700  py-2 px-4 w-full"
+                        className="border border-gray-300 text-black dark:text-gray-600  py-2 px-4 w-full"
                     >
                         <option value="">All Sizes</option>
                         {sizes?.map((size, index) => (
