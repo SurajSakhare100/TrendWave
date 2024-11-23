@@ -5,7 +5,6 @@ import Navbar from '../components/Navbar';
 import AddItem from '../components/AddItem';  // Add item component
 import ItemList from './ItemList';
 import Analytics from './Analytics';
-import Dashboard from './Dashboard';
 import SettingsPage from './SettingsPage';
 import Footer from '../components/Footer';
 import OrderPage from './OrderPage';

@@ -20,8 +20,6 @@ import Footer from './components/Footer/Footer';
 import CheckoutForm from './components/CheckoutForm';
 import WishList from './pages/WishList';
 import ReviewProduct from './pages/reviewProduct';
-import Dashboard from './pages/Dashboard';
-import './css/style.css';
 import './components/charts/ChartjsConfig';
 
 const App = () => {
@@ -49,7 +47,6 @@ const App = () => {
 
                                 {/* Admin Page Route */}
                                 <Route path="/admin/:id/*" element={<AdminPage />} />
-                                <Route path="/admin/dashboard" element={<Dashboard />} />
 
                                 {/* Fallback Route */}
                                 <Route path="*" element={<NotFound />} />

@@ -15,8 +15,8 @@ const Register = () => {
 
     const onSubmit = async (data) => {
         try {
-            await registerUser(data);
-            navigate('/auth/signin');
+            const resoponse=await registerUser(data);
+            // navigate('/auth/signin');
         } catch (error) {
             console.log(error.message);
         }

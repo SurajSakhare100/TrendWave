@@ -12,6 +12,8 @@ import bodyParser from 'body-parser'
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import Razorpay from 'razorpay'
+import { errorHandler } from './middlewares/errorHandler.js';
+
 
 dotenv.config();
 
@@ -30,6 +32,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(errorHandler);
 
 app.use(bodyParser.json());
 

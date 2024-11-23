@@ -1,155 +1,126 @@
 import axios from "axios";
-// import { setUser } from "./app/slices/userSlice";
-// import { useDispatch } from "react-redux";
 
 export const base = "http://localhost:5000";
-const API_URL = base+'/api/v1/products';
-const handleResponse = (res) => res.data.data;
-const handleError = (err) => {
-  console.log(err.message);
-  return [];
-};
-const createFormData = (data) => {
-    const formData = new FormData();
-    for (const key in data) {
-      formData.append(key, data[key]);
-    }
-    return formData;
-  };
+const API_URL = `${base}/api/v1/products`;
+
 const axiosInstance = axios.create({
+  baseURL: base,
   headers: {
     "Content-Type": "application/json",
   },
   withCredentials: true,
 });
-// User-related functions
-const registerUser = async (user) => {
-    try {
-      const response = await axiosInstance.post(`${base}/api/v1/users/register`,{...user});
-      return handleResponse(response);
-    } catch (error) {
-      return handleError(error);
-    }
-  };
-  
-  
-  const loginUser = async (form) => {
-    try {
-      const response = await axios.post(`${base}/api/v1/auth/loginuser`, {
-        ...form
-      }, {
-        withCredentials: true,
-      });
-      // useDispatch(setUser(response));
-      return handleResponse(response);
-    } catch (error) {
-      console.log('Error logging in:', error.message);
-    }
-  };
-  
-  const logoutUser = async () => {
-    try {
-      const response = await axiosInstance.post(`${url}/api/v1/auth/logout`, {});
-  
-      return handleResponse(response);
-    } catch (error) {
-      return handleError(error);
-    }
-  };
-  const getCurrentUser = async () => {
-    try {
-      const response = await axiosInstance.get(`${url}/api/v1/auth/getuser`);
-      // useDispatch(setUser(response.data));
-      return handleResponse(response);
-    } catch (error) {
-      return handleError(error);
-    }
-  };
-  
-  const updatePassword = async (password) => {
-    try {
-      const response = await axiosInstance.post(`${url}/api/v1/auth/updatepassword`, password);
-      return handleResponse(response);
-    } catch (error) {
-      return handleError(error);
-    }
-  };
 
+const handleResponse = (res) => res.data.data || res.data;
+const handleError = (err) => {
+  const message = err.response?.data?.message || err.message || "An error occurred.";
+  console.error("API Error:", message);
+  throw new Error(message);
+};
 
+const createFormData = (data) => {
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+  return formData;
+};
 
+// Authentication APIs
+export const registerUser = async (data) => {
+  try {
+    const response = await axios.post('/api/v1/auth/register', data);
+    return response; // Return the data if the registration is successful
+  } catch (error) {
+    // Propagate the error back to the caller (Frontend)
+    throw new Error(error.response ? error.response.data.message : 'Something went wrong');
+  }
+};
 
-// Create new product
+export const loginUser = async (form) => {
+  try {
+    const response = await axiosInstance.post("/api/v1/auth/loginuser", { ...form });
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    const response = await axiosInstance.post("/api/v1/auth/logout", {});
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+export const getCurrentUser = async () => {
+  try {
+    const response = await axiosInstance.get("/api/v1/auth/getuser");
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+export const updatePassword = async (password) => {
+  try {
+    const response = await axiosInstance.post("/api/v1/auth/updatepassword", password);
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+// Product APIs
 export const createProduct = async (productData) => {
-    try {
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        };
-        const { data } = await axios.post(API_URL, productData, config);
-        return data;
-    } catch (error) {
-        console.error('Error creating product:', error.response?.data?.message || error.message);
-        throw error;
-    }
+  try {
+    const config = {
+      headers: { "Content-Type": "multipart/form-data" },
+    };
+    const response = await axiosInstance.post("/api/v1/products", productData, config);
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 };
 
-// Get all products
 export const getProducts = async () => {
-    try {
-        const { data } = await axios.get(API_URL);
-        return data;
-    } catch (error) {
-        console.error('Error fetching products:', error.response?.data?.message || error.message);
-        throw error;
-    }
+  try {
+    const response = await axiosInstance.get("/api/v1/products");
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 };
 
-// Get product by ID
 export const getProductById = async (id) => {
-    try {
-        const  data  = await axios.get(`${API_URL}/${id}`,{withCredentials: true,});
-        console.log(data)
-        return data;
-    } catch (error) {
-        console.error('Error fetching product:', error.response?.data?.message || error.message);
-        throw error;
-    }
+  try {
+    const response = await axiosInstance.get(`/api/v1/products/${id}`);
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 };
 
-// Update product
 export const updateProduct = async (id, productData) => {
-    try {
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        };
-        const { data } = await axios.put(`${API_URL}/${id}`, productData, config);
-        return data;
-    } catch (error) {
-        console.error('Error updating product:', error.response?.data?.message || error.message);
-        throw error;
-    }
+  try {
+    const config = {
+      headers: { "Content-Type": "multipart/form-data" },
+    };
+    const response = await axiosInstance.put(`/api/v1/products/${id}`, productData, config);
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 };
 
-// Delete product
 export const deleteProduct = async (id) => {
-    try {
-        const { data } = await axios.delete(`${API_URL}/${id}`);
-        return data;
-    } catch (error) {
-        console.error('Error deleting product:', error.response?.data?.message || error.message);
-        throw error;
-    }
+  try {
+    const response = await axiosInstance.delete(`/api/v1/products/${id}`);
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 };
-
-
-export {
-    registerUser,
-    updatePassword,
-    loginUser,
-    logoutUser,
-    getCurrentUser,
-}
-  

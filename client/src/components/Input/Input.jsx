@@ -8,7 +8,7 @@ const Input = ({ label, type = 'text', placeholder, error, ...props }, ref) => {
         ref={ref}
         type={type}
         placeholder={placeholder}
-        className={`w-full p-2 border border-gray-300  ${error ? 'border-red-500' : ''}`}
+        className={`w-full p-2 border border-gray-300 text-black  ${error ? 'border-red-500' : ''}`}
         {...props} 
       />
       {error && <p className="text-red-500">{error}</p>}

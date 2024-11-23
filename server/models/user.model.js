@@ -48,7 +48,6 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      // required: [true, 'Password is required'],
     },
     role: {
       type: String,
@@ -60,9 +59,14 @@ const userSchema = new Schema(
     refresh_token: {
       type: String,
     },
+    provider:{
+      type:String,
+      enum: ['google', 'email'], 
+      default: 'email',
+    }
   },
   {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
+    timestamps: true, 
   }
 );
 
