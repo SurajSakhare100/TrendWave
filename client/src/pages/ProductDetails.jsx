@@ -22,9 +22,9 @@ const ProductDetails = () => {
         const fetchProduct = async () => {
             try {
                 const response = await getProductById(id);
-                if (response?.data?.data) {
-                    setProduct(response?.data?.data);
-                    setSelectedImage(response?.data?.data?.image || '/default-image.jpg');
+                if (response.success) {
+                    setProduct(response.data);
+                    setSelectedImage(response.data.image || '/default-image.jpg');
                 } else {
                     setError('Product not found.');
                 }

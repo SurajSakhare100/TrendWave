@@ -62,7 +62,6 @@ const Navbar = () => {
                             <div className='w-4 h-4 flex items-center justify-center text-[13px] font-bold font-poppins rounded-full -translate-x-[50%] -translate-y-[50%]'>{cartLength}</div>
                         </Link>
                         <div className="relative">
-                            {user?.profile_url && (
                                 <button onClick={toggleDropdown} className="flex items-center focus:outline-none">
                                     <img
                                         src={user?.profile_url}
@@ -70,7 +69,6 @@ const Navbar = () => {
                                         className="rounded-full w-10 h-10 border-2"
                                     />
                                 </button>
-                            )}
 
                             {isDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">

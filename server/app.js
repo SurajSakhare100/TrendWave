@@ -32,8 +32,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-app.use(errorHandler);
-
 app.use(bodyParser.json());
 
 
@@ -46,6 +44,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 
+app.use(errorHandler);
 
 // Get port from environment variable or default to 5000
 const PORT = process.env.PORT || 5000;

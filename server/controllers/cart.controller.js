@@ -105,6 +105,7 @@ const updateItemQuantity = asyncHandler(async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
 const clearCart = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const cart = await Cart.findOne({ userId });

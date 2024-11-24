@@ -43,6 +43,7 @@ const Cart = () => {
           <ul className="space-y-6">
             {items?.map((item) => (
               <li key={item._id} className="flex items-center justify-between border-b pb-4 last:border-none">
+                <div>
                 <Link to={`/products/${item.productId._id}`}>
                   <img
                     src={item.image}
@@ -50,10 +51,11 @@ const Cart = () => {
                     className="w-24 h-24 object-cover rounded"
                   />
                 </Link>
+                </div>
 
-                <div className='xs:w-full flex flex-col gap-2 xs:flex-row justify-end xs:justify-between'>
-                <div className="flex flex-col xs:items-start items-end xs:mx-4">
-                  <h2 className="text-lg font-semibold text-gray-800">
+                <div className='w-full flex flex-col  gap-2 sm:flex-row justify-between items-end sm:items-center'>
+                <div className="flex flex-col items-end sm:items-start  sm:mx-4">
+                  <h2 className="md:text-xl text-lg font-semibold text-gray-800">
                     {item.productId.name}
                   </h2>
                   <p className="text-gray-500 text-sm">

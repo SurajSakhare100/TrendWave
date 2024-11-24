@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form';
 import { loginUser } from '../app/features/userSlices.js';
 import Input from '../components/Input/Input.jsx';
 import Button from '../components/Button/Button.jsx';
-import {GoogleAuth} from '../components/GoogleAuth'; // Import corrected
+import { GoogleAuth } from '../components/GoogleAuth'; // Import corrected
+import 'react-toastify/dist/ReactToastify.css';
+import { showErrorToast, showSuccessToast } from '../utils/toast.js';
 
 const Login = () => {
     const [error, setError] = useState(null);
@@ -19,28 +21,30 @@ const Login = () => {
     } = useForm();
 
     const login = async (data) => {
-        setError(''); // Clear previous errors
+        setError('');
         try {
-            const userData = await loginUser(data);
-            if (userData) {
-                navigate('/');
+           await dispatch(loginUser(data));
+            if (user.isAuthenticated) {
+                showSuccessToast('Login successful!')
+                setTimeout(() => {
+                    navigate('/');
+                }, 2000); 
             } else {
-                setError('Invalid email or password.'); // Set error message
+                showErrorToast('Invalid email or password.')
             }
         } catch (error) {
-            setError('An error occurred during login.'); // Set error message for API errors
-            console.error('Error occurred during login:', error);
+            showErrorToast("An error occurred during login.")
         }
     };
+    
+    
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
             <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6">
                 <h1 className="text-3xl font-bold text-center text-gray-700">Sign In</h1>
                 {error && (
-                    <p className="text-red-500 text-center text-sm">
-                        {error}
-                    </p>
+                    <p className="text-red-500 text-center text-sm">{error}</p>
                 )}
                 <form onSubmit={handleSubmit(login)} className="space-y-4">
                     <Input
@@ -69,8 +73,14 @@ const Login = () => {
                         })}
                         error={errors.password && errors.password.message}
                     />
-                    <Button variant="primary" size="md" className="w-full" type="submit">
-                        Sign In
+                    <Button
+                        variant="primary"
+                        size="md"
+                        className="w-full"
+                        type="submit"
+                        disabled={user.loading}
+                    >
+                        {user.loading ? 'Signing In...' : 'Sign In'}
                     </Button>
                 </form>
 

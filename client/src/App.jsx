@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import store from './app/store/store'; // Import your Redux store
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Products from './pages/Products';
+// import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
@@ -21,10 +21,13 @@ import CheckoutForm from './components/CheckoutForm';
 import WishList from './pages/WishList';
 import ReviewProduct from './pages/reviewProduct';
 import './components/charts/ChartjsConfig';
-
+import  { lazy, Suspense } from 'react';
+import { ToastContainer } from 'react-toastify';
+const Products = lazy(() => import('./pages/Products'));
 const App = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     return (
+        <Suspense fallback={<div className='h-screen bg-black text-white'>Loading...</div>}>
         <GoogleOAuthProvider clientId={clientId}>
             <Provider store={store}> 
                 <Router>
@@ -52,11 +55,13 @@ const App = () => {
                                 <Route path="*" element={<NotFound />} />
                             </Routes>
                         </main>
+                        <ToastContainer />
                         <Footer />
                     </div>
                 </Router>
             </Provider> {/* End of Provider */}
         </GoogleOAuthProvider>
+        </Suspense>
     );
 };
 

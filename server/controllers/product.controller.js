@@ -100,6 +100,7 @@ const getProductById = asyncHandler(async (req, res,next) => {
     if (!product) {
       return next(new ApiError(404, 'Product not found'));
     }
+    console.log(product)
     return res.status(200).json(new ApiResponse(200, product,'Product fetched successfully', ));
   } catch (error) {
     console.error(error);

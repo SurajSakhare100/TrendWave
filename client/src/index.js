@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-const handleResponse = (res) => res.data.data || res.data;
+const handleResponse = (res) => res.data;
 const handleError = (err) => {
   const message = err.response?.data?.message || err.message || "An error occurred.";
   console.error("API Error:", message);
@@ -29,11 +29,10 @@ const createFormData = (data) => {
 // Authentication APIs
 export const registerUser = async (data) => {
   try {
-    const response = await axios.post('/api/v1/auth/register', data);
-    return response; // Return the data if the registration is successful
+    const response = await axiosInstance.post('/api/v1/auth/register', data);
+    return handleResponse(response);
   } catch (error) {
-    // Propagate the error back to the caller (Frontend)
-    throw new Error(error.response ? error.response.data.message : 'Something went wrong');
+    return handleError(error);
   }
 };
 

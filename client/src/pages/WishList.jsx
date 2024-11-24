@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import LikeProduct from '../components/Like Product/LikeProduct';
+import { useDispatch } from 'react-redux';
+import { fetchCurrentUser } from '../app/features/userSlices';
 
 const WishList = () => {
   const [savedProducts, setSavedProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state for fetching data
-  const [error, setError] = useState(null); // Error state for handling errors
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchCurrentUser());
+}, [dispatch]);
   useEffect(() => {
     const fetchSavedProducts = async () => {
       try {

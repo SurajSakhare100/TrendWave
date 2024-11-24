@@ -4,6 +4,7 @@ import { fetchProducts } from '../app/features/productSlice';
 import Filter from './../components/Filter';
 import Pagination from './../components/Pagination';
 import { Link } from 'react-router-dom';
+import LikeProduct from '../components/Like Product/LikeProduct';
 
 const ProductList = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -35,6 +36,9 @@ const ProductList = () => {
                     key={_id}
                     className="hover:scale-105 hover:shadow-lg  transition-transform duration-300"
                 >
+                    <div className=" relative">
+                        <LikeProduct productId={_id} className="text-xl absolute top-2 right-2 z-20" />
+                    </div>
                     <Link to={`/products/${_id}`}>
                         <img
                             src={image || '/default-image.jpg'}
