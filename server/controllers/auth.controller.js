@@ -31,16 +31,22 @@ const googleLogin = async (req, res, next) => {
 
     const { name, email, picture } = ticket.getPayload();
 
+
     let user = await User.findOne({ email });
     if (!user) {
-      user = await User.create({
-        username: name,
-        profileName: name,
-        email,
-        profile_url: picture,
-        password: null,
-        provider: "google",
-      });
+      try {
+        user = new User({
+          username: name,
+          profileName: name,
+          email,
+          profile_url: picture,
+          password: null,
+          provider: "google",
+        });
+        await user.save()
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(

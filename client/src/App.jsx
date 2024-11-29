@@ -23,11 +23,12 @@ import ReviewProduct from './pages/reviewProduct';
 import './components/charts/ChartjsConfig';
 import  { lazy, Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
+import CashFreePayment from './pages/CashfreePayment';
 const Products = lazy(() => import('./pages/Products'));
 const App = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     return (
-        <Suspense fallback={<div className='h-screen bg-black text-white'>Loading...</div>}>
+        <Suspense fallback={<div className='h-screen bg-white dark:bg-gray-900'>Loading...</div>}>
         <GoogleOAuthProvider clientId={clientId}>
             <Provider store={store}> 
                 <Router>
@@ -40,6 +41,7 @@ const App = () => {
                                 <Route path="/products/:id" element={<ProductDetails />} />
                                 <Route path="/cart" element={<Cart />} />
                                 <Route path="/checkout" element={<Checkout />} />
+                                <Route path="/payment/cashfree/:id" element={<CashFreePayment />} />
                                 <Route path="/about" element={<About />} />
                                 <Route path="/contact" element={<ContactPage />} />
                                 <Route path="/auth/signup" element={<Register />} />

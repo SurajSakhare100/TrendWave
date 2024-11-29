@@ -69,12 +69,16 @@ const userSchema = new Schema(
     timestamps: true, 
   }
 );
+userSchema.index({ email: 1 });
 
 userSchema.pre('save', async function (next) {
-  if (this.isModified('password') || this.isNew) {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+  if(this.provider=="email"){
+    if (this.isModified('password') || this.isNew) {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+    }
   }
+  
   next();
 });
 

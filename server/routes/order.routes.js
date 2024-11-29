@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/:userId/create',verifyJWT, CreateOrder);
 
-router.get('/:orderId',verifyJWT, getOrderById);
+router.get('/:orderId', getOrderById);
 
 router.get('/user/:userId',verifyJWT, getAllOrders);
 

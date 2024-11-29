@@ -39,7 +39,7 @@ export const CreateOrder = async (req, res, next) => {
 export const getOrderById = async (req, res, next) => {
     const { orderId } = req.params;
     try {
-        const order = await Order.findById(orderId).populate('items.productId');
+        const order = await Order.findById(orderId)
         if (!order) throw new ApiError(404, 'Order not found');
 
         res.status(200).json( new ApiResponse(201, order,"Order placed successfully" ));
@@ -51,7 +51,7 @@ export const getOrderById = async (req, res, next) => {
 export const getAllOrders = async (req, res, next) => {
     const { userId } = req.params;
     try {
-        const orders = await Order.find({ userId }).populate('items.productId');
+        const orders = await Order.find({ userId }).select('-items.productId -userId');
         if (!orders || orders.length === 0) throw new ApiError(404, 'No orders found');
 
         res.status(200).json(new ApiResponse(200, orders,"Order placed successfully" ));

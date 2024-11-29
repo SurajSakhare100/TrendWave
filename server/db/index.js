@@ -6,12 +6,8 @@ dotenv.config();
 const connectDB = async () => {
     try {
         const dbURI = `${process.env.MONGODB_URL}/${DB_NAME}`;
+        const connectionInstance = await mongoose.connect(dbURI);
         console.log(`Connecting to MongoDB`);
-        const connectionInstance = await mongoose.connect(dbURI, {
-          
-            tls: true,
-            tlsInsecure: true, // Disable certificate validation (not recommended in production)
-        });
     } catch (error) {
         console.error("MongoDB connection FAILED", error);
         process.exit(1);
