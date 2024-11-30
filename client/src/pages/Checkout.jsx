@@ -18,6 +18,7 @@ const Checkout = () => {
     const [paymentMethod, setPaymentMethod] = useState('PayPal');
     const [orderId, setorderId] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [orderSuccess, setOrderSuccess] = useState('');
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -34,9 +35,9 @@ const Checkout = () => {
                 shippingAddress,
                 paymentMethod,
                 items
-            });
+            },{withCredentials:true});
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 setorderId(response.order_id);
                 setTimeout(() => {
                     navigate(`/orders/${orderId}`); 

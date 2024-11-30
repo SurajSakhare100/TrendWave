@@ -29,6 +29,7 @@ export const CreateOrder = async (req, res, next) => {
             { $set: { items: [], totalPrice: 0 } }, 
             { new: true }
         );
+        console.log(order)
 
         res.status(201).json( new ApiResponse(201, newOrder._id, "Order placed successfully"));
     } catch (error) {
