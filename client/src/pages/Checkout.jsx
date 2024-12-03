@@ -38,10 +38,10 @@ const Checkout = () => {
             },{withCredentials:true});
 
             if (response.status === 201) {
-                setorderId(response.order_id);
-                setTimeout(() => {
-                    navigate(`/orders/${orderId}`); 
-                }, 2000);
+                setorderId(response.data.data);
+                if (response.data.data.approvalLink) {
+                    window.location.href = response.data.data.approvalLink;
+                  }
             } else {
                 throw new Error(response.data?.message || 'Failed to place order');
             }
@@ -112,7 +112,7 @@ const Checkout = () => {
 
                         <div className="border-b border-gray-200 pb-4">
                             <div className="space-y-3 ">
-                                {['PayPal', 'Cashfree', 'COD'].map((method) => (
+                                {['PayPal', 'COD'].map((method) => (
                                     <label key={method} className="inline-flex items-center cursor-pointer">
                                         <Input
                                             type="radio"
@@ -123,8 +123,7 @@ const Checkout = () => {
                                             className="mr-2"
                                         />
                                         {method === 'PayPal' && <FaPaypal className="text-blue-600" />}
-                                        {method === 'Cashfree' && <FaMoneyBillWave className="text-yellow-600" />}
-                                        {method === 'COD' && <FaCreditCard className="text-gray-800" />}
+                                        {method === 'COD' }
                                         <span className="ml-2">{method}</span>
                                     </label>
                                 ))}
