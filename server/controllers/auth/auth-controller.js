@@ -8,6 +8,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 //register
 const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
+  console.log(userName, email, password)
 
   try {
     const checkUser = await User.findOne({ email });
@@ -123,7 +124,6 @@ const loginUser = async (req, res) => {
     }
 
     const isPasswordValid = await user.isPasswordCorrect(password);
-    console.log(isPasswordValid)
     if (!isPasswordValid) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
