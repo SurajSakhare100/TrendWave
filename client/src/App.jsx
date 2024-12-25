@@ -1,70 +1,104 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './app/store/store'; // Import your Redux store
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-// import Products from './pages/Products';
-import ProductDetails from './pages/ProductDetails';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import NotFound from './pages/NotFound';
-import About from './pages/About';
-import ContactPage from './pages/ContactPage';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { products } from './data';
-import AdminPage from './pages/AdminPage';
-import Footer from './components/Footer/Footer';
-import CheckoutForm from './components/CheckoutForm';
-import WishList from './pages/WishList';
-import ReviewProduct from './pages/reviewProduct';
-import './components/charts/ChartjsConfig';
-import  { lazy, Suspense } from 'react';
-import { ToastContainer } from 'react-toastify';
-import CashFreePayment from './pages/CashfreePayment';
-const Products = lazy(() => import('./pages/Products'));
-const App = () => {
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-    return (
-        <Suspense fallback={<div className='h-screen bg-white dark:bg-gray-900'>Loading...</div>}>
-        <GoogleOAuthProvider clientId={clientId}>
-            <Provider store={store}> 
-                <Router>
-                    <div className="app">
-                        <Navbar />
-                        <main>
-                            <Routes>
-                                <Route path="/" element={<Home />} />
-                                <Route path="/products" element={<Products products={products} />} />
-                                <Route path="/products/:id" element={<ProductDetails />} />
-                                <Route path="/cart" element={<Cart />} />
-                                <Route path="/checkout" element={<Checkout />} />
-                                <Route path="/payment/cashfree/:id" element={<CashFreePayment />} />
-                                <Route path="/about" element={<About />} />
-                                <Route path="/contact" element={<ContactPage />} />
-                                <Route path="/auth/signup" element={<Register />} />
-                                <Route path="/auth/signin" element={<Login />} />
-                                <Route path="/check" element={<CheckoutForm />} />
-                                <Route path="/wishlist" element={<WishList />} />
-                                <Route path="/products/:productId/review" element={<ReviewProduct />} />
+import { Route, Routes } from "react-router-dom";
+import AuthLayout from "./components/auth/layout";
+import AuthLogin from "./pages/auth/login";
+import AuthRegister from "./pages/auth/register";
+import AdminLayout from "./components/admin-view/layout";
+import AdminDashboard from "./pages/admin-view/dashboard";
+import AdminProducts from "./pages/admin-view/products";
+import AdminOrders from "./pages/admin-view/orders";
+import AdminFeatures from "./pages/admin-view/features";
+import ShoppingLayout from "./components/shopping-view/layout";
+import NotFound from "./pages/not-found";
+import ShoppingHome from "./pages/shopping-view/home";
+import ShoppingListing from "./pages/shopping-view/listing";
+import ShoppingCheckout from "./pages/shopping-view/checkout";
+import ShoppingAccount from "./pages/shopping-view/account";
+import CheckAuth from "./components/common/check-auth";
+import UnauthPage from "./pages/unauth-page";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { checkAuth } from "./store/auth-slice";
+import { Skeleton } from "@/components/ui/skeleton";
+import PaypalReturnPage from "./pages/shopping-view/paypal-return";
+import PaymentSuccessPage from "./pages/shopping-view/payment-success";
+import SearchProducts from "./pages/shopping-view/search";
+import ProductView from "./pages/shopping-view/productView";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
-                                {/* Admin Page Route */}
-                                <Route path="/admin/:id/*" element={<AdminPage />} />
+function App() {
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
 
-                                {/* Fallback Route */}
-                                <Route path="*" element={<NotFound />} />
-                            </Routes>
-                        </main>
-                        <ToastContainer />
-                        <Footer />
-                    </div>
-                </Router>
-            </Provider> {/* End of Provider */}
-        </GoogleOAuthProvider>
-        </Suspense>
-    );
-};
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
+
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  return (
+    
+     <GoogleOAuthProvider clientId={clientId}>
+      <div className="flex flex-col overflow-hidden bg-white">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+            ></CheckAuth>
+          }
+        />
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="login" element={<AuthLogin />} />
+          <Route path="register" element={<AuthRegister />} />
+        </Route>
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="features" element={<AdminFeatures />} />
+        </Route>
+        <Route
+          path="/shop"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <ShoppingLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="home" element={<ShoppingHome />} />
+          <Route path="product/:id" element={<ProductView/>} />
+          <Route path="listing" element={<ShoppingListing />} />
+          <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="account" element={<ShoppingAccount />} />
+          <Route path="paypal-return" element={<PaypalReturnPage />} />
+          <Route path="payment-success" element={<PaymentSuccessPage />} />
+          <Route path="search" element={<SearchProducts />} />
+        </Route>
+        <Route path="/unauth-page" element={<UnauthPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
+     </GoogleOAuthProvider>
+  );
+}
 
 export default App;
