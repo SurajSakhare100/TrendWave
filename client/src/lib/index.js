@@ -1,1 +1,2 @@
-export const url=import.meta.VITE_BACKEND_URL
+
+export const url=import.meta.env.VITE_BACKEND_URL
