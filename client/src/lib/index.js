@@ -1,1 +1,1 @@
-export  const url="http://localhost:5000/api/v1"
+export const url=import.meta.VITE_BACKEND_URL
