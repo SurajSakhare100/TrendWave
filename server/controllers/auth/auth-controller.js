@@ -81,13 +81,8 @@ const googleLogin = async (req, res, next) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure this is true for HTTPS in production
-      sameSite: "None", // Required for cross-site cookies
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
-      domain:
-        process.env.NODE_ENV === "production"
-          ? "https://itstrendwave.vercel.app"
-          : "localhost",
+      secure: true,
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), 
     };
 
     const userWithoutSensitiveData = await User.findById(user._id).select(
@@ -135,13 +130,9 @@ const loginUser = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure this is true for HTTPS in production
-      sameSite: "None", // Required for cross-site cookies
+      secure: true,
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
-      domain:
-        process.env.NODE_ENV === "production"
-          ? "dev-net-backend.onrender.com"
-          : "localhost",
+      
     };
 
     const userWithoutSensitiveData = await User.findById(user._id).select(
