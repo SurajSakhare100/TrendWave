@@ -59,28 +59,28 @@ TrendWave is a modern, responsive, and feature-rich clothing e-commerce platform
 ### Steps
 
 1. **Clone the Repository**:
-   ```bash
+```bash
    git clone https://github.com/yourusername/trendwave.git
    cd trendwave
+```
 
-### Install Dependencies
 
 # Install frontend dependencies
+
 ```bash
 cd client
 npm install
 ```
 
 # Install backend dependencies
-
 ```bash
 cd ../server
 npm install
 ```
-#Environment Variables
+# Environment Variables
 Create .env files in both client and server directories.
 
-Server Environment Variables (.env)
+#### Server Environment Variables (.env)
 
 
 ```bash
@@ -92,20 +92,22 @@ CLOUDINARY_API_KEY=your-cloudinary-api-key
 CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 STRIPE_SECRET_KEY=your-stripe-secret-key
 ```
-Client Environment Variables (.env)
+#### Client Environment Variables (.env)
 
 ```bash
 REACT_APP_API_URL=http://localhost:5000/api
 REACT_APP_STRIPE_PUBLIC_KEY=your-stripe-public-key
-
-```bash
+```
 # Start the backend server
+```bash
 cd server
 npm run dev
-
+```
 # Start the frontend server
+```bash
 cd ../client
 npm start
+```
 Access the Application
-Frontend: http://localhost:3000
-Backend API: http://localhost:5000
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:5000
