@@ -79,10 +79,6 @@ const googleLogin = async (req, res, next) => {
       user._id
     );
 
-    const jwtToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -98,7 +94,6 @@ const googleLogin = async (req, res, next) => {
       .status(200)
       .cookie("accessToken", accessToken, cookieOptions)
       .cookie("refreshToken", refreshToken, cookieOptions)
-      .cookie("token", jwtToken, cookieOptions)
       .json({
         success: true,
         data:userWithoutSensitiveData,
@@ -190,9 +185,16 @@ const authMiddleware = async (req, res, next) => {
     req.user=user
     next();
   } catch (error) {
-    res.status(401).json({
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        success: false,
+        message: "Token has expired, please log in again.",
+      });
+    }
+
+    return res.status(401).json({
       success: false,
-      message: "Unauthorised user!",
+      message: "Unauthorized user! Invalid token.",
     });
   }
 };
