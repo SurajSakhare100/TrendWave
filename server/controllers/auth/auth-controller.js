@@ -81,8 +81,10 @@ const googleLogin = async (req, res, next) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: false,
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), 
+      secure: process.env.NODE_ENV === "production", // Ensure this is true for HTTPS in production
+      sameSite: "None", // Required for cross-site cookies
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
+     
     };
 
     const userWithoutSensitiveData = await User.findById(user._id).select(
@@ -130,7 +132,8 @@ const loginUser = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production", // Ensure this is true for HTTPS in production
+      sameSite: "None", // Required for cross-site cookies
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
       
     };
