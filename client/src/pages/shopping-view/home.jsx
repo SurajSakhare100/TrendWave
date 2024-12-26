@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllFilteredProducts,
   fetchProductDetails,
+  getBestSeller,
 } from "@/store/shop/products-slice";
 import ShoppingProductTile from "@/components/shopping-view/product-tile";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +40,7 @@ const brandsWithIcon = [
 ];
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [bestSeller, setBestSeller] = useState(null);
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
@@ -65,6 +67,7 @@ function ShoppingHome() {
   function handleGetProductDetails(getCurrentProductId) {
     dispatch(fetchProductDetails(getCurrentProductId));
   }
+  
 
   function handleAddtoCart(getCurrentProductId) {
     dispatch(
@@ -86,6 +89,13 @@ function ShoppingHome() {
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const bestSeller=await dispatch(getBestSeller());
+      setBestSeller(bestSeller.payload.data.slice(0,4));
+    }
+    fetchData()
+  },[])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -192,14 +202,16 @@ function ShoppingHome() {
         </div>
       </section>
 
+
+
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
-            Feature Products
+            Best Selling Products
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {productList && productList.length > 0
-              ? productList.map((productItem) => (
+            {bestSeller && bestSeller.length > 0
+              ? bestSeller.map((productItem) => (
                   <ShoppingProductTile
                     handleGetProductDetails={handleGetProductDetails}
                     product={productItem}
@@ -213,7 +225,7 @@ function ShoppingHome() {
       <ProductDetailsDialog
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
-        productDetails={productDetails}
+        productDetails={bestSeller}
       />
     </div>
   );

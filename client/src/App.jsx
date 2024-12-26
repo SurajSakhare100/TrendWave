@@ -24,6 +24,7 @@ import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import SearchProducts from "./pages/shopping-view/search";
 import ProductView from "./pages/shopping-view/productView";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Loader from "./components/ui/Loader";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -32,10 +33,13 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkAuth());
+    const timeout = setTimeout(() => {
+      dispatch(checkAuth());
+    }, 200); 
+    return () => clearTimeout(timeout); 
   }, [dispatch]);
 
-  if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
+  if (isLoading) return <Loader />;
 
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   return (

@@ -36,6 +36,16 @@ export const fetchProductDetails = createAsyncThunk(
     return result?.data;
   }
 );
+export const getBestSeller = createAsyncThunk(
+  "/products/getBestSeller",
+  async () => {
+    const result = await axios.get(
+      `${url}/shop/products/get/bestSeller`
+    );
+
+    return result?.data;
+  }
+);
 
 const shoppingProductSlice = createSlice({
   name: "shoppingProducts",

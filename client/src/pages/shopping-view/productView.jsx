@@ -58,7 +58,7 @@ function ProductView() {
                     <p className="text-gray-800 dark:text-gray-300 mb-4">{product?.description}</p>
 
 
-                    <CardFooter>
+                    {/* <CardFooter> */}
                         {product?.totalStock === 0 ? (
                             <Button className="w-full opacity-60 cursor-not-allowed">
                                 Out Of Stock
@@ -66,12 +66,12 @@ function ProductView() {
                         ) : (
                             <Button
                                 onClick={() => handleAddtoCart(product?._id, product?.totalStock)}
-                                className="w-full"
+                                className="w-60"
                             >
                                 Add to cart
                             </Button>
                         )}
-                    </CardFooter>
+                    {/* </CardFooter> */}
 
 
                 </div>
