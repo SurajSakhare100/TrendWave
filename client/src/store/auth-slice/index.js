@@ -6,6 +6,8 @@ const initialState = {
   isAuthenticated: false,
   isLoading: true,
   user: null,
+  token: null,
+  error: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -116,7 +118,6 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log(action)
         state.isLoading = false;
         state.user = action.payload.success ? action.payload.data : null;
         state.isAuthenticated = action.payload.success;
@@ -126,9 +127,13 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
       })
+      .addCase(googleLogin.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(googleLogin.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.success ? action.payload.data:null;
+        state.user = action.payload.success ? action.payload.data : null;
         state.isAuthenticated = action.payload.success;
       })
       .addCase(googleLogin.rejected, (state, action) => {
