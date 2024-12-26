@@ -81,9 +81,13 @@ const googleLogin = async (req, res, next) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
-      samesite:"None",
-      maxAge: 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production", // Ensure this is true for HTTPS in production
+      sameSite: "None", // Required for cross-site cookies
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "https://trendwave.onrender.com"
+          : "localhost",
     };
 
     const userWithoutSensitiveData = await User.findById(user._id).select(
@@ -96,7 +100,7 @@ const googleLogin = async (req, res, next) => {
       .cookie("refreshToken", refreshToken, cookieOptions)
       .json({
         success: true,
-        data:userWithoutSensitiveData,
+        data: userWithoutSensitiveData,
         message: "User logged in successfully",
       });
   } catch (error) {
@@ -120,9 +124,10 @@ const loginUser = async (req, res) => {
 
     const isPasswordValid = await user.isPasswordCorrect(password);
     if (!isPasswordValid) {
-      return res.status(401).json({ success: false, message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials" });
     }
-
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
       user._id
@@ -130,9 +135,13 @@ const loginUser = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
-      samesite:"None",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production", // Ensure this is true for HTTPS in production
+      sameSite: "None", // Required for cross-site cookies
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "dev-net-backend.onrender.com"
+          : "localhost",
     };
 
     const userWithoutSensitiveData = await User.findById(user._id).select(
@@ -157,7 +166,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-
 //logout
 
 const logoutUser = (req, res) => {
@@ -169,8 +177,8 @@ const logoutUser = (req, res) => {
 
 //auth middleware
 const authMiddleware = async (req, res, next) => {
-  const token = req.cookies?.accessToken 
-  
+  const token = req.cookies?.accessToken;
+
   if (!token)
     return res.status(401).json({
       success: false,
@@ -179,11 +187,11 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    req.user = decodedToken
-    const user= await User.findById(req.user._id).select(
+    req.user = decodedToken;
+    const user = await User.findById(req.user._id).select(
       "-password -refreshToken -provider -__v"
     );
-    req.user=user
+    req.user = user;
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
