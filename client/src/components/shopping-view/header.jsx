@@ -8,6 +8,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
+import Logo from '../../../public/logo.png'
 import { shoppingViewHeaderMenuItems } from "@/config";
 import {
   DropdownMenu,
@@ -138,6 +139,7 @@ function ShoppingHeader() {
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/shop/home" className="flex items-center gap-2">
           <HousePlug className="h-6 w-6" />
+          <img src={Logo} className="h-6 w-6"/>
           <span className="font-bold text-lg">Trend Wave</span>
         </Link>
         <Sheet>
