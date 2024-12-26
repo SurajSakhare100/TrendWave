@@ -12,7 +12,13 @@ const storage = new multer.memoryStorage();
 
 async function imageUploadUtil(file) {
   const result = await cloudinary.uploader.upload(file, {
-    resource_type: "auto",
+    resource_type: "image",
+  }, (error, result) => {
+    if (error) {
+      console.error("Error uploading image:", error);
+    } else {
+      console.log("Uploaded image details:", result);
+    }
   });
 
   return result;

@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
+import { url } from "@/lib";
 
 function ProductImageUpload({
   imageFile,
@@ -47,11 +48,9 @@ function ProductImageUpload({
     const data = new FormData();
     data.append("my_file", imageFile);
     const response = await axios.post(
-      "http://localhost:5000/api/admin/products/upload-image",
+      `${url}/admin/products/upload-image`,
       data
     );
-    console.log(response, "response");
-
     if (response?.data?.success) {
       setUploadedImageUrl(response.data.result.url);
       setImageLoadingState(false);
@@ -79,6 +78,7 @@ function ProductImageUpload({
           type="file"
           className="hidden"
           ref={inputRef}
+          accept="image/*"
           onChange={handleImageFileChange}
           disabled={isEditMode}
         />
