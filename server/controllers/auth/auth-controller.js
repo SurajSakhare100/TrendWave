@@ -81,7 +81,7 @@ const googleLogin = async (req, res, next) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: true,
+      secure: false,
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), 
     };
 
@@ -130,7 +130,7 @@ const loginUser = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: true,
+      secure: false,
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
       
     };
