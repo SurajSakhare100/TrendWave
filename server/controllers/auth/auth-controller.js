@@ -81,7 +81,7 @@ const googleLogin = async (req, res, next) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       samesite:"None",
       maxAge: 24 * 60 * 60 * 1000,
     };
@@ -130,7 +130,7 @@ const loginUser = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       samesite:"None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     };
@@ -169,7 +169,8 @@ const logoutUser = (req, res) => {
 
 //auth middleware
 const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.accessToken
+  const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
+  
   if (!token)
     return res.status(401).json({
       success: false,
