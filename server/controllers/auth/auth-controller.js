@@ -81,7 +81,7 @@ const googleLogin = async (req, res, next) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production", 
       samesite:"None",
       maxAge: 24 * 60 * 60 * 1000,
     };
@@ -130,7 +130,7 @@ const loginUser = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production", 
       samesite:"None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     };
