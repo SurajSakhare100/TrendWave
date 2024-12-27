@@ -50,12 +50,12 @@ function App() {
       <Routes>
         <Route
           path="/"
-          // element={
-          //   <CheckAuth
-          //     isAuthenticated={isAuthenticated}
-          //     user={user}
-          //   ></CheckAuth>
-          // }
+          element={
+            <CheckAuth
+              isAuthenticated={isAuthenticated}
+              user={user}
+            ></CheckAuth>
+          }
         />
         <Route
           path="/auth"
@@ -70,11 +70,11 @@ function App() {
         </Route>
         <Route
           path="/admin"
-          // element={
-          //   <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-          //     <AdminLayout />
-          //   </CheckAuth>
-          // }
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
