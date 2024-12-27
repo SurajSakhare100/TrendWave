@@ -5,6 +5,7 @@ const cors = require("cors");
 const authRouter = require("./routes/auth/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
 const adminOrderRouter = require("./routes/admin/order-routes");
+const adminAnalyticsRouter = require("./routes/admin/analytics-routes");
 const shopProductsRouter = require("./routes/shop/products-routes");
 const shopCartRouter = require("./routes/shop/cart-routes");
 const shopAddressRouter = require("./routes/shop/address-routes");
@@ -40,6 +41,7 @@ app.use(express.json());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/admin/products", adminProductsRouter);
 app.use("/api/v1/admin/orders", adminOrderRouter);
+app.use("/api/v1/admin/analytics", adminAnalyticsRouter);
 
 app.use("/api/v1/shop/products", shopProductsRouter);
 app.use("/api/v1/shop/cart", shopCartRouter);

@@ -5,11 +5,12 @@ const {
   getProductDetails,
   getBestSeller,
 } = require("../../controllers/shop/products-controller");
+const { authMiddleware } = require("../../middleware/auth");
 
 const router = express.Router();
 
-router.get("/get", getFilteredProducts);
-router.get("/get/bestSeller", getBestSeller);
-router.get("/get/:id", getProductDetails);
+router.get("/get",authMiddleware, getFilteredProducts);
+router.get("/get/bestSeller",authMiddleware, getBestSeller);
+router.get("/get/:id",authMiddleware, getProductDetails);
 
 module.exports = router;

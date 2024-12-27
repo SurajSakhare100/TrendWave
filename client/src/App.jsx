@@ -25,6 +25,7 @@ import SearchProducts from "./pages/shopping-view/search";
 import ProductView from "./pages/shopping-view/productView";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Loader from "./components/ui/Loader";
+import Analytics from "./pages/admin-view/analytics";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -49,12 +50,12 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            <CheckAuth
-              isAuthenticated={isAuthenticated}
-              user={user}
-            ></CheckAuth>
-          }
+          // element={
+          //   <CheckAuth
+          //     isAuthenticated={isAuthenticated}
+          //     user={user}
+          //   ></CheckAuth>
+          // }
         />
         <Route
           path="/auth"
@@ -69,16 +70,17 @@ function App() {
         </Route>
         <Route
           path="/admin"
-          element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-              <AdminLayout />
-            </CheckAuth>
-          }
+          // element={
+          //   <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+          //     <AdminLayout />
+          //   </CheckAuth>
+          // }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
+          <Route path="analytics" element={<Analytics />} />
         </Route>
         <Route
           path="/shop"
