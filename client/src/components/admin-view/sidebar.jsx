@@ -1,5 +1,6 @@
 import {
   BadgeCheck,
+  BarChart2,
   ChartNoAxesCombined,
   LayoutDashboard,
   ShoppingBasket,
@@ -9,24 +10,30 @@ import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 
 const adminSidebarMenuItems = [
-  {
-    id: "dashboard",
-    label: "Dashboard",
-    path: "/admin/dashboard",
-    icon: <LayoutDashboard />,
-  },
-  {
-    id: "products",
-    label: "Products",
-    path: "/admin/products",
-    icon: <ShoppingBasket />,
-  },
-  {
-    id: "orders",
-    label: "Orders",
-    path: "/admin/orders",
-    icon: <BadgeCheck />,
-  },
+{
+
+  id: "dashboard",
+  label: "Dashboard",
+  path: "/admin/dashboard",
+  icon: <LayoutDashboard />,
+},{
+  id: "analytics",
+  label: "analytics",
+  path: "/admin/analytics",
+  icon: <BarChart2 />
+},
+{
+  id: "products",
+  label: "Products",
+  path: "/admin/products",
+  icon: <ShoppingBasket />,
+},
+{
+  id: "orders",
+  label: "Orders",
+  path: "/admin/orders",
+  icon: <BadgeCheck />,
+},
 ];
 
 function MenuItems({ setOpen }) {

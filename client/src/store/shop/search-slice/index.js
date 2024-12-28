@@ -11,7 +11,7 @@ export const getSearchResults = createAsyncThunk(
   "/order/getSearchResults",
   async (keyword) => {
     const response = await axios.get(
-      `${url}/shop/search/${keyword}`
+      `${url}/shop/search/${keyword}`, {withCredentials: true}
     );
 
     return response.data;

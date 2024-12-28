@@ -4,7 +4,6 @@ function CheckAuth({ isAuthenticated, user, children }) {
   const location = useLocation();
 
   if (location.pathname === "/") {
-    console.log(isAuthenticated)
     if (!isAuthenticated) {
       return <Navigate to="/auth/login" />;
     } else {

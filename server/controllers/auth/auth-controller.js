@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../../models/User");
 const { OAuth2Client } = require("google-auth-library");
+const User = require("../../models/User");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -132,8 +132,8 @@ const loginUser = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure this is true for HTTPS in production
-      sameSite: "None", // Required for cross-site cookies
+      secure: true, 
+      sameSite: "None", 
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
       
     };
@@ -148,6 +148,36 @@ const loginUser = async (req, res) => {
       .cookie("refreshToken", refreshToken, cookieOptions)
       .json({
         data: userWithoutSensitiveData,
+        success: true,
+        message: "Login successful",
+      });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occurred",
+    });
+  }
+};
+const getuser = async (req, res) => {
+
+  try {
+
+    const user = await User.findById(req.user._id).select(
+      "-password -refreshToken -provider -__v"
+    );
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User doesn't exist! Please register first",
+      });
+    }
+
+    res
+      .status(200)
+      .json({
+        user,
         success: true,
         message: "Login successful",
       });
@@ -175,4 +205,5 @@ module.exports = {
   loginUser,
   logoutUser,
   googleLogin,
+  getuser
 };

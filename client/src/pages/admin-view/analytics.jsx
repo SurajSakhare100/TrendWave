@@ -30,13 +30,13 @@ const Analytics = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const revenueRes = await axios.get(`${url}/admin/analytics/revenue`);
-        const ordersRes = await axios.get(`${url}/admin/analytics/orders`);
-        const usersRes = await axios.get(`${url}/admin/analytics/users`);
-        const productsRes = await axios.get(`${url}/admin/analytics/top-products`);
-        const statusRes = await axios.get(`${url}/admin/analytics/orders-status`);
-        const averageOrderRes = await axios.get(`${url}/admin/analytics/average-order`);
-        const userGrowthRes = await axios.get(`${url}/admin/analytics/user-growth`);
+        const revenueRes = await axios.get(`${url}/admin/analytics/revenue`,{withCredentials:true});
+        const ordersRes = await axios.get(`${url}/admin/analytics/orders`,{withCredentials:true});
+        const usersRes = await axios.get(`${url}/admin/analytics/users`,{withCredentials:true});
+        const productsRes = await axios.get(`${url}/admin/analytics/top-products`,{withCredentials:true});
+        const statusRes = await axios.get(`${url}/admin/analytics/orders-status`,{withCredentials:true});
+        const averageOrderRes = await axios.get(`${url}/admin/analytics/average-order`,{withCredentials:true});
+        const userGrowthRes = await axios.get(`${url}/admin/analytics/user-growth`,{withCredentials:true});
         setAnalytics({
           totalRevenue: revenueRes.data.totalRevenue,
           totalOrders: ordersRes.data.totalOrders,
@@ -61,11 +61,29 @@ const Analytics = () => {
       {
         label: "Orders by Status",
         data: analytics.ordersByStatus.map((status) => status.count),
-        backgroundColor: [ "#2196f3","#4caf50", "#ff9800", "#f44336",'purple'],
+        backgroundColor: analytics.ordersByStatus.map((status) => {
+          if (status._id === 'rejected') {
+            return '#f44336'; // Red for rejected
+          } else if (status._id === 'confirmed') {
+            return '#4caf50'; // Green for confirmed
+          } else if (status._id === 'inProcess') {
+            return '#ff9800'; // Orange for in process
+          } else if (status._id === 'pending') {
+            return '#2196f3'; // Blue for pending
+          } else if (status._id === 'inShipping') {
+            return '#ffeb3b'; // Yellow for in shipping
+          } else if (status._id === 'delivered') {
+            return '#8e24aa'; // Purple for delivered
+          } else {
+            return '#9e9e9e'; // Grey for unknown statuses
+          }
+        }),
         borderWidth: 1,
       },
     ],
   };
+  
+  
 
   const userGrowthData = {
     labels: analytics.userGrowth.map((growth) => growth._id),
@@ -98,15 +116,15 @@ const Analytics = () => {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gradient-to-r from-green-400 to-blue-500 shadow-md rounded-lg p-6 text-center text-white">
+        <div className="bg-black shadow-md rounded-lg p-6 text-center text-white">
           <h2 className="text-lg font-semibold">Total Revenue</h2>
           <p className="text-3xl font-bold">${analytics.totalRevenue}</p>
         </div>
-        <div className="bg-gradient-to-r from-indigo-400 to-purple-500 shadow-md rounded-lg p-6 text-center text-white">
+        <div className="bg-black shadow-md rounded-lg p-6 text-center text-white">
           <h2 className="text-lg font-semibold">Total Orders</h2>
           <p className="text-3xl font-bold">{analytics.totalOrders}</p>
         </div>
-        <div className="bg-gradient-to-r from-yellow-400 to-red-500 shadow-md rounded-lg p-6 text-center text-white">
+        <div className="bg-black shadow-md rounded-lg p-6 text-center text-white">
           <h2 className="text-lg font-semibold">Total Users</h2>
           <p className="text-3xl font-bold">{analytics.totalUsers}</p>
         </div>

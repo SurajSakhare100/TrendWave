@@ -18,7 +18,7 @@ export const fetchAllFilteredProducts = createAsyncThunk(
     });
 
     const result = await axios.get(
-      `${url}/shop/products/get?${query}`
+      `${url}/shop/products/get?${query}`, {withCredentials: true}
     );
 
 
@@ -30,7 +30,7 @@ export const fetchProductDetails = createAsyncThunk(
   "/products/fetchProductDetails",
   async (id) => {
     const result = await axios.get(
-      `${url}/shop/products/get/${id}`
+      `${url}/shop/products/get/${id}`, {withCredentials: true}
     );
 
     return result?.data;
@@ -40,7 +40,7 @@ export const getBestSeller = createAsyncThunk(
   "/products/getBestSeller",
   async () => {
     const result = await axios.get(
-      `${url}/shop/products/get/bestSeller`
+      `${url}/shop/products/get/bestSeller`, {withCredentials: true}
     );
 
     return result?.data;
