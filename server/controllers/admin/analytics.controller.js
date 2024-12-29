@@ -1,6 +1,6 @@
-import {Order} from "../../models/Order.js";
-import {Product} from "../../models/Product.js";
-import {User} from "../../models/User.js";
+import {Order} from "../../models/Order.model.js";
+import {Product} from "../../models/Product.model.js";
+import {User} from "../../models/User.model.js";
 
 
 // Analytics Controller

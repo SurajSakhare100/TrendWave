@@ -5,7 +5,7 @@ import {
   logoutUser, 
   googleLogin, 
   getuser 
-} from "../../controllers/auth/auth-controller.js";
+} from "../../controllers/auth/auth.controller.js";
 import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();

@@ -3,7 +3,7 @@ import {
   getFilteredProducts, 
   getProductDetails, 
   getBestSeller 
-} from "../../controllers/shop/products-controller.js";
+} from "../../controllers/shop/products.controller.js";
 import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();

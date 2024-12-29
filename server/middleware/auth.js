@@ -1,7 +1,7 @@
 import jwt  from "jsonwebtoken";
 
 const authMiddleware = async (req, res, next) => {
-  const token = req.cookies?.accessToken;
+  const token = req.cookies?.accessToken  || req.header("Authorization")?.replace("Bearer ", "");;
   
   if (!token) {
     return res.status(401).json({

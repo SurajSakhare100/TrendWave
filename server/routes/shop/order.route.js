@@ -4,7 +4,7 @@ import {
   getAllOrdersByUser, 
   getOrderDetails, 
   capturePayment 
-} from "../../controllers/shop/order-controller.js";
+} from "../../controllers/shop/order.controller.js";
 import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();

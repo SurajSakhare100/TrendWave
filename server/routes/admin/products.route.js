@@ -5,7 +5,7 @@ import {
   editProduct, 
   fetchAllProducts, 
   deleteProduct 
-} from "../../controllers/admin/products-controller.js";
+} from "../../controllers/admin/products.controller.js";
 import { upload } from "../../helpers/cloudinary.js";
 import authMiddleware from "../../middleware/auth.js";
 

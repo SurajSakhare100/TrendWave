@@ -4,7 +4,7 @@ import {
   fetchAllAddress, 
   editAddress, 
   deleteAddress 
-} from "../../controllers/shop/address-controller.js";
+} from "../../controllers/shop/address.controller.js";
 import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();

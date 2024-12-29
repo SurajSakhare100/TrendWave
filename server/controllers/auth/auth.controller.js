@@ -1,5 +1,6 @@
 import { OAuth2Client } from "google-auth-library";
-import {User} from "../../models/User.js";
+import {User} from "../../models/User.model.js";
+import { options } from "../../utils/constant.js";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -77,22 +78,14 @@ const googleLogin = async (req, res, next) => {
       user._id
     );
 
-    const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure this is true for HTTPS in production
-      sameSite: "None", // Required for cross-site cookies
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
-     
-    };
-
     const userWithoutSensitiveData = await User.findById(user._id).select(
       "-password -refreshToken"
     );
 
     res
       .status(200)
-      .cookie("accessToken", accessToken, cookieOptions)
-      .cookie("refreshToken", refreshToken, cookieOptions)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
       .json({
         success: true,
         data: userWithoutSensitiveData,
@@ -128,13 +121,7 @@ const loginUser = async (req, res) => {
       user._id
     );
 
-    const cookieOptions = {
-      httpOnly: true,
-      secure: true, 
-      sameSite: "None", 
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
-      
-    };
+    
 
     const userWithoutSensitiveData = await User.findById(user._id).select(
       "-password -refreshToken"
@@ -142,8 +129,8 @@ const loginUser = async (req, res) => {
 
     res
       .status(200)
-      .cookie("accessToken", accessToken, cookieOptions)
-      .cookie("refreshToken", refreshToken, cookieOptions)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
       .json({
         data: userWithoutSensitiveData,
         success: true,

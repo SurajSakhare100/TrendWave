@@ -1,7 +1,7 @@
 import paypal from "../../helpers/paypal.js";
-import { Cart } from "../../models/Cart.js";
-import { Order } from "../../models/Order.js";
-import { Product } from "../../models/Product.js";
+import { Cart } from "../../models/Cart.model.js";
+import { Order } from "../../models/Order.model.js";
+import { Product } from "../../models/Product.model.js";
 
 const createOrder = async (req, res) => {
   try {

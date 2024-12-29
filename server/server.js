@@ -1,30 +1,23 @@
 import express from "express";
-import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import authRouter from "./routes/auth/auth-routes.js";
-import adminProductsRouter from "./routes/admin/products-routes.js";
-import adminOrderRouter from "./routes/admin/order-routes.js";
-import adminAnalyticsRouter from "./routes/admin/analytics-routes.js";
-import shopProductsRouter from "./routes/shop/products-routes.js";
-import shopCartRouter from "./routes/shop/cart-routes.js";
-import shopAddressRouter from "./routes/shop/address-routes.js";
-import shopOrderRouter from "./routes/shop/order-routes.js";
-import shopSearchRouter from "./routes/shop/search-routes.js";
-import shopReviewRouter from "./routes/shop/review-routes.js";
-
-import commonFeatureRouter from "./routes/common/feature-routes.js";
+import authRouter from "./routes/auth/auth.route.js";
+import adminProductsRouter from "./routes/admin/products.route.js";
+import adminOrderRouter from "./routes/admin/order.route.js";
+import adminAnalyticsRouter from "./routes/admin/analytics.route.js";
+import shopProductsRouter from "./routes/shop/products.route.js";
+import shopCartRouter from "./routes/shop/cart.route.js";
+import shopAddressRouter from "./routes/shop/address.route.js";
+import shopOrderRouter from "./routes/shop/order.route.js";
+import shopSearchRouter from "./routes/shop/search.route.js";
+import shopReviewRouter from "./routes/shop/review.route.js";
+import shopFeatureRouter from "./routes/shop/feature.route.js";
 import dotenv from 'dotenv';
-dotenv.config();
-
-
-mongoose
-  .connect(process.env.MONGODB_URL)
-  .then(() => console.log("MongoDB connected"))
-  .catch((error) => console.log(error));
+import connectDB from "./DB/index.js";
+dotenv.config({ path: './.env' });
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
 app.use(
   cors({
@@ -52,7 +45,15 @@ app.use("/api/v1/shop/address", shopAddressRouter);
 app.use("/api/v1/shop/order", shopOrderRouter);
 app.use("/api/v1/shop/search", shopSearchRouter);
 app.use("/api/v1/shop/review", shopReviewRouter);
+app.use("/api/v1/common/feature", shopFeatureRouter);
 
-app.use("/api/v1/common/feature", commonFeatureRouter);
 
-app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+connectDB()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`⚙️  Server is running at port: ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error('MongoDB connection failed:', err);
+  });

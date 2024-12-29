@@ -1,4 +1,4 @@
-import { Feature } from "../../models/Feature.js";
+import { Feature } from "../../models/Feature.model.js";
 
 const addFeatureImage = async (req, res) => {
   try {
