@@ -71,7 +71,7 @@ function UserCartItemsContent({ cartItem }) {
   }
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-4" key={cartItem._id}>
       <img
         src={cartItem?.image}
         alt={cartItem?.title}

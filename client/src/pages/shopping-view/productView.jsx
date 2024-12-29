@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { CardFooter } from '@/components/ui/card'
 import { toast } from '@/components/ui/use-toast'
 import { addToCart, fetchCartItems } from '@/store/shop/cart-slice'
 import { fetchProductDetails } from '@/store/shop/products-slice'

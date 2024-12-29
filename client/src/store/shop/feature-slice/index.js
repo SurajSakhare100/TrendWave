@@ -33,8 +33,8 @@ export const addFeatureImage = createAsyncThunk(
   }
 );
 
-const commonSlice = createSlice({
-  name: "commonSlice",
+const FeatureSlice = createSlice({
+  name: "FeatureSlice",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -53,4 +53,4 @@ const commonSlice = createSlice({
   },
 });
 
-export default commonSlice.reducer;
+export default FeatureSlice.reducer;

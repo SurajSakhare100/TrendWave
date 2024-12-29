@@ -128,6 +128,16 @@ export const shoppingViewHeaderMenuItems = [
     path: "/shop/listing",
   },
   {
+    id: "accessories",
+    label: "accessories",
+    path: "/shop/listing",
+  },
+  {
+    id: "footwear",
+    label: "footwear",
+    path: "/shop/listing",
+  },
+  {
     id: "search",
     label: "Search",
     path: "/shop/search",
@@ -138,12 +148,19 @@ export const categoryOptionsMap = {
   men: "Men",
   women: "Women",
   kids: "Kids",
+  accessories:"accessories",
+  footwear:"footwear"
+
 };
 
 export const brandOptionsMap = {
   levi: "Levi",
   zara: "Zara",
-  "H&M":"H&M"
+  nike:"nike",
+  "H&M": "H&M",
+  puma:"puma",
+  adidas:"adidas"
+
 };
 
 export const filterOptions = {
@@ -151,8 +168,13 @@ export const filterOptions = {
     { id: "men", label: "Men" },
     { id: "women", label: "Women" },
     { id: "kids", label: "Kids" },
+    { id: "accessories", label: "Accessories" },
+    { id: "footwear", label: "Footwear" },
   ],
   brand: [
+    { id: "nike", label: "Nike" },
+    { id: "adidas", label: "Adidas" },
+    { id: "puma", label: "Puma" },
     { id: "levi", label: "Levi's" },
     { id: "zara", label: "Zara" },
     { id: "h&m", label: "H&M" },
