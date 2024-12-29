@@ -73,7 +73,7 @@ function AdminOrderDetailsView({ orderDetails }) {
                     ? "bg-green-500"
                     : orderDetails?.orderStatus === "rejected"
                     ? "bg-red-600"
-                    : "bg-black"
+                    : "bg-orange-600"
                 }`}
               >
                 {orderDetails?.orderStatus}
