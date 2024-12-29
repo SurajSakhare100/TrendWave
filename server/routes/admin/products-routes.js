@@ -1,15 +1,13 @@
-const express = require("express");
-
-const {
-  handleImageUpload,
-  addProduct,
-  editProduct,
-  fetchAllProducts,
-  deleteProduct,
-} = require("../../controllers/admin/products-controller");
-
-const { upload } = require("../../helpers/cloudinary");
-const { authMiddleware } = require("../../middleware/auth");
+import express from "express";
+import { 
+  handleImageUpload, 
+  addProduct, 
+  editProduct, 
+  fetchAllProducts, 
+  deleteProduct 
+} from "../../controllers/admin/products-controller.js";
+import { upload } from "../../helpers/cloudinary.js";
+import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();
 
@@ -19,4 +17,4 @@ router.put("/edit/:id",authMiddleware, editProduct);
 router.delete("/delete/:id",authMiddleware, deleteProduct);
 router.get("/get",authMiddleware, fetchAllProducts);
 
-module.exports = router;
+export default router;

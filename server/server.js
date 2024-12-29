@@ -1,20 +1,23 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const authRouter = require("./routes/auth/auth-routes");
-const adminProductsRouter = require("./routes/admin/products-routes");
-const adminOrderRouter = require("./routes/admin/order-routes");
-const adminAnalyticsRouter = require("./routes/admin/analytics-routes");
-const shopProductsRouter = require("./routes/shop/products-routes");
-const shopCartRouter = require("./routes/shop/cart-routes");
-const shopAddressRouter = require("./routes/shop/address-routes");
-const shopOrderRouter = require("./routes/shop/order-routes");
-const shopSearchRouter = require("./routes/shop/search-routes");
-const shopReviewRouter = require("./routes/shop/review-routes");
+import express from "express";
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import authRouter from "./routes/auth/auth-routes.js";
+import adminProductsRouter from "./routes/admin/products-routes.js";
+import adminOrderRouter from "./routes/admin/order-routes.js";
+import adminAnalyticsRouter from "./routes/admin/analytics-routes.js";
+import shopProductsRouter from "./routes/shop/products-routes.js";
+import shopCartRouter from "./routes/shop/cart-routes.js";
+import shopAddressRouter from "./routes/shop/address-routes.js";
+import shopOrderRouter from "./routes/shop/order-routes.js";
+import shopSearchRouter from "./routes/shop/search-routes.js";
+import shopReviewRouter from "./routes/shop/review-routes.js";
 
-const commonFeatureRouter = require("./routes/common/feature-routes");
-require('dotenv').config();
+import commonFeatureRouter from "./routes/common/feature-routes.js";
+import dotenv from 'dotenv';
+dotenv.config();
+
+
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB connected"))

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const OrderSchema = new mongoose.Schema({
   userId: String,
@@ -30,5 +30,4 @@ const OrderSchema = new mongoose.Schema({
   payerId: String,
 });
 
-const Order = mongoose.model("Order", OrderSchema);
-module.exports = Order;
+export const Order = mongoose.model("Order", OrderSchema);

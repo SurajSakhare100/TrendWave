@@ -1,7 +1,9 @@
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
+import { v2 as cloudinary } from "cloudinary";
+import multer from "multer";
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -26,4 +28,4 @@ async function imageUploadUtil(file) {
 
 const upload = multer({ storage });
 
-module.exports = { upload, imageUploadUtil };
+export { upload, imageUploadUtil };

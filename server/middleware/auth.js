@@ -1,5 +1,4 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import jwt  from "jsonwebtoken";
 
 const authMiddleware = async (req, res, next) => {
   const token = req.cookies?.accessToken;
@@ -30,6 +29,4 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  authMiddleware,
-};
+export default authMiddleware;

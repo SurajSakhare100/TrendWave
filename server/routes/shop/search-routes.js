@@ -1,10 +1,9 @@
-const express = require("express");
-
-const { searchProducts } = require("../../controllers/shop/search-controller");
-const { authMiddleware } = require("../../middleware/auth");
+import express from "express";
+import { searchProducts } from "../../controllers/shop/search-controller.js";
+import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();
 
 router.get("/:keyword",authMiddleware, searchProducts);
 
-module.exports = router;
+export default router;

@@ -1,14 +1,14 @@
-const express = require("express");
-
-const {
-  addProductReview,
-  getProductReviews,
-} = require("../../controllers/shop/product-review-controller");
-const { authMiddleware } = require("../../middleware/auth");
+import express from "express";
+import { 
+  addProductReview, 
+  getProductReviews 
+} from "../../controllers/shop/product-review-controller.js";
+import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();
+
 
 router.post("/add",authMiddleware, addProductReview);
 router.get("/:productId",authMiddleware, getProductReviews);
 
-module.exports = router;
+export default router;

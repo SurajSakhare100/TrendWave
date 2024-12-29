@@ -1,7 +1,7 @@
-// Routes
-const express = require('express');
-const { analyticsController } = require('../../controllers/admin/analytics-controller');
-const { authMiddleware } = require('../../middleware/auth');
+import express from 'express';
+import { analyticsController } from '../../controllers/admin/analytics-controller.js';
+import authMiddleware from '../../middleware/auth.js';
+
 const router = express.Router();
 
 
@@ -14,4 +14,5 @@ router.get('/revenue-date',authMiddleware, analyticsController.getRevenueByDate)
 router.get('/average-order',authMiddleware, analyticsController.getAverageOrderValue);
 router.get('/user-growth',authMiddleware, analyticsController.getUserGrowth);
 router.get('/product-performance',authMiddleware, analyticsController.getProductPerformance);
-module.exports = router;
+
+export default router;

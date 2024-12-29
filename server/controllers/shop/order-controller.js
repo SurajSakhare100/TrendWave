@@ -1,7 +1,5 @@
-const paypal = require("../../helpers/paypal");
-const Order = require("../../models/Order");
-const Cart = require("../../models/Cart");
-const Product = require("../../models/Product");
+import { Order } from "../../models/Order.js";
+import { Product } from "../../models/Product.js";
 
 const createOrder = async (req, res) => {
   try {
@@ -199,7 +197,7 @@ const getOrderDetails = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   createOrder,
   capturePayment,
   getAllOrdersByUser,

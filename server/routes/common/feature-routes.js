@@ -1,14 +1,14 @@
-const express = require("express");
-
-const {
-  addFeatureImage,
-  getFeatureImages,
-} = require("../../controllers/common/feature-controller");
-const { authMiddleware } = require("../../middleware/auth");
+import express from "express";
+import { 
+  addFeatureImage, 
+  getFeatureImages 
+} from "../../controllers/common/feature-controller.js";
+import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();
+
 
 router.post("/add",authMiddleware, addFeatureImage);
 router.get("/get",authMiddleware, getFeatureImages);
 
-module.exports = router;
+export default router;

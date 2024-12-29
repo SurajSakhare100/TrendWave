@@ -1,11 +1,10 @@
-const express = require("express");
-
-const {
-  getAllOrdersOfAllUsers,
-  getOrderDetailsForAdmin,
-  updateOrderStatus,
-} = require("../../controllers/admin/order-controller");
-const { authMiddleware } = require("../../middleware/auth");
+import express from "express";
+import { 
+  getAllOrdersOfAllUsers, 
+  getOrderDetailsForAdmin, 
+  updateOrderStatus 
+} from "../../controllers/admin/order-controller.js";
+import authMiddleware from "../../middleware/auth.js";
 
 const router = express.Router();
 
@@ -13,4 +12,4 @@ router.get("/get",authMiddleware, getAllOrdersOfAllUsers);
 router.get("/details/:id",authMiddleware, getOrderDetailsForAdmin);
 router.put("/update/:id",authMiddleware, updateOrderStatus);
 
-module.exports = router;
+export default router;
