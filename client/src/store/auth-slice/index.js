@@ -82,10 +82,6 @@ export const checkAuth = createAsyncThunk(
       `${url}/auth/getuser`,
       {
         withCredentials: true,
-        headers: {
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
       }
     );
 
