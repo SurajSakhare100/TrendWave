@@ -2,11 +2,13 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import { brandOptionsMap, categoryOptionsMap } from "@/config";
 import { Badge } from "../ui/badge";
+import { WishlistButton } from "./wishlistButton";
 
 function ShoppingProductTile({
   product,
   handleGetProductDetails,
   handleAddtoCart,
+  userId, wishlist
 }) {
   return (
     <Card className="w-full max-w-sm mx-auto" key={product?._id}>
@@ -18,6 +20,14 @@ function ShoppingProductTile({
             className="w-full h-[300px] object-cover rounded-t-lg"
             onClick={()=>window.location.href=`product/${product._id}`}
           />
+          <div className="absolute top-0 right-0">
+          <WishlistButton
+          key={product._id}
+          product={product}
+          userId={userId}
+          wishlist={wishlist}
+        />
+          </div>
           {
           product?.totalStock === 0 ? (
             <Badge className="absolute top right-2 bg-red-500 hover:bg-red-600">

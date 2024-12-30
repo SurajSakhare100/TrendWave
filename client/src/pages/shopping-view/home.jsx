@@ -16,8 +16,9 @@ import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useToast } from "@/components/ui/use-toast";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/shop/feature-slice";
+import { fetchWishlist } from "@/store/shop/wishlist-slice";
 
-function ShoppingHome() {
+function ShoppingHome({user}) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bestSeller, setBestSeller] = useState(null);
   const { productList, productDetails } = useSelector(
@@ -25,12 +26,18 @@ function ShoppingHome() {
   );
   const featureImageList=useSelector((state) => state.Feature.featureImageList);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const {wishlist} = useSelector((state) => state);
 
-  const { user } = useSelector((state) => state.auth);
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
+  useEffect(() => {
+    if(user._id)
+      {
+        dispatch(fetchWishlist(user._id));}
+  }, [dispatch]);
 
   function handleNavigateToListingPage(getCurrentItem, section) {
     sessionStorage.removeItem("filters");
@@ -96,6 +103,7 @@ function ShoppingHome() {
   useEffect(() => {
     dispatch(getFeatureImages());
   }, [dispatch]);
+  
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -152,6 +160,8 @@ function ShoppingHome() {
                     key={index}
                     handleGetProductDetails={handleGetProductDetails}
                     product={productItem}
+                    wishlist={wishlist}
+                    userId={user._id}
                     handleAddtoCart={handleAddtoCart}
                   />
                 ))

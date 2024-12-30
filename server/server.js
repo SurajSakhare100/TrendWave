@@ -12,6 +12,7 @@ import shopOrderRouter from "./routes/shop/order.route.js";
 import shopSearchRouter from "./routes/shop/search.route.js";
 import shopReviewRouter from "./routes/shop/review.route.js";
 import shopFeatureRouter from "./routes/shop/feature.route.js";
+import wishlistRouter from "./routes/shop/wishlist.route.js";
 import dotenv from 'dotenv';
 import connectDB from "./DB/index.js";
 dotenv.config({ path: './.env' });
@@ -45,7 +46,8 @@ app.use("/api/v1/shop/address", shopAddressRouter);
 app.use("/api/v1/shop/order", shopOrderRouter);
 app.use("/api/v1/shop/search", shopSearchRouter);
 app.use("/api/v1/shop/review", shopReviewRouter);
-app.use("/api/v1/common/feature", shopFeatureRouter);
+app.use("/api/v1/shop/feature", shopFeatureRouter);
+app.use("/api/v1/shop/wishlist", wishlistRouter);
 
 
 connectDB()

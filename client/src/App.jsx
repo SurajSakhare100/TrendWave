@@ -25,6 +25,7 @@ import ProductView from "./pages/shopping-view/productView";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Loader from "./components/ui/Loader";
 import Analytics from "./pages/admin-view/analytics";
+import { WishlistPage } from "./pages/shopping-view/wishlist";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -81,10 +82,11 @@ function App() {
               </CheckAuth>
             }
           >
-            <Route path="home" element={<ShoppingHome />} />
+            <Route path="home" element={<ShoppingHome user={user}/>} />
             <Route path="product/:id" element={<ProductView />} />
             <Route path="listing" element={<ShoppingListing />} />
             <Route path="checkout" element={<ShoppingCheckout />} />
+            <Route path="wishlist" element={<WishlistPage userId={user._id}/>} />
             <Route path="account" element={<ShoppingAccount />} />
             <Route path="paypal-return" element={<PaypalReturnPage />} />
             <Route path="payment-success" element={<PaymentSuccessPage />} />

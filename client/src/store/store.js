@@ -9,6 +9,7 @@ import shopOrderSlice from "./shop/order-slice";
 import shopSearchSlice from "./shop/search-slice";
 import shopReviewSlice from "./shop/review-slice";
 import FeatureSlice from "./shop/feature-slice";
+import WishlistSlice from "./shop/wishlist-slice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     shopSearch: shopSearchSlice,
     shopReview: shopReviewSlice,
     Feature: FeatureSlice,
+    Wishlist: WishlistSlice,
   },
 });
 
