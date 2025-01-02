@@ -12,46 +12,44 @@ function ShoppingProductTile({
 }) {
   return (
     <Card className="w-full max-w-sm mx-auto" key={product?._id}>
-      <div onClick={() => handleGetProductDetails(product?._id)}>
+      <div >
         <div className="relative">
           <img
             src={product?.image}
             alt={product?.title}
             className="w-full h-[300px] object-cover rounded-t-lg"
-            onClick={()=>window.location.href=`product/${product._id}`}
+            onClick={() => window.location.href = `product/${product._id}`}
           />
-          <div className="absolute top-0 right-0">
-          <WishlistButton
-          key={product._id}
-          product={product}
-          userId={userId}
-          wishlist={wishlist}
-        />
+          <div className="absolute top-0 right-1">
+            <WishlistButton
+              key={product._id}
+              product={product}
+              userId={userId}
+            />
           </div>
-          {
-          product?.totalStock === 0 ? (
-            <Badge className="absolute top right-2 bg-red-500 hover:bg-red-600">
-              Out Of Stock
-            </Badge>
-          ) : product?.totalStock < 10 ? (
-            <Badge className="absolute top-2 right-2 bg-red-500 hover:bg-red-600">
-              {`Only ${product?.totalStock} items left`}
-            </Badge>
-          ) : product?.salePrice > 0 ? (
-            <Badge className="absolute top-2 right-2 bg-red-500 hover:bg-red-600">
-              Sale
-            </Badge>
-          ) : null}
-          
-        {
-            product?.bestseller==true? (
-              <Badge className="absolute top-2 left-4 bg-green-500 hover:bg-green-600  ">
-                {`BestSeller`}
+          <div className="absolute top-2 left-2 flex flex-col space-y-1">
+          {product?.bestseller ? (
+              <Badge className="bg-green-500 hover:bg-green-600">
+                BestSeller
               </Badge>
-            ):null
-          }
+            ) : null}
+            {product?.totalStock === 0 ? (
+              <Badge className="bg-red-500 hover:bg-red-600">
+                Out Of Stock
+              </Badge>
+            ) : product?.totalStock < 10 ? (
+              <Badge className="bg-red-500 hover:bg-red-600">
+                {`Only ${product?.totalStock} items left`}
+              </Badge>
+            ) : product?.salePrice > 0 ? (
+              <Badge className="bg-red-500 hover:bg-red-600">
+                Sale
+              </Badge>
+            ) : null}
+            
+          </div>
         </div>
-        
+
         <CardContent className="p-4">
           <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
           <div className="flex justify-between items-center mb-2">
@@ -64,9 +62,8 @@ function ShoppingProductTile({
           </div>
           <div className="flex justify-between items-center mb-2">
             <span
-              className={`${
-                product?.salePrice > 0 ? "line-through" : ""
-              } text-lg font-semibold text-primary`}
+              className={`${product?.salePrice > 0 ? "line-through" : ""
+                } text-lg font-semibold text-primary`}
             >
               ${product?.price}
             </span>

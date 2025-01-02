@@ -4,7 +4,7 @@ import axios from "axios";
 
 const initialState = {
   isLoading: false,
-  wishlist: {
+  wishlists: {
     _id: "",
     userId: "",
     products: [], // Initialize products as an empty array
@@ -25,7 +25,7 @@ export const fetchWishlist = createAsyncThunk(
 // Add to wishlist
 export const addToWishlist = createAsyncThunk(
   "wishlist/add",
-  async ( userId, productId ) => {
+  async ( {userId, productId}) => {
     const response = await axios.post(
       `${url}/shop/wishlist/add`,
       { userId, productId },
@@ -64,11 +64,12 @@ const WishlistSlice = createSlice({
       })
       .addCase(fetchWishlist.fulfilled, (state, action) => {
         state.isLoading = false; 
-        state.wishlist = action.payload?.wishlist || { _id: "", userId: "", products: [] };
+        state.wishlists = action.payload?.wishlist || { _id: "", userId: "", products: [] };
+        
       })
       .addCase(fetchWishlist.rejected, (state) => {
         state.isLoading = false;
-        state.wishlist = { _id: "", userId: "", products: [] }; // Reset on failure
+        state.wishlists = { _id: "", userId: "", products: [] }; // Reset on failure
       })
 
       // Add to Wishlist
@@ -77,7 +78,7 @@ const WishlistSlice = createSlice({
       })
       .addCase(addToWishlist.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.wishlist = action.payload?.wishlist || { _id: "", userId: "", products: [] }; // Update wishlist
+        state.wishlists = action.payload?.wishlist || { _id: "", userId: "", products: [] }; // Update wishlist
       })
       .addCase(addToWishlist.rejected, (state) => {
         state.isLoading = false;
@@ -89,12 +90,11 @@ const WishlistSlice = createSlice({
       })
       .addCase(removeFromWishlist.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.wishlist = action.payload?.wishlist || { _id: "", userId: "", products: [] }; // Update wishlist
+        state.wishlists = action.payload?.wishlist || { _id: "", userId: "", products: [] }; // Update wishlist
       })
       .addCase(removeFromWishlist.rejected, (state) => {
         state.isLoading = false;
       });
   },
 });
-
 export default WishlistSlice.reducer;

@@ -86,7 +86,7 @@ function App() {
             <Route path="product/:id" element={<ProductView />} />
             <Route path="listing" element={<ShoppingListing />} />
             <Route path="checkout" element={<ShoppingCheckout />} />
-            <Route path="wishlist" element={<WishlistPage userId={user._id}/>} />
+            <Route path="wishlist" element={<WishlistPage userId={user?._id}/>} />
             <Route path="account" element={<ShoppingAccount />} />
             <Route path="paypal-return" element={<PaypalReturnPage />} />
             <Route path="payment-success" element={<PaymentSuccessPage />} />

@@ -26,10 +26,7 @@ function ShoppingHome({user}) {
   );
   const featureImageList=useSelector((state) => state.Feature.featureImageList);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-  const {wishlist} = useSelector((state) => state);
-
-
-
+ 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -160,7 +157,6 @@ function ShoppingHome({user}) {
                     key={index}
                     handleGetProductDetails={handleGetProductDetails}
                     product={productItem}
-                    wishlist={wishlist}
                     userId={user._id}
                     handleAddtoCart={handleAddtoCart}
                   />
