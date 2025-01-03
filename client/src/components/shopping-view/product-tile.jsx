@@ -8,8 +8,9 @@ function ShoppingProductTile({
   product,
   handleGetProductDetails,
   handleAddtoCart,
-  userId, wishlist
+  userId
 }) {
+
   return (
     <Card className="w-full max-w-sm mx-auto" key={product?._id}>
       <div >
@@ -21,11 +22,7 @@ function ShoppingProductTile({
             onClick={() => window.location.href = `product/${product._id}`}
           />
           <div className="absolute top-0 right-1">
-            <WishlistButton
-              key={product._id}
-              product={product}
-              userId={userId}
-            />
+            <WishlistButton product={product} userId={userId} />
           </div>
           <div className="absolute top-2 left-2 flex flex-col space-y-1">
           {product?.bestseller ? (
