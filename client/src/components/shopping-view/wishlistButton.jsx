@@ -6,24 +6,19 @@ import { useState, useEffect } from 'react';
 export const WishlistButton = ({ product, userId }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  
-  // Fetch wishlist products from Redux state and ensure it's always an array
-  const { products = [] } = useSelector((state) => state.Wishlist);
-  
-  // Remove undefined or null products from the array before checking if the product exists
-  const filteredProducts = products.filter((p) => p !== undefined && p !== null);
 
-  // Check if the current product is already in the wishlist
-  const isProductInWishlist = filteredProducts?.some((p) => p._id === product._id);
+  const { products = [] } = useSelector((state) => state.Wishlist);
+
+  const isProductInWishlist = products?.some((p) => p?._id === product._id);
 
   const handleWishlistToggle = async () => {
     setLoading(true);
 
     try {
       if (isProductInWishlist) {
-        await dispatch(removeFromWishlist({ userId, productId: product._id }));
+        await dispatch(removeFromWishlist({ userId, productId: product._id })).unwrap();
       } else {
-        await dispatch(addToWishlist({ userId, productId: product._id }));
+        await dispatch(addToWishlist({ userId, productId: product._id })).unwrap();
       }
     } catch (error) {
       console.error('Error updating wishlist:', error);
