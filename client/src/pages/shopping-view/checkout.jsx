@@ -102,15 +102,16 @@ function ShoppingCheckout() {
     } else if (selectedPaymentMethod === 'cod') {
       dispatch(createNewOrder(orderData)).then((data) => {
         if (data?.payload?.success) {
-          toast({
-            title: 'Order placed successfully with Cash on Delivery.',
-            variant: 'success',
-          });
+         
           dispatch(capturePayment({orderId:data.payload.orderId,paymentMethod:selectedPaymentMethod} )).then((data) => {
             if (data?.payload?.success) {
               sessionStorage.removeItem("currentOrderId");
               window.location.href = "/shop/payment-success";
             }
+          });
+          toast({
+            title: 'Order placed successfully with Cash on Delivery.',
+            variant: 'success',
           });
         } else {
           toast({
