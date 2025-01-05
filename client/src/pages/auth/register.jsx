@@ -1,7 +1,9 @@
 import CommonForm from "@/components/common/form";
+import { GoogleAuth } from "@/components/googleAuth/GoogleAuth";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { registerFormControls } from "@/config";
-import { registerUser } from "@/store/auth-slice";
+import { loginUser, registerUser } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -34,6 +36,12 @@ function AuthRegister() {
       }
     });
   }
+  const handleGuest=()=>{
+      dispatch(loginUser({email:"one@gmail.com",password:"one"}))
+    }
+    const handleDemoAdmin=()=>{
+      dispatch(loginUser({email:"fun@gmail.com",password:"fun"}))
+    }
 
 
   return (
@@ -59,6 +67,33 @@ function AuthRegister() {
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
+      <div className="">
+              <p className="text-center text-2xl line-clamp-1 leading-tight">or</p>
+            </div>
+            <div className="flex flex-col gap-4">
+              
+           <Button className="w-full" variant={"secondary"} onClick={handleGuest}>
+            Login as Guest
+           </Button>
+           
+           <Button className="w-full" variant={"outline"} onClick={handleDemoAdmin}>
+            Login as Demo Admin
+           </Button>
+            <GoogleAuth/>
+            <p className="mt-2">
+           have an account
+          <Link
+            className="font-medium ml-2 text-primary hover:underline"
+            to="/auth/login"
+          >
+            Login
+          </Link>
+        </p>
+      
+      
+            </div>
+      
+
     </div>
   );
 }

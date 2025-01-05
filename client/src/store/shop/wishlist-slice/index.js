@@ -3,56 +3,53 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  products: [],  // Initial state to store the wishlist products
-  status: "idle",  // Status for loading, success, failure
-  error: null,  // Error state
+  products: [], // Initial state to store the wishlist products
+  status: "idle", // Status for loading, success, failure
+  error: null, // Error state
 };
 
-// Fetch wishlist (GET request)
 export const fetchWishlist = createAsyncThunk(
   "wishlist/get",
-  async (userId) => {
+  async (userId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${url}/shop/wishlist/${userId}`, {
         withCredentials: true,
       });
-      return response.data.wishlist; 
+      return response.data; // Assume response.data contains the wishlist
     } catch (error) {
-      throw error;  // Proper error handling
+      return rejectWithValue(error.response?.data || error.message); // Handle errors properly
     }
   }
 );
 
-// Add to wishlist (POST request)
 export const addToWishlist = createAsyncThunk(
   "wishlist/add",
-  async ({ userId, productId }) => {
+  async ({ userId, productId }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
         `${url}/shop/wishlist/add`,
         { userId, productId },
         { withCredentials: true }
       );
-      return response.data;  // Should return the updated list of products
+      return response.data; // Assume response.data contains the added product
     } catch (error) {
-      throw error;  // Proper error handling
+      return rejectWithValue(error.response?.data || error.message); // Handle errors properly
     }
   }
 );
 
-// Remove from wishlist (POST request)
 export const removeFromWishlist = createAsyncThunk(
   "wishlist/remove",
-  async ({ userId, productId }) => {
+  async ({ userId, productId }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
         `${url}/shop/wishlist/remove`,
         { userId, productId },
         { withCredentials: true }
       );
-      return response.data;  // Ensure this returns the updated list of products
+      return response.data; 
     } catch (error) {
-      throw error;  // Proper error handling
+      return rejectWithValue(error.response?.data || error.message); // Handle errors properly
     }
   }
 );
@@ -60,27 +57,34 @@ export const removeFromWishlist = createAsyncThunk(
 const WishlistSlice = createSlice({
   name: "wishlist",
   initialState,
-  reducers: {},  // No custom reducers, only async thunks
+  reducers: {}, // No custom reducers, only async thunks
   extraReducers: (builder) => {
     builder
       .addCase(fetchWishlist.pending, (state) => {
-        state.status = "loading";  // Indicate loading state
+        state.status = "loading"; // Indicate loading state
+        state.error = null; // Clear any previous errors
       })
       .addCase(fetchWishlist.fulfilled, (state, action) => {
-        state.status = "succeeded";  // Wishlist fetched successfully
-        state.products = action.payload.products;  // Set the fetched products
+        state.status = "succeeded"; // Wishlist fetched successfully
+        state.products = action.payload.wishlist || []; // Set the fetched products
       })
       .addCase(fetchWishlist.rejected, (state, action) => {
-        state.status = "failed";  // Failed to fetch wishlist
-        state.error = action.error.message;  // Capture the error message
+        state.status = "failed"; // Failed to fetch wishlist
+        state.error = action.payload || action.error.message; // Capture the error message
       })
       .addCase(addToWishlist.fulfilled, (state, action) => {
-        state.products.push(action.payload.product);  // Optimistically add the product
+        state.products = action.payload.wishlist || [];// Optimistically add the product
+      })
+      .addCase(addToWishlist.rejected, (state, action) => {
+        state.error = action.payload || action.error.message; // Capture the error message
       })
       .addCase(removeFromWishlist.fulfilled, (state, action) => {
-        state.products = state.products.filter(
-          (product) => product._id !== action.payload.productId  // Remove the product
-        );
+        state.status = "succeeded";
+        state.products = action.payload.wishlist || [];
+      })
+      .addCase(removeFromWishlist.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || action.error.message; // Capture the error message
       });
   },
 });

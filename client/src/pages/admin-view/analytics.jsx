@@ -116,15 +116,15 @@ const Analytics = () => {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div className="bg-black shadow-md rounded-lg p-6 text-center text-white">
+        <div className="border text-black shadow-md rounded-lg p-6 text-center ">
           <h2 className="text-lg font-semibold">Total Revenue</h2>
           <p className="text-3xl font-bold">${analytics.totalRevenue}</p>
         </div>
-        <div className="bg-black shadow-md rounded-lg p-6 text-center text-white">
+        <div className="border shadow-md rounded-lg p-6 text-center text-black">
           <h2 className="text-lg font-semibold">Total Orders</h2>
           <p className="text-3xl font-bold">{analytics.totalOrders}</p>
         </div>
-        <div className="bg-black shadow-md rounded-lg p-6 text-center text-white">
+        <div className="border shadow-md rounded-lg p-6 text-center text-black">
           <h2 className="text-lg font-semibold">Total Users</h2>
           <p className="text-3xl font-bold">{analytics.totalUsers}</p>
         </div>

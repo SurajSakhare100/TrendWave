@@ -21,7 +21,11 @@ const OrderSchema = new mongoose.Schema({
     notes: String,
   },
   orderStatus: String,
-  paymentMethod: String,
+  paymentMethod: {
+    type: String,
+    enum: ["paypal", "cod"], // Enumerate possible payment methods
+    required: true,
+  },
   paymentStatus: String,
   totalAmount: Number,
   orderDate: Date,

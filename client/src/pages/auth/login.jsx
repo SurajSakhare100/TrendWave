@@ -1,5 +1,6 @@
 import CommonForm from "@/components/common/form";
 import { GoogleAuth } from "@/components/googleAuth/GoogleAuth";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { loginFormControls } from "@/config";
 import { loginUser } from "@/store/auth-slice";
@@ -34,6 +35,12 @@ function AuthLogin() {
     });
   }
 
+  const handleGuest=()=>{
+    dispatch(loginUser({email:"one@gmail.com",password:"one"}))
+  }
+  const handleDemoAdmin=()=>{
+    dispatch(loginUser({email:"fun@gmail.com",password:"fun"}))
+  }
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
@@ -49,6 +56,18 @@ function AuthLogin() {
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
+      <div className="">
+        <p className="text-center text-2xl line-clamp-1 leading-tight">or</p>
+      </div>
+      <div className="flex flex-col gap-4">
+        
+     <Button className="w-full" variant={"secondary"} onClick={handleGuest}>
+      Login as Guest
+     </Button>
+     
+     <Button className="w-full" variant={"outline"} onClick={handleDemoAdmin}>
+      Login as Demo Admin
+     </Button>
       <GoogleAuth/>
       <p className="mt-2">
           Don't have an account
@@ -59,6 +78,9 @@ function AuthLogin() {
             Register
           </Link>
         </p>
+
+
+      </div>
     </div>
   );
 }

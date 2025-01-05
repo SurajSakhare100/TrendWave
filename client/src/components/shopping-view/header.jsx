@@ -1,4 +1,4 @@
-import { HousePlug, LogOut, Menu, ShoppingBag, ShoppingCart, UserCog } from "lucide-react";
+import { Heart, LogOut, Menu, ShoppingBag, UserCog, WavesIcon } from "lucide-react";
 import {
   Link,
   useLocation,
@@ -55,7 +55,7 @@ function MenuItems() {
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <Label
           onClick={() => handleNavigate(menuItem)}
-          className="text-md md:text-sm  font-medium cursor-pointer"
+          className="text-md  font-medium cursor-pointer"
           key={menuItem.id}
         >
           {menuItem.label}
@@ -119,6 +119,10 @@ function HeaderRightContent() {
           <DropdownMenuItem onClick={() => navigate("/shop/account")} className="cursor-pointer">
             <UserCog className="mr-2 h-4 w-4" />
             Account
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate("/shop/wishlist")} className="cursor-pointer">
+            <Heart className="mr-2 h-4 w-4" />
+            WishList
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">

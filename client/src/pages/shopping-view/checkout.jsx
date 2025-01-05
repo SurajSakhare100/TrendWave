@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserCartItemsContent from "@/components/shopping-view/cart-items-content";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { createNewOrder } from "@/store/shop/order-slice";
+import { capturePayment, createNewOrder } from "@/store/shop/order-slice";
 import { Navigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -12,12 +12,17 @@ function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
   const { approvalURL } = useSelector((state) => state.shopOrder);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('cod');
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
-  const [isPaymentStart, setIsPaymemntStart] = useState(false);
+  const [isPaymentStart, setIsPaymentStart] = useState(false);
+  
   const dispatch = useDispatch();
   const { toast } = useToast();
 
 
+  const handlePaymentMethodChange = (event) => {
+    setSelectedPaymentMethod(event.target.value);
+  };
   const totalCartAmount =
     cartItems && cartItems.items && cartItems.items.length > 0
       ? cartItems.items.reduce(
@@ -31,7 +36,7 @@ function ShoppingCheckout() {
         )
       : 0;
 
-  function handleInitiatePaypalPayment() {
+  function handleInitiatePayment() {
     if (cartItems.length === 0) {
       toast({
         title: "Your cart is empty. Please add items to proceed",
@@ -71,7 +76,7 @@ function ShoppingCheckout() {
         notes: currentSelectedAddress?.notes,
       },
       orderStatus: "pending",
-      paymentMethod: "paypal",
+      paymentMethod: selectedPaymentMethod,
       paymentStatus: "pending",
       totalAmount: totalCartAmount,
       orderDate: new Date(),
@@ -80,14 +85,42 @@ function ShoppingCheckout() {
       payerId: "",
     };
 
-    dispatch(createNewOrder(orderData)).then((data) => {
-      if (data?.payload?.success) {
-        setIsPaymemntStart(true);
-      } else {
-        setIsPaymemntStart(false);
-      }
-    });
-  }
+    
+    if (selectedPaymentMethod === 'paypal') {
+      setIsPaymentStart(true);
+      dispatch(createNewOrder(orderData)).then((data) => {
+        if (data?.payload?.success) {
+          // Redirect to PayPal approval URL
+          window.location.href = data.payload.approvalURL;
+        } else {
+          setIsPaymentStart(false);
+          toast({
+            title: 'Error initiating PayPal payment. Please try again.',
+            variant: 'destructive',
+          });
+        }
+      });
+    } else if (selectedPaymentMethod === 'cod') {
+      dispatch(createNewOrder(orderData)).then((data) => {
+        if (data?.payload?.success) {
+          toast({
+            title: 'Order placed successfully with Cash on Delivery.',
+            variant: 'success',
+          });
+          dispatch(capturePayment({orderId:data.payload.orderId,paymentMethod:selectedPaymentMethod} )).then((data) => {
+            if (data?.payload?.success) {
+              sessionStorage.removeItem("currentOrderId");
+              window.location.href = "/shop/payment-success";
+            }
+          });
+        } else {
+          toast({
+            title: 'Error placing order. Please try again.',
+            variant: 'destructive',
+          });
+        }
+      });
+  }}
 
   if (approvalURL) {
     window.location.href = approvalURL;
@@ -115,11 +148,36 @@ function ShoppingCheckout() {
               <span className="font-bold">${totalCartAmount}</span>
             </div>
           </div>
+
+          <div className="mt-4 flex gap-4 items-center">
+            <div>
+              <input
+                type="radio"
+                value="cod"
+                name="paymentMethod"
+                checked={selectedPaymentMethod === 'cod'}
+                onChange={handlePaymentMethodChange}
+              />
+              <label htmlFor="cod" className="ml-2">Cash on Delivery (COD)</label>
+            </div>
+            <div className="">
+              <input
+                type="radio"
+                value="paypal"
+                name="paymentMethod"
+                checked={selectedPaymentMethod === 'paypal'}
+                onChange={handlePaymentMethodChange}
+              />
+              <label htmlFor="paypal" className="ml-2">PayPal</label>
+            </div>
+          </div>
           <div className="mt-4 w-full">
-            <Button onClick={handleInitiatePaypalPayment} className="w-full">
-              {isPaymentStart
-                ? "Processing Paypal Payment..."
-                : "Checkout with Paypal"}
+            <Button onClick={handleInitiatePayment} className="w-full">
+              {isPaymentStart && selectedPaymentMethod === 'paypal'
+                ? 'Processing PayPal Payment...'
+                : selectedPaymentMethod === 'paypal'
+                ? 'Checkout with PayPal'
+                : 'Place Order'}
             </Button>
           </div>
         </div>

@@ -46,7 +46,6 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         }
       }
     }
-    console.log(user)
     dispatch(
       addToCart({
         userId: user?._id,

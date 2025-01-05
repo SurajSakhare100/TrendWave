@@ -17,6 +17,7 @@ import { useToast } from "@/components/ui/use-toast";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/shop/feature-slice";
 import { fetchWishlist } from "@/store/shop/wishlist-slice";
+import Section from "@/components/shopping-view/Section";
 
 function ShoppingHome({user}) {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -104,7 +105,7 @@ function ShoppingHome({user}) {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="relative w-auto h-[300px] md:h-[600px] overflow-hidden">
+      <div className="relative w-auto h-[300px] md:h-[700px] overflow-hidden">
         {featureImageList && featureImageList.length > 0
           ? featureImageList.map((slide, index) => (
               <img
@@ -143,28 +144,10 @@ function ShoppingHome({user}) {
           <ChevronRightIcon className="w-4 h-4" />
         </Button>
       </div>
+      <Section products={productList} handleAddtoCart={handleAddtoCart} handleGetProductDetails={handleGetProductDetails} userId={user._id} bestSeller={bestSeller}/>
       
 
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            Best Selling Products
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {bestSeller && bestSeller.length > 0
-              ? bestSeller.map((productItem,index) => (
-                  <ShoppingProductTile
-                    key={index}
-                    handleGetProductDetails={handleGetProductDetails}
-                    product={productItem}
-                    userId={user._id}
-                    handleAddtoCart={handleAddtoCart}
-                  />
-                ))
-              : null}
-          </div>
-        </div>
-      </section>
+     
       <ProductDetailsDialog
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}

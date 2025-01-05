@@ -1,56 +1,64 @@
-import { addToWishlist, fetchWishlist, removeFromWishlist } from '@/store/shop/wishlist-slice';
 import { Heart } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { addToWishlist, removeFromWishlist, fetchWishlist } from '@/store/shop/wishlist-slice';
+import { useDispatch, useSelector } from 'react-redux';
 
-export const WishlistButton = ({ product, userId }) => {
+export const WishlistButton = ({ product, userId ,updateWishlist}) => {
   const dispatch = useDispatch();
+  const [isInWishlist, setIsInWishlist] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { products = [] } = useSelector((state) => state.Wishlist.products);
+  useEffect(()=>{
+    const data=products?.some((p)=>product?._id===p._id)
+    setIsInWishlist(data)
+  },[])
 
-  const { products = [] } = useSelector((state) => state.Wishlist);
 
-  const isProductInWishlist = products?.some((p) => p?._id === product._id);
 
   const handleWishlistToggle = async () => {
-    setLoading(true);
+    if (!userId) {
+      console.error('User ID is required to update the wishlist.');
+      return;
+    }
 
+    setLoading(true);
     try {
-      if (isProductInWishlist) {
-        await dispatch(removeFromWishlist({ userId, productId: product._id })).unwrap();
+      if (isInWishlist) {
+        await dispatch(removeFromWishlist({ userId, productId: product?._id }))
+        setIsInWishlist(false);
       } else {
-        await dispatch(addToWishlist({ userId, productId: product._id })).unwrap();
+        await dispatch(addToWishlist({ userId, productId: product._id }))
+        setIsInWishlist(true);
       }
     } catch (error) {
-      console.error('Error updating wishlist:', error);
+      console.error('Error updating wishlist:', error.message || error);
     } finally {
       setLoading(false);
+      updateWishlist();
+      fetchWishlist(userId)
     }
   };
 
-  useEffect(() => {
-    if (userId) {
-      dispatch(fetchWishlist(userId));
-    }
-  }, [userId, dispatch]);
-
   return (
-    <div>
-      <button
-        onClick={handleWishlistToggle}
-        disabled={loading}
-        className={`p-2 rounded-full transition-all duration-200 
-          ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:text-red-600'}`}
-        aria-label={isProductInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-      >
-        {loading ? (
-          <div className="animate-spin w-6 h-6 border-t-2 border-red-600 rounded-full border-t-transparent" />
-        ) : (
-          <Heart
-            className={`w-6 h-6 ${isProductInWishlist ? 'text-red-600 fill-current' : 'text-gray-500'}`}
-            aria-hidden="true"
-          />
-        )}
-      </button>
-    </div>
+    <button
+      onClick={handleWishlistToggle}
+      disabled={loading}
+      className={`p-2 rounded-full transition-all duration-200 ${
+        loading ? 'opacity-50 cursor-not-allowed' : 'hover:text-red-600'
+      }`}
+      aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+    >
+      {loading ? (
+        <div
+          className="animate-spin w-6 h-6 border-2 border-t-2 border-t-red-600 border-transparent rounded-full"
+          aria-hidden="true"
+        />
+      ) : (
+        <Heart
+          className={`w-6 h-6 ${isInWishlist ? 'text-red-600 fill-current' : 'text-gray-500'}`}
+          aria-hidden="true"
+        />
+      )}
+    </button>
   );
 };

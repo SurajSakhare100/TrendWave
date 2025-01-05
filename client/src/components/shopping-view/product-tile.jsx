@@ -8,7 +8,8 @@ function ShoppingProductTile({
   product,
   handleGetProductDetails,
   handleAddtoCart,
-  userId
+  userId,
+  updateWishlist
 }) {
 
   return (
@@ -18,11 +19,11 @@ function ShoppingProductTile({
           <img
             src={product?.image}
             alt={product?.title}
-            className="w-full h-[300px] object-cover rounded-t-lg"
+            className="w-full h-[340px] object-cover "
             onClick={() => window.location.href = `product/${product._id}`}
           />
           <div className="absolute top-0 right-1">
-            <WishlistButton product={product} userId={userId} />
+            <WishlistButton product={product} userId={userId} updateWishlist={updateWishlist}/>
           </div>
           <div className="absolute top-2 left-2 flex flex-col space-y-1">
           {product?.bestseller ? (
@@ -39,7 +40,7 @@ function ShoppingProductTile({
                 {`Only ${product?.totalStock} items left`}
               </Badge>
             ) : product?.salePrice > 0 ? (
-              <Badge className="bg-red-500 hover:bg-red-600">
+              <Badge className="bg-blue-500 text-xs hover:bg-red-600">
                 Sale
               </Badge>
             ) : null}
@@ -47,29 +48,35 @@ function ShoppingProductTile({
           </div>
         </div>
 
-        <CardContent className="p-4">
-          <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
-          <div className="flex justify-between items-center mb-2">
+        <CardContent className="py-4">
+          {/* <div className="flex justify-between items-center mb-2">
             <span className="text-[16px] text-muted-foreground">
               {categoryOptionsMap[product?.category]}
             </span>
             <span className="text-[16px] text-muted-foreground">
               {brandOptionsMap[product?.brand]}
             </span>
+          </div> */}
+          <div className="flex justify-between items-center ">
+          <div className="flex items-center">
+          <p className="text-xl font-bold mb-2 capitalize">{product?.title}</p>
           </div>
-          <div className="flex justify-between items-center mb-2">
-            <span
+           <div className="flex gap-2 items-center">
+           <span
               className={`${product?.salePrice > 0 ? "line-through" : ""
-                } text-lg font-semibold text-primary`}
+                } text-xl font-semibold text-gray-700`}
             >
               ${product?.price}
             </span>
             {product?.salePrice > 0 ? (
-              <span className="text-lg font-semibold text-primary">
+              <span className="text-xl font-bold text-primary">
                 ${product?.salePrice}
               </span>
             ) : null}
+           </div>
           </div>
+          <h4 className="text-md font-senibold mb-2">{product?.description?.slice(0,30)+ '...'}</h4>
+
         </CardContent>
       </div>
       <CardFooter>
