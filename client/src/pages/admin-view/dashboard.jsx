@@ -1,5 +1,6 @@
 import ProductImageUpload from "@/components/admin-view/image-upload";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
 import { addFeatureImage, getFeatureImages } from "@/store/shop/feature-slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,13 @@ function AdminDashboard() {
   const featureImageList=useSelector((state) => state.Feature.featureImageList);
 
   function handleUploadFeatureImage() {
+    if(!imageFile){
+      toast({
+          title: 'Please Select Feature Image!',
+          variant: 'destructive',
+        });
+      return;
+    }
     dispatch(addFeatureImage(uploadedImageUrl)).then((data) => {
       if (data?.payload?.success) {
         dispatch(getFeatureImages());

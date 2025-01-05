@@ -1,5 +1,5 @@
 import React from 'react';
-import { Youtube, Github, Facebook, Linkedin, LinkedinIcon, FacebookIcon, GithubIcon, YoutubeIcon, LucideYoutube } from 'lucide-react';
+import { Youtube, Github, Facebook, Linkedin, LinkedinIcon, FacebookIcon, GithubIcon, YoutubeIcon, LucideYoutube, Earth } from 'lucide-react';
 import paymentLine from '../../../public/paymentLine.png';
 
 function Footer() {
@@ -14,23 +14,18 @@ function Footer() {
                 Trend Wave is one of the world's leading ecommerce brands and is internationally recognized for celebrating the essence of classic worldwide clothing style.
               </p>
               <ul className="flex items-center gap-2">
-                <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
-                  <li className="w-7 h-7 bg-primeColor text-gray-100 hover:text-white cursor-pointer text-lg rounded-full flex justify-center items-center hover:bg-black duration-300">
-                    <LucideYoutube size={18} color='black'/>
+                <a href="https://www.surajsakhare.me/" target="_blank" rel="noreferrer">
+                  <li className="w-7 h-7 bg-primeColor text-gray-100 hover:text-white cursor-pointer text-lg rounded-full flex justify-center items-center  duration-300">
+                    <Earth size={18} color='black' />
                   </li>
                 </a>
-                <a href="https://github.com/ddhoye" target="_blank" rel="noreferrer">
-                  <li className="w-7 h-7 bg-primeColor text-gray-100 hover:text-white cursor-pointer text-lg rounded-full flex justify-center items-center hover:bg-black duration-300">
+                <a href="https://github.com/SurajSakhare100" target="_blank" rel="noreferrer">
+                  <li className="w-7 h-7 bg-primeColor text-gray-100 hover:text-white cursor-pointer text-lg rounded-full flex justify-center items-center  duration-300">
                     <GithubIcon size={18} color='black'/>
                   </li>
                 </a>
-                <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
-                  <li className="w-7 h-7 bg-primeColor text-gray-100 hover:text-white cursor-pointer text-lg rounded-full flex justify-center items-center hover:bg-black duration-300">
-                    <FacebookIcon size={18} color='black' />
-                  </li>
-                </a>
-                <a href="https://www.linkedin.com/in/" target="_blank" rel="noreferrer">
-                  <li className="w-7 h-7 bg-primeColor text-gray-100 hover:text-white cursor-pointer text-lg rounded-full flex justify-center items-center hover:bg-black duration-300">
+                <a href="https://www.linkedin.com/in/suraj-sakhare10/" target="_blank" rel="noreferrer">
+                  <li className="w-7 h-7 bg-primeColor text-gray-100 hover:text-white cursor-pointer text-lg rounded-full flex justify-center items-center  duration-300">
                     <LinkedinIcon size={18} color='black' />
                   </li>
                 </a>
@@ -75,7 +70,7 @@ function Footer() {
                     value=""
                   />
                 </div>
-                <button className="bg-white text-lightText w-[30%] h-10 hover:bg-black hover:text-white duration-300 text-base tracking-wide">
+                <button className="bg-white text-lightText w-[30%] h-10  hover:text-white duration-300 text-base tracking-wide">
                   Subscribe
                 </button>
               </div>

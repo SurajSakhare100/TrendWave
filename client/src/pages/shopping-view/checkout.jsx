@@ -122,6 +122,13 @@ function ShoppingCheckout() {
       });
   }}
 
+ const handlePaypal=(()=>{
+    toast({
+      title: 'Paypal Option is Off For Some Reason Now.',
+      variant: 'destructive',
+    });
+  })
+
   if (approvalURL) {
     window.location.href = approvalURL;
   }
@@ -157,6 +164,7 @@ function ShoppingCheckout() {
                 name="paymentMethod"
                 checked={selectedPaymentMethod === 'cod'}
                 onChange={handlePaymentMethodChange}
+                className="cursor-pointer"
               />
               <label htmlFor="cod" className="ml-2">Cash on Delivery (COD)</label>
             </div>
@@ -165,8 +173,11 @@ function ShoppingCheckout() {
                 type="radio"
                 value="paypal"
                 name="paymentMethod"
+                disabled
                 checked={selectedPaymentMethod === 'paypal'}
                 onChange={handlePaymentMethodChange}
+                className="cursor-pointer"
+                onClick={handlePaypal}
               />
               <label htmlFor="paypal" className="ml-2">PayPal</label>
             </div>
