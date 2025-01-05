@@ -24,8 +24,9 @@ import SearchProducts from "./pages/shopping-view/search";
 import ProductView from "./pages/shopping-view/productView";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Loader from "./components/ui/Loader";
-import Analytics from "./pages/admin-view/analytics";
 import { WishlistPage } from "./pages/shopping-view/wishlist";
+import Analytics from "./pages/admin-view/analytics";
+import AnalyticsPage from "./pages/admin-view/analytics";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -72,7 +73,7 @@ function App() {
             <Route path="products" element={<AdminProducts />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="features" element={<AdminFeatures />} />
-            <Route path="analytics" element={<Analytics />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
           </Route>
           <Route
             path="/shop/*"
@@ -96,6 +97,8 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      <Analytics/>
+
     </GoogleOAuthProvider>
   );
 }

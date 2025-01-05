@@ -16,7 +16,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, PointElement, LineElement, Tooltip, Legend);
 
-const Analytics = () => {
+const AnalyticsPage = () => {
   const [analytics, setAnalytics] = useState({
     totalRevenue: 0,
     totalOrders: 0,
@@ -157,4 +157,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+export default AnalyticsPage;
