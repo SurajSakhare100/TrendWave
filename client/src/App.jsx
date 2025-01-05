@@ -25,8 +25,8 @@ import ProductView from "./pages/shopping-view/productView";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Loader from "./components/ui/Loader";
 import { WishlistPage } from "./pages/shopping-view/wishlist";
-import Analytics from "./pages/admin-view/analytics";
 import AnalyticsPage from "./pages/admin-view/analytics";
+import { Analytics } from "@vercel/analytics/react"
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -96,8 +96,8 @@ function App() {
           <Route path="/unauth-page" element={<UnauthPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </div>
       <Analytics/>
+      </div>
 
     </GoogleOAuthProvider>
   );
