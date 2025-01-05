@@ -90,7 +90,6 @@ function ShoppingCheckout() {
       setIsPaymentStart(true);
       dispatch(createNewOrder(orderData)).then((data) => {
         if (data?.payload?.success) {
-          // Redirect to PayPal approval URL
           window.location.href = data.payload.approvalURL;
         } else {
           setIsPaymentStart(false);
